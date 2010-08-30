@@ -20,6 +20,9 @@
 
 #include <libcdsBasics.h>
 
+#include <Mapper.h>
+#include <SequenceBuilder.h>
+#include <BitSequenceBuilder.h>
 
 #ifndef SEQUENCEBUILDERWAVELETTREENOPTRS_H
 #define SEQUENCEBUILDERWAVELETTREENOPTRS_H
@@ -27,9 +30,13 @@
 namespace cds_static {
     class SequenceBuilderWaveletTreeNoptrs : public SequenceBuilder {
         public:
-            SequenceBuilderWaveletTreeNoptrs(BitSequenceBuilder * bsb);
+            SequenceBuilderWaveletTreeNoptrs(BitSequenceBuilder * bsb, Mapper * am);
             virtual ~SequenceBuilderWaveletTreeNoptrs();
             virtual Sequence * build(uint * seq, size_t len);
+
+        protected:
+            BitSequenceBuilder * bsb;
+            Mapper * am;
     };
 };
 

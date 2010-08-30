@@ -20,6 +20,7 @@
 
 #include <libcdsBasics.h>
 
+#include <Sequence.h>
 
 #ifndef SEQUENCEBUILDER_H
 #define SEQUENCEBUILDER_H
@@ -28,10 +29,20 @@ namespace cds_static {
 
     class SequenceBuilder {
         public:
+            SequenceBuilder() { userCount=0; }
             virtual ~SequenceBuilder() {}
             virtual Sequence * build(uint * seq, size_t len)=0;
+            virtual void use() { userCount++; }
+            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
+
+        protected:
+            int userCount;
     };
 };
 
+#include <SequenceBuilderWaveletTreeNoptrs.h>
+#include <SequenceBuilderWaveletTree.h>
+#include <SequenceBuilderGMRChunk.h>
+#include <SequenceBuilderGMR.h>
 #endif
 

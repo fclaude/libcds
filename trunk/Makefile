@@ -1,5 +1,5 @@
 
-CPPFLAGS=-g3 -Wall -O0
+CPPFLAGS=-g3 -Wall -O0 -std=c++0x
 #CPPFLAGS=-O3 -Wall -DNDEBUG 
 
 all: clean libcompact tests

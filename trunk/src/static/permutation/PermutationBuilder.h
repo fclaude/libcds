@@ -28,8 +28,14 @@ namespace cds_static {
     
     class PermutationBuilder {
         public:
+            PermutationBuilder() { userCount=0; }
             virtual ~PermutationBuilder() {}
             virtual Permutation * build(uint * perm, uint n) const = 0;
+            virtual void use() { userCount++; }
+            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
+
+        protected:
+            int userCount;
     };
 };
 

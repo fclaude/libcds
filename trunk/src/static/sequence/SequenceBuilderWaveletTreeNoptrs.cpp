@@ -22,17 +22,20 @@
 
 namespace cds_static {
 
-    SequenceBuilderWaveletTreeNoptrs::SequenceBuilderWaveletTreeNoptrs(BitSequenceBuilder * bsb) {
+    SequenceBuilderWaveletTreeNoptrs::SequenceBuilderWaveletTreeNoptrs(BitSequenceBuilder * bsb, Mapper * am) {
         this->bsb = bsb;
+        this->am = am;
         bsb->use();
+        am->use();
     }
 
     SequenceBuilderWaveletTreeNoptrs::~SequenceBuilderWaveletTreeNoptrs() {
         bsb->unuse();
+        am->unuse();
     }
 
-    Sequence * SequenceBuilderWaveletTreeNoptrs::build(uint * sequence, size_t len) const {
-        return new WaveletTreeNoptrs(sequence, len, bmb, NULL);
+    Sequence * SequenceBuilderWaveletTreeNoptrs::build(uint * sequence, size_t len) {
+        return new WaveletTreeNoptrs(sequence, len, bsb, am);
     }
 };
 

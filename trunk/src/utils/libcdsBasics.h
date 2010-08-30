@@ -36,6 +36,7 @@
 #include <string>
 #include <sstream>
 #include <cassert>
+#include <cstdint>
 
 namespace cds_utils
 {
