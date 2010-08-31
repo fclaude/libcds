@@ -54,6 +54,7 @@ namespace cds_static
             virtual uint access(size_t i) const;
 
             virtual size_t getSize() const = 0;
+            virtual size_t getLength() const { return length; }
 
             virtual void save(ofstream & fp) const = 0;
 
