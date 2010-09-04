@@ -122,7 +122,7 @@ namespace cds_utils
 
     /** uints required to represent n integers of e bits each */
     inline uint uint_len(const uint e, const size_t n) {
-        return ((unsigned long long)e*n/W+((unsigned long long)e*n%W>0));
+        return ((unsigned long long)e*n+W-1)/W; //+((unsigned long long)e*n%W>0));
     }
 
     /** Retrieve a given index from array A where every value uses len bits

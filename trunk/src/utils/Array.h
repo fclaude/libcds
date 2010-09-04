@@ -101,9 +101,6 @@ namespace cds_utils
              */
             inline uint getField(const size_t pos) const
             {
-                if(pos>=length) {
-                    cout << "pos=" << pos << " length=" << length << endl;
-                }
                 assert(pos<length);
                 return get_field(data, bitsPerItem, pos);
             }
@@ -128,9 +125,6 @@ namespace cds_utils
              */
             inline uint operator[](const size_t pos) const
             {
-                if(pos>=length) {
-                    cout << "pos=" << pos << " length=" << length << endl;
-                }
                 assert(pos<length);
                 return get_field(data, bitsPerItem, pos);
             }

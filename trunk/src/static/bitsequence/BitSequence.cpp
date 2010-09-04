@@ -134,10 +134,10 @@ namespace cds_static
         size_t pos = fp.tellg();
         fp.seekg(pos-sizeof(uint));
         switch(r) {
-            //case RRR02_HDR: return BitSequence_rrr02::load(fp);
-            //case BRW32_HDR: return BitSequence_brw32::load(fp);
+            case RRR02_HDR: return BitSequenceRRR::load(fp);
+            case BRW32_HDR: return BitSequenceRG::load(fp);
             //case RRR02_LIGHT_HDR: return BitSequence_rrr02_light::load(fp);
-            //case SDARRAY_HDR: return BitSequence_sdarray::load(fp);
+            case SDARRAY_HDR: return BitSequenceSDArray::load(fp);
         }
         return NULL;
     }

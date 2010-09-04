@@ -100,4 +100,8 @@ namespace cds_static
     };
 
 };
+
+#include<BitSequenceRG.h>
+#include<BitSequenceRRR.h>
+#include<BitSequenceSDArray.h>
 #endif                           /* _STATIC_BITSEQUENCE_H */
