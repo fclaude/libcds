@@ -1,7 +1,7 @@
 
 CPP=g++
 
-CPPFLAGS=-g3 -Wall -O0 -I../includes/ -std=c++0x
+CPPFLAGS=-g3 -Wall -O0 -I../includes/ 
 #CPPFLAGS=-O3 -Wall -DNDEBUG -I../includes/
 LIB=../lib/libcds.a
 
