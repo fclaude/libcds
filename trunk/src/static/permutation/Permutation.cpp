@@ -62,7 +62,7 @@ namespace cds_static {
         size_t pos = fp.tellg();
         fp.seekg(pos - sizeof(uint),ios::beg);
         switch(rd) {
-            case MRRRPERM: 
+            case MRRRPERM: return PermutationMRRR::load(fp); 
                 break;
         }
         return NULL;
