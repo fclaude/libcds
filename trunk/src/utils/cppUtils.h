@@ -34,5 +34,17 @@ namespace cds_utils
         return ret;
     }
 
+    template <typename T> T * loadValue(const char * name, size_t & slen) {
+        ifstream in(name);
+        assert(in.good());
+        in.seekg(0,ios_base::end);
+        size_t len = in.tellg();
+        slen = len/sizeof(T);
+        if(len%sizeof(T)) slen--;
+        T * ret = loadValue<T>(in,slen);
+        in.close();
+        return ret;
+    }
+
 };
 #endif
