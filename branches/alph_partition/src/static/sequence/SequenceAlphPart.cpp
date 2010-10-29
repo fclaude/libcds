@@ -22,6 +22,11 @@
 
 namespace cds_static
 {
+
+#define GROUP((x),(c)) ((c<=x)?x:(floor(log2((x)-(c)+1))))
+#define OFFSET((x),(c),(k)) ((k<=c)?0:(((x)-(c)+1)-(1<<(k))))
+#define MAP((x),
+
     SequenceAlphPart::SequenceAlphPart(uint * seq, size_t n, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder) : Sequence(n) { 
         
         // Say we are using the builders
@@ -51,7 +56,7 @@ namespace cds_static
         lengthForSymb = new uint[sigma+1];
 
         // We estimate maxLen, it may be smaller if many symbols have 0 frequency
-        maxLen = getSymbolLength(sigma);
+        maxLen = GROUP(sigma,cut);
 
         // Initialize the lengths of each sequence in indexesByLength
         uint * lenLengths = new uint[maxLen];
@@ -62,10 +67,10 @@ namespace cds_static
         for(uint i=0;i<=sigma;i++) {
             if(pairs[i].first==0) break;
             alphSortedByFreq[i] = pairs[i].second;
-            uint sl = getSymbolLength(i);
+            uint sl = GROUP(i,c);
             lengthForSymb[pairs[i].second] = sl; 
             lenLengths[sl]++;
-            maxLen = getSymbolLength(i);
+            maxLen = sl;
         }
 
         // Now we build lengthsIndex
@@ -88,10 +93,11 @@ namespace cds_static
         // We maintain the positions in lenLenght (not needed anymore)
         for(uint i=0;i<maxLen;i++)
             lenLength[i] = 0;
-        for(uint i=0;i<n;i++)
+        for(uint i=0;i<n;i++) {
             if(seq[i]>=cut) {
-                seqs[lengthForSymb[seq[i]]++] = symbOffset[seq[i]];
+                seqs[lengthForSymb[seq[i]]][lenLength[lengthForSymb[seq[i]]]++] = symbOffset[seq[i]];
             }
+        }
 
         // We are done with the builders
         lenIndexBuilder->unuse();
