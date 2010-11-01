@@ -91,6 +91,7 @@ namespace cds_static
 
     void HuffmanCoder::save(ofstream & fp) const
     {
+        saveValue<uint>(fp,HUFF_HDR);
         saveHuff(huff_table,fp);
     }
 

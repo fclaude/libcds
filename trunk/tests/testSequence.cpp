@@ -11,6 +11,12 @@ using namespace cds_static;
 
 
 void testSequence(Array & a, Sequence & bs) {
+    ofstream outfs("sequence.tmp");
+    bs.save(outfs);
+    outfs.close();
+    ifstream infs("sequence.tmp");
+    Sequence * seq = Sequence::load(infs);
+    infs.close();
     uint maxv = a.getMax();
     size_t count[maxv+1];
     for(size_t i=0;i<=maxv;i++)
@@ -18,24 +24,25 @@ void testSequence(Array & a, Sequence & bs) {
     for(size_t i=0;i<a.getLength();i++) {
         count[a[i]]++;
         for(uint j=a[i];j<=a[i];j++) { 
-            if(bs.rank(j,i)!=count[j]) {
+            if(seq->rank(j,i)!=count[j]) {
                 cerr << "ERROR RANK " << endl;
                 cerr << " Rank result: " << bs.rank(j,i) << " count=" << count[j] << endl;
                 cerr << " symbol=" << j << " position=" << i << endl;
                 exit(-1);
             }
         }
-        if(bs.select(a[i],count[a[i]])!=i) {
+        if(seq->select(a[i],count[a[i]])!=i) {
             cerr << "ERROR SELECT " << endl;
             cerr << "a[i]=" << a[i] << " maxv=" << maxv << endl;
             cerr << "bs.select=" << bs.select(a[i],count[a[i]]) << " i=" << i << endl;
             exit(-2);
         }
-        if(a[i]!=bs.access(i)) {
+        if(a[i]!=seq->access(i)) {
             cerr << "ERROR ACCESS" << endl;
             exit(-3);
         }
     }
+    delete seq;
 }
 
 int main(int argc, char ** argv) {
@@ -65,11 +72,12 @@ int main(int argc, char ** argv) {
   Mapper * mapper2 = new MapperNone();
   mapper->use();
   mapper2->use();
+  cout << "Test 1 : Wavelet tree with pointers" << endl;
   WaveletTree wt1(a,new wt_coder_huff(a, mapper),new BitSequenceBuilderRG(20), mapper);
   cout << "bs.size() = " << wt1.getSize() << endl;
   testSequence(a, wt1);
 
-  cout << "Test 2" << endl;
+  cout << "Test 2 : Wavelet tree without pointers" << endl;
   WaveletTreeNoptrs wt3(a, new BitSequenceBuilderRRR(32), mapper);
   cout << "bs.size() = " << wt3.getSize() << endl;
   testSequence(a, wt3);

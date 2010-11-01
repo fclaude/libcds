@@ -12,6 +12,16 @@ using namespace std;
 using namespace cds_utils;
 using namespace cds_static;
 
+BitSequence * saveLoad(BitSequence * bs) {
+    ofstream ofs("bitsequence.tmp");
+    bs->save(ofs);
+    ofs.close();
+    ifstream ifs("bitsequence.tmp");
+    BitSequence * ret = BitSequence::load(ifs);
+    ifs.close();
+    return ret;
+}
+
 bool testBitSequence(BitString & a, BitSequence * bs) {
   size_t rank0SoFar = 0;
   size_t rank1SoFar = 0;
@@ -71,20 +81,26 @@ int main(int argc, char ** argv) {
   }
 
   BitSequenceRG bsRG(a,20);
-  if(!testBitSequence(a,&bsRG)) {
+  BitSequence * s = saveLoad(&bsRG);
+  if(!testBitSequence(a,s)) {
       cerr << "ERROR TESTING BitSequenceRG" << endl;
       return -1;
   }
-  BitSequenceRRR bsRRR(a,33);
-  if(!testBitSequence(a,&bsRRR)) {
-      cerr << "ERROR TESTING BitSequenceRRR" << endl;
-      return -1;
-  }
+  delete s;
   BitSequenceSDArray bsSDArray(a);
-  if(!testBitSequence(a,&bsSDArray)) {
+  s = saveLoad(&bsSDArray);
+  if(!testBitSequence(a,s)) {
       cerr << "ERROR TESTING BitSequenceSDArray" << endl;
       return -1;
   }
+  delete s;
+  BitSequenceRRR bsRRR(a,33);
+  s = saveLoad(&bsRRR);
+  if(!testBitSequence(a,s)) {
+      cerr << "ERROR TESTING BitSequenceRRR" << endl;
+      return -1;
+  }
+  delete s;
   return 0;
 }
 

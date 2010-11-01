@@ -32,7 +32,7 @@ namespace cds_static
         uint * symbols = new uint[n];
         for(size_t i=0;i<n;i++)
             symbols[i] = am->map(a[i]);
-        max_v=a.getMax();
+        max_v=am->map(a.getMax());
         height=bits(max_v);
         uint *occurrences=new uint[max_v+1];
         for(uint i=0;i<=max_v;i++) occurrences[i]=0;
@@ -221,21 +221,29 @@ namespace cds_static
     }
 
     WaveletTreeNoptrs::WaveletTreeNoptrs():Sequence(0) {
+        bitstring = NULL;
+        occ = NULL;
+        am = NULL;
     }
 
     WaveletTreeNoptrs::~WaveletTreeNoptrs() {
-        for(uint i=0;i<height;i++)
-            delete bitstring[i];
-        delete [] bitstring;
-        delete occ;
-        am->unuse();
+        if(bitstring) {
+            for(uint i=0;i<height;i++)
+                if(bitstring[i])
+                    delete bitstring[i];
+            delete [] bitstring;
+        }
+        if(occ)
+            delete occ;
+        if(am)
+            am->unuse();
     }
 
     void WaveletTreeNoptrs::save(ofstream & fp) const
     {
         uint wr = WVTREE_NOPTRS_HDR;
         saveValue(fp,wr);
-        saveValue(fp,n);
+        saveValue<size_t>(fp,n);
         saveValue(fp,max_v);
         saveValue(fp,height);
         am->save(fp);
@@ -258,9 +266,12 @@ namespace cds_static
         }
         ret->am->use();
         ret->bitstring = new BitSequence*[ret->height];
+        for(uint i=0;i<ret->height;i++) 
+            ret->bitstring[i] = NULL;
         for(uint i=0;i<ret->height;i++) {
             ret->bitstring[i] = BitSequence::load(fp);
             if(ret->bitstring[i]==NULL) {
+                cout << "damn" << i << " " << ret->height << endl;
                 delete ret;
                 return NULL;
             }

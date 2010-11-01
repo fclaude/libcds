@@ -90,6 +90,7 @@ namespace cds_static
         if(rd!=WT_CODER_HUFF_HDR) return NULL;
         wt_coder_huff * ret = new wt_coder_huff();
         ret->hc = HuffmanCoder::load(fp);
+        assert(ret->hc!=NULL);
         ret->maxBuffer = ret->hc->maxLength()/W+1;
         return ret;
     }

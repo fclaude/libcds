@@ -88,7 +88,17 @@ namespace cds_static
 
     void BitSequenceRRR::create_sampling(uint sample_rate) {
         this->sample_rate = sample_rate;
-
+        /*cout << "===================" << endl;
+        cout << "length = " << length << endl;
+        cout << "ones = " << ones << endl;
+        cout << "C_len = " << C_len << endl;
+        cout << "C_field_bits = " << C_field_bits << endl;
+        cout << "O_len = " << O_len << endl;
+        cout << "O_bits_len = " << O_bits_len << endl;
+        cout << "sample_rate = " << sample_rate << endl;
+        cout << "C_alen = " << uint_len(C_len,C_field_bits) << endl;
+        cout << "O_alen = " << O_len << endl;*/
+ 
         // Sampling for C
         C_sampling_len = C_len/sample_rate+2;
         C_sampling_field_bits = bits(ones);
@@ -311,6 +321,16 @@ namespace cds_static
 
     void BitSequenceRRR::save(ofstream & f) const
     {
+        /*cout << "===================" << endl;
+        cout << "length = " << length << endl;
+        cout << "ones = " << ones << endl;
+        cout << "C_len = " << C_len << endl;
+        cout << "C_field_bits = " << C_field_bits << endl;
+        cout << "O_len = " << O_len << endl;
+        cout << "O_bits_len = " << O_bits_len << endl;
+        cout << "sample_rate = " << sample_rate << endl;
+        cout << "C_alen = " << uint_len(C_len,C_field_bits) << endl;
+        cout << "O_alen = " << O_len << endl;*/
         uint wr = RRR02_HDR;
         saveValue(f,wr);
         saveValue(f,length);
@@ -330,18 +350,25 @@ namespace cds_static
         {
             ret = new BitSequenceRRR();
             uint type = loadValue<uint>(f);
-                                 // TODO:throw an exception!
+            // TODO:throw an exception!
             if(type!=RRR02_HDR) {
                 abort();
             }
-            ret->length = loadValue<uint>(f);
-            ret->ones = loadValue<uint>(f);
+            ret->length = loadValue<size_t>(f);
+            //cout << ret->length << endl;
+            ret->ones = loadValue<size_t>(f);
+            //cout << ret->ones << endl;
             ret->C_len = loadValue<uint>(f);
+            //cout << ret->C_len << endl;
             ret->C_field_bits = loadValue<uint>(f);
+            //cout << ret->C_field_bits << endl;
             ret->O_len = loadValue<uint>(f);
+            //cout << ret->O_len << endl;
             ret->O_bits_len = loadValue<uint>(f);
+            //cout << ret->O_bits_len << endl;
             ret->sample_rate = loadValue<uint>(f);
-            ret->length = loadValue<uint>(f);
+            //cout << ret->sample_rate << endl;
+            //ret->length = loadValue<uint>(f);
             ret->C = loadValue<uint>(f,uint_len(ret->C_len,ret->C_field_bits));
             ret->O = loadValue<uint>(f,ret->O_len);
             ret->create_sampling(ret->sample_rate);
@@ -352,5 +379,5 @@ namespace cds_static
         }
         return NULL;
     }
-
 }
+
