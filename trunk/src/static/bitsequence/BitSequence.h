@@ -28,6 +28,7 @@
 #define BRW32_HDR 3
 #define RRR02_LIGHT_HDR 4
 #define SDARRAY_HDR 5
+#define DARRAY_HDR 6
 
 #include <libcdsBasics.h>
 #include <Array.h>
@@ -123,4 +124,5 @@ namespace cds_static
 #include<BitSequenceRG.h>
 #include<BitSequenceRRR.h>
 #include<BitSequenceSDArray.h>
+#include<BitSequenceDArray.h>
 #endif                           /* _STATIC_BITSEQUENCE_H */

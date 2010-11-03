@@ -33,7 +33,7 @@ namespace cds_static
             tmp_seq[i] = 0;
         for(uint i=0;i<bs.getLength();i++)
         if(bs[i]) {
-            __setbit(tmp_seq,i,1);
+					  __setbit(tmp_seq,i,1);
             ones++;
         }
         if(ones)
@@ -49,7 +49,7 @@ namespace cds_static
             tmp_seq[i] = 0;
         for(uint i=0;i<len;i++)
         if(bitget(buff,i)) {
-            __setbit(tmp_seq,i,1);
+					  __setbit(tmp_seq,i,1);
             ones++;
         }
         if(ones)

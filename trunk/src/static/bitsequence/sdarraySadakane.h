@@ -31,6 +31,7 @@
 
 #include <libcdsBasics.h>
 #include <cppUtils.h>
+#include <libcdsSDArray.h>
 
 namespace cds_static
 {
@@ -66,7 +67,6 @@ namespace cds_static
     int selects3_selectnext(const selects3 *select, const int i);
 
     void make___selecttbl(void);
-    int __setbit(uint *B, int i,int x);
     void selectd2_save(const selectd2 * s, ofstream & fp);
     void selects3_save(const selects3 * s, ofstream & fp);
 

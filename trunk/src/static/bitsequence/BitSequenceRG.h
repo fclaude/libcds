@@ -52,7 +52,6 @@ namespace cds_static
     class BitSequenceRG : public BitSequence
     {
         private:
-            uint *data;
             //bool owner;
             size_t n,integers;
             size_t factor,b,s;
@@ -66,6 +65,7 @@ namespace cds_static
             size_t SpaceRequirement() const;
 
         public:
+						uint *data;
             /** Build the BitSequenceRG with a sampling factor <code>factor</code>
              * The <code>factor</code> value has to be either 2,3,4 or 20, being the first one the fastest/bigger.
              */

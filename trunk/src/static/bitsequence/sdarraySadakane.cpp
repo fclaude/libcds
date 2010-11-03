@@ -25,160 +25,6 @@
 
 namespace cds_static
 {
-
-    #if 0
-    typedef unsigned int qword;
-    #define logD 4
-    #else
-    typedef unsigned long long qword;
-    #define logD 5
-    #endif
-    #define PBS (sizeof(uint)*8)
-    #define D (1<<logD)
-    #define logM 5
-    #define M (1<<logM)
-    #define logP 8
-    #define P (1<<logP)
-    #define logLL 16             // size of word
-    #define LL (1<<logLL)
-    //#define logLLL 7
-    #define logLLL 5
-    //#define LLL 128
-    //#define LLL 32
-    #define LLL (1<<logLLL)
-    //#define logL 10
-    //#define logL (logLL-3)
-    #define logL (logLL-1-5)
-    #define L (1<<logL)
-
-    int __blog(const int x1) {
-        int x=x1;
-        int l;
-        l = 0;
-        while (x>0) {
-            x>>=1;
-            l++;
-        }
-        return l;
-    }
-
-    int __setbit(uint *B, const int i, const int x) {
-        int j,l;
-        //printf("%u\n",D);
-        j = i / D;
-        l = i % D;
-        if (x==0) B[j] &= (~(1<<(D-1-l)));
-        else if (x==1) B[j] |= (1<<(D-1-l));
-        else {
-            printf("error __setbit x=%d\n",x);
-            exit(1);
-        }
-        return x;
-    }
-
-    int __setbit2(unsigned char *B, const int i, const int x) {
-        int j,l;
-
-        j = i / 8;
-        l = i % 8;
-        if (x==0) B[j] &= (~(1<<(8-1-l)));
-        else if (x==1) B[j] |= (1<<(8-1-l));
-        else {
-            printf("error __setbit2 x=%d\n",x);
-            exit(1);
-        }
-        return x;
-    }
-
-    int __setbits(uint *B, const int i, const int d, const int x) {
-        int j;
-
-        for (j=0; j<d; j++) {
-            __setbit(B,i+j,(x>>(d-j-1))&1);
-        }
-        return x;
-    }
-
-    int __getbit(const uint *B, const int i) {
-        int j,l;
-
-        //j = i / D;
-        //l = i % D;
-        j = i >> logD;
-        l = i & (D-1);
-        return (B[j] >> (D-1-l)) & 1;
-    }
-
-    int __getbit2(const unsigned char *B, const int i) {
-        int j,l;
-
-        //j = i / D;
-        //l = i % D;
-        j = i >> 3;
-        l = i & (8-1);
-        return (B[j] >> (8-1-l)) & 1;
-    }
-
-    #if 1
-    uint __getbits(const uint *B, const int i1, const int d) {
-        qword x,z;
-
-        int i = i1;
-        B += (i >> logD);
-        i &= (D-1);
-        if (i+d <= 2*D) {
-            x = (((qword)B[0]) << D) + B[1];
-            x <<= i;
-            x >>= (D*2-1-d);
-            x >>= 1;
-        }
-        else {
-            x = (((qword)B[0])<<D)+B[1];
-            z = (x<<D)+B[2];
-            x <<= i;
-            x &= (((qword)1L<<D)-1)<<D;
-            z <<= i;
-            z >>= D;
-            x += z;
-            x >>= (2*D-d);
-        }
-
-        return x;
-    }
-    #endif
-
-    #if 0
-    uint __getbits(uint *B, int i, int d) {
-        uint j,x;
-
-        x = 0;
-        for (j=0; j<d; j++) {
-            x <<= 1;
-            x += __getbit(B,i+j);
-        }
-        return x;
-    }
-    #endif
-
-    static const unsigned int _popCount[] = {
-        0,1,1,2,1,2,2,3,1,2,2,3,2,3,3,4,
-        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
-        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
-        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
-        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
-        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
-        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
-        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
-        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
-        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
-        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
-        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
-        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
-        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
-        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
-        4,5,5,6,5,6,6,7,5,6,6,7,6,7,7,8
-    };
-
     static unsigned int __selecttbl[8*256];
     static int built = 0;
 
@@ -200,47 +46,6 @@ namespace cds_static
                 }
             }
         }
-    }
-
-    unsigned int __popCount(const uint x) {
-        uint r;
-        #if 0
-        r = x;
-        r = r - ((r>>1) & 0x77777777) - ((r>>2) & 0x33333333) - ((r>>3) & 0x11111111);
-        r = ((r + (r>>4)) & 0x0f0f0f0f) % 0xff;
-        #elif 1
-        r = x;
-        r = ((r & 0xaaaaaaaa)>>1) + (r & 0x55555555);
-        r = ((r & 0xcccccccc)>>2) + (r & 0x33333333);
-        //r = ((r & 0xf0f0f0f0)>>4) + (r & 0x0f0f0f0f);
-        r = ((r>>4) + r) & 0x0f0f0f0f;
-        //r = ((r & 0xff00ff00)>>8) + (r & 0x00ff00ff);
-        r = (r>>8) + r;
-        //r = ((r & 0xffff0000)>>16) + (r & 0x0000ffff);
-        r = ((r>>16) + r) & 63;
-        #else
-        r = _popCount[x & 0xff];
-        x >>= 8;
-        r += _popCount[x & 0xff];
-        x >>= 8;
-        r += _popCount[x & 0xff];
-        x >>= 8;
-        r += _popCount[x & 0xff];
-        #endif
-        return r;
-    }
-
-    unsigned int __popCount8(const uint x) {
-        uint r;
-        #if 1
-        r = x;
-        r = ((r & 0xaa)>>1) + (r & 0x55);
-        r = ((r & 0xcc)>>2) + (r & 0x33);
-        r = ((r>>4) + r) & 0x0f;
-        #else
-        r = _popCount[x & 0xff];
-        #endif
-        return r;
     }
 
     void selectd2_save(const selectd2 * s, ofstream & fp) {
@@ -326,13 +131,13 @@ namespace cds_static
             for (il = 0; il < nl; il++) {
                 pp = s[il*L];
                 select->lp[il] = pp;
-                i = min((il+1)*L-1,m-1);
+                i = min((il+1)*(int)L-1,m-1);
                 p = s[i];
                 //printf("%d ",p-pp);
-                if (p - pp >= LL) {
+                if (p - pp >= (int)LL) {
                     if (r == 1) {
-                        for (is = 0; is < L; is++) {
-                            if (il*L+is >= m) break;
+                        for (is = 0; is < (int)L; is++) {
+                            if (il*(int)L+is >= m) break;
                             select->sl[ml*L+is] = s[il*L+is];
                         }
                     }
@@ -341,8 +146,8 @@ namespace cds_static
                 }
                 else {
                     if (r == 1) {
-                        for (is = 0; is < L/LLL; is++) {
-                            if (il*L+is*LLL >= m) break;
+                        for (is = 0; is < (int)(L/LLL); is++) {
+                            if ((int)(il*L+is*LLL) >= m) break;
                             select->ss[ms*(L/LLL)+is] = s[il*L+is*LLL] - pp;
                         }
                     }
@@ -352,11 +157,11 @@ namespace cds_static
             }
             if (r == 0) {
                 select->sl = new uint[ml*L+1];
-                for(int k=0;k<ml*L+1;k++) select->sl[k]=0;
+                for(int k=0;k<ml*(int)L+1;k++) select->sl[k]=0;
                 select->size += sizeof(uint)*(ml*L+1);
                 select->sl_len = ml*L+1;
                 select->ss = new ushort[ms*(L/LLL)+1];
-                for(int k=0;k<ms*(L/LLL)+1;k++) select->ss[k]=0;
+                for(int k=0;k<ms*(int)(L/LLL)+1;k++) select->ss[k]=0;
                 select->ss_len = ms*(L/LLL)+1;
                 select->size += sizeof(ushort)*(ms*(L/LLL)+1);
             }

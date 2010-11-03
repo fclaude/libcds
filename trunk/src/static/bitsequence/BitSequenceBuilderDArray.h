@@ -1,7 +1,7 @@
-/*  BitSequenceBuilder.h
+/*  BitSequenceBuilderDArray.h
  * Copyright (C) 2008, Francisco Claude, all rights reserved.
  *
- * Francisco Claude <fclaude@cs.uwaterloo.ca>
+ * Rodrigo Canovas <rcanovas@dcc.uchile.cl>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,14 +19,12 @@
  *
  */
 
-#ifndef BITSEQUENCEBUILDER_H
-#define BITSEQUENCEBUILDER_H
+#ifndef BITSEQUENCEBUILDERDARRAY_H
+#define BITSEQUENCEBUILDERDARRAY_H
 
 #include <libcdsBasics.h>
-#include <BitSequence.h>
-#include <BitString.h>
-
-using namespace cds_utils;
+#include <BitSequenceDArray.h>
+#include <BitSequenceBuilder.h>
 
 namespace cds_static
 {
@@ -35,25 +33,15 @@ namespace cds_static
      * be set in any way by the builder, but none are received when
      * the actual building takes place.
      *
-     * @author Francisco Claude
+     * @author Rodrigo Canovas
      */
-    class BitSequenceBuilder
+    class BitSequenceBuilderDArray : public BitSequenceBuilder
     {
         public:
-            BitSequenceBuilder() { userCount=0; }
-            ~BitSequenceBuilder() {}
-            virtual void use() { userCount++; }
-            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
-            virtual BitSequence * build(uint * bitseq, size_t len) const = 0;
-            virtual BitSequence * build(const BitString & bs) const = 0;
-
-        protected:
-            int userCount;
+            BitSequenceBuilderDArray();
+            virtual ~BitSequenceBuilderDArray();
+            virtual BitSequence * build(uint * bitseq, size_t len) const;
+            virtual BitSequence * build(const BitString & bs) const;
     };
 };
-
-#include <BitSequenceBuilderRG.h>
-#include <BitSequenceBuilderRRR.h>
-#include <BitSequenceBuilderSDArray.h>
-#include <BitSequenceBuilderDArray.h>
 #endif

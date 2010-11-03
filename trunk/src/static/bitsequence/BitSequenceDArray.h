@@ -22,38 +22,52 @@
  *
  */
 
-#ifndef _BITSEQUENCESDARRAY_H
-#define _BITSEQUENCESDARRAY_H
+#ifndef _BITSEQUENCEDARRAY_H
+#define _BITSEQUENCEDARRAY_H
 
 #include <libcdsBasics.h>
-#include <libcdsSDArray.h>
 #include <BitSequence.h>
-#include <sdarraySadakane.h>
-
+#include <libcdsSDArray.h>
 #include <BitString.h>
+
 using namespace cds_utils;
 
 namespace cds_static
 {
-    class BitSequenceSDArray: public BitSequence
+    class BitSequenceDArray: public BitSequence
     {
 
         public:
-            /** Builds the SDArray */
-            BitSequenceSDArray(const BitString & bs);
-            /** Builds the SDArray */
-            BitSequenceSDArray(uint * buff, size_t len);
-            virtual ~BitSequenceSDArray();
+            /** Builds the DArray (Sadakane's dense version for rank/select*/
+            BitSequenceDArray(const BitString & bs);
+            /** Builds the DArray */
+            BitSequenceDArray(uint * buff, size_t len);
+            virtual ~BitSequenceDArray();
             virtual size_t select1(size_t i) const;
-            virtual size_t rank1(size_t i) const;
-            virtual size_t selectNext1(size_t i) const;
+            virtual size_t rank0(size_t i) const;
+						virtual size_t rank1(size_t i) const;
             virtual size_t getSize() const;
             virtual void save(ofstream & fp) const;
-            static BitSequenceSDArray * load(ifstream & fp);
+            static BitSequenceDArray * load(ifstream & fp);
 
         protected:
-            selects3 sd;
-            BitSequenceSDArray();
+						uint m;           //number of 1's
+						uint nl, s_ss, s_sl;
+						uint *a;         //bitarray
+						uint *lp;
+						uint *sl;
+						uint *ss;
+						uint *p;
+						uint *rl;
+						uchar *rs;
+
+						 /** Internal building function, same parameters as the base constructor. */
+						void build(uint *buff, size_t len);
+            
+						/** Protected constructor for loaders, you have to initialize data before
+						 *using an object built with this constructor.
+						 */
+						BitSequenceDArray();
 
     };
 };

@@ -29,7 +29,7 @@ bool testBitSequence(BitString & a, BitSequence * bs) {
     if(a[i]) {
         rank1SoFar++;
         if(bs->select1(rank1SoFar)!=i) {
-            cerr << "SELECT1 ERROR" << endl;
+            cerr << "SELECT1 ERROR " << i << endl;
             return false;
         }
         if(i>0 && bs->selectNext1(i)!=i) {
@@ -86,20 +86,31 @@ int main(int argc, char ** argv) {
       cerr << "ERROR TESTING BitSequenceRG" << endl;
       return -1;
   }
+	cout << "RG OK\n" << endl; 
   delete s;
-  BitSequenceSDArray bsSDArray(a);
+	BitSequenceDArray bsDArray(a);
+	s = saveLoad(&bsDArray);
+	if(!testBitSequence(a,s)) {
+		cerr << "ERROR TESTING BitSequenceDArray" << endl;
+		return -1;
+	}
+	cout << "DArray OK\n" << endl; 
+	delete s;	
+	BitSequenceSDArray bsSDArray(a);
   s = saveLoad(&bsSDArray);
   if(!testBitSequence(a,s)) {
       cerr << "ERROR TESTING BitSequenceSDArray" << endl;
       return -1;
   }
+	cout << "SDArray OK\n" << endl;
   delete s;
-  BitSequenceRRR bsRRR(a,33);
+	BitSequenceRRR bsRRR(a,33);
   s = saveLoad(&bsRRR);
   if(!testBitSequence(a,s)) {
       cerr << "ERROR TESTING BitSequenceRRR" << endl;
       return -1;
   }
+	cout << "RRR OK\n" << endl;
   delete s;
   return 0;
 }
