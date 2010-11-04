@@ -25,17 +25,16 @@ namespace cds_utils
 {
 
     Array::Array(ifstream & input) {
-        assert(input.good());
-        input.read((char*)&length,sizeof(uint));
-        input.read((char*)&maxValue,sizeof(uint));
-        input.read((char*)&bitsPerItem,sizeof(uint));
-        input.read((char*)&uintLength,sizeof(uint));
-        data = new uint[uintLength];
-        input.read((char*)data,sizeof(uint)*uintLength);
+        length = loadValue<size_t>(input);
+        maxValue = loadValue<uint>(input);
+        bitsPerItem = loadValue<uint>(input);
+        uintLength = loadValue<size_t>(input);
+        data = loadValue<uint>(input,uintLength);
     }
 
     Array::Array(const vector<uint> & A, uint bpe) {
         size_t n = A.size();
+        maxValue = 0;
         if(bpe==0) {
             for(size_t k=0;k<n;k++)
                 maxValue = max(maxValue,A[k]);
@@ -54,6 +53,7 @@ namespace cds_utils
 
     Array::Array(const vector<uint>::iterator & ini, const vector<uint>::iterator & fin, uint bpe) {
         size_t n = 0;
+        maxValue = 0;
         for(vector<uint>::iterator it = ini; it!=fin ;++it) {
             maxValue = max(maxValue,*it);
             n++;
@@ -120,12 +120,11 @@ namespace cds_utils
 
     void Array::save(ofstream & out) const
     {
-        assert(out.good());
-        out.write((char*)&length,sizeof(uint));
-        out.write((char*)&maxValue,sizeof(uint));
-        out.write((char*)&bitsPerItem,sizeof(uint));
-        out.write((char*)&uintLength,sizeof(uint));
-        out.write((char*)data,sizeof(uint)*uintLength);
+        saveValue(out,length);
+        saveValue(out,maxValue);
+        saveValue(out,bitsPerItem);
+        saveValue(out,uintLength);
+        saveValue(out,data,uintLength);
     }
 
     void Array::initData() {
