@@ -21,30 +21,11 @@
 
 import sys,os,random,pickle,re
 
-seed = ["4","7","21","9","3","1","12","25","8","10"]
 
-array_len  = ["1", "2", "1000", "71", "1000003","19342531"]
-array_maxv = ["100", "100", "10", "71", "100000","99"]
-for i in range(len(array_len)):
-    print("* running ./testArray "+seed[i]+" "+array_len[i]+" "+array_maxv[i])
-    res=os.system("./testArray "+seed[i]+" "+array_len[i]+" "+array_maxv[i])
-    if res!=0:
-        print("./testArray "+seed[i]+" "+array_len[i]+" "+array_maxv[i]+" FAILED")
-
-bitmap_len = ["0","1","2","10000","1000023","10000853"]
-bitmap_den = ["0","0","1","641","5312","123517"]
-for i in range(len(bitmap_len)):
-    print("* running ./testBitSequence "+seed[i]+" "+bitmap_len[i]+" "+bitmap_den[i])
-    res=os.system("./testBitSequence "+seed[i]+" "+bitmap_len[i]+" "+bitmap_den[i])
-    if res!=0:
-        print("./testBitSequence "+seed[i]+" "+array_len[i]+" "+array_maxv[i]+" FAILED")
-
-array_len  = ["1", "2", "1000", "71", "1000003","19342531"]
-array_maxv = ["100", "100", "10", "71", "100000","99"]
-for i in range(len(array_len)):
-    print("* running ./testSequence "+seed[i]+" "+array_len[i]+" "+array_maxv[i])
-    res=os.system("./testSequence "+seed[i]+" "+array_len[i]+" "+array_maxv[i])
-    if res!=0:
-        print("./testSequence "+seed[i]+" "+array_len[i]+" "+array_maxv[i]+" FAILED")
+print("******************************")
+print("Running tests for Array")
+res=os.system("./testArray")
+if res!=0:
+    print("./testArray FAILED")
 
 
