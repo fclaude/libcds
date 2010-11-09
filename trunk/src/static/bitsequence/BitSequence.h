@@ -105,7 +105,7 @@ namespace cds_static
             /** Returns the size of the structure in bytes */
             virtual size_t getSize() const=0;
 
-            /** Stores the bitmap given a file pointer, return 0 in case of success */
+            /** Stores the bitmap given a file pointer*/
             virtual void save(ofstream & fp) const=0;
 
             /** Reads a bitmap determining the type */

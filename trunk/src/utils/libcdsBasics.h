@@ -43,8 +43,8 @@ namespace cds_utils
 
     using namespace std;
     typedef unsigned char uchar;
-
-    /** mask for obtaining the first 5 bits */
+    
+		/** mask for obtaining the first 5 bits */
     const uint mask31 = 0x0000001F;
 
     /** number of bits in a uint */

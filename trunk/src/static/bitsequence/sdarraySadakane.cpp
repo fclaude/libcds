@@ -366,7 +366,7 @@ namespace cds_static
         s->hi_len = loadValue<uint>(fp);
         s->low_len = loadValue<uint>(fp);
         s->hi = loadValue<unsigned char>(fp,s->hi_len);
-        s->low = loadValue<uint>(fp,s->low_len);
+        s->low = loadValue<uint>(fp, s->low_len);
         s->sd0 = new selectd2;
         selectd2_load(s->sd0,fp);
         s->sd1 = new selectd2;

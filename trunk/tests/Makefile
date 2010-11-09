@@ -5,8 +5,8 @@ CPPFLAGS=-g3 -Wall -O0 -I../includes/
 #CPPFLAGS=-O3 -Wall -DNDEBUG -I../includes/
 LIB=../lib/libcds.a
 
-OBJECTS=testArray.o testBitSequence.o testSequence.o testHuffman.o
-BIN=testArray testBitSequence testSequence testHuffman
+OBJECTS= testArray.o testBitSequence.o testSequence.o testHuffman.o testTextIndex.o
+BIN= testArray testBitSequence testSequence testHuffman testTextIndex
 
 %.o: %.cpp
 	@echo " [C++] Compiling $<"
@@ -30,6 +30,10 @@ testBitSequence:
 testArray:
 	@echo " [LNK] Building testArray"
 	@$(CPP) $(CPPFLAGS) -o testArray testArray.o $(LIB)
+
+testTextIndex:
+	 @echo " [LNK] Building testTextIndex"
+	 @$(CPP) $(CPPFLAGS) -o testTextIndex testTextIndex.o $(LIB)
 
 clean:
 	@echo " [CLN] Cleaning object and binary files"

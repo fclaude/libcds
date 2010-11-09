@@ -19,7 +19,7 @@
  *
  */
 
-#include "BitSequence.h"
+#include <BitSequence.h>
 
 namespace cds_static
 {

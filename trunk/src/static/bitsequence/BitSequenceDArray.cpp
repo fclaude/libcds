@@ -109,6 +109,7 @@ namespace cds_static{
 		a = buf;
 		s = new uint[m];
 		m2 = 0;
+		s_ss = s_sl = 0;
 		/*store in s the place where are 1's in the array*/
 		for(i=0; i<(int)n; i++){
 			if (__getbit(buf,i)){
@@ -154,7 +155,11 @@ namespace cds_static{
 				s_sl = ml*L+1;
 				s_ss = ms*(L/LLL)+1;
 				sl = new uint[s_sl];
+				for(uint i_sl=0; i_sl<s_sl; i_sl++)
+					sl[i_sl]=0;
 				ss = new uint[s_ss];
+				for(uint i_ss=0; i_ss<s_ss; i_ss++)
+					ss[i_ss]=0;
 			}
 		}
 		delete [] s;

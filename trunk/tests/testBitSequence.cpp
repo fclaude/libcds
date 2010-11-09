@@ -87,7 +87,8 @@ int main(int argc, char ** argv) {
       return -1;
   }
 	cout << "RG OK\n" << endl; 
-  delete s;
+  delete (BitSequenceRG *)s;
+
 	BitSequenceDArray bsDArray(a);
 	s = saveLoad(&bsDArray);
 	if(!testBitSequence(a,s)) {
@@ -95,7 +96,8 @@ int main(int argc, char ** argv) {
 		return -1;
 	}
 	cout << "DArray OK\n" << endl; 
-	delete s;	
+	delete (BitSequenceDArray *)s;
+
 	BitSequenceSDArray bsSDArray(a);
   s = saveLoad(&bsSDArray);
   if(!testBitSequence(a,s)) {
@@ -103,7 +105,8 @@ int main(int argc, char ** argv) {
       return -1;
   }
 	cout << "SDArray OK\n" << endl;
-  delete s;
+  delete (BitSequenceSDArray *)s;
+
 	BitSequenceRRR bsRRR(a,33);
   s = saveLoad(&bsRRR);
   if(!testBitSequence(a,s)) {
@@ -111,7 +114,7 @@ int main(int argc, char ** argv) {
       return -1;
   }
 	cout << "RRR OK\n" << endl;
-  delete s;
+  delete (BitSequenceRRR *)s;
   return 0;
 }
 

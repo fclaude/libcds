@@ -63,8 +63,8 @@ namespace cds_static
     }
 
     BitSequenceSDArray::~BitSequenceSDArray() {
-        if(ones)
-            selects3_free(&sd);
+			if(ones)
+				selects3_free(&sd);
     }
 
     size_t BitSequenceSDArray::rank1(size_t i) const
