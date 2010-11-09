@@ -66,7 +66,7 @@ void testConstructors(Array * a) {
     test("testConstructor",a,a2);
     delete  a2;
     if(a->getLength()>0) {
-        a2 = new Array(vals_array,0,a->getLength()-1);
+        a2 = new Array(vals_array,(size_t)0,(size_t)a->getLength()-1,0);
         test("testConstructor",a,a2);
         delete  a2;
     }
