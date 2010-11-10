@@ -41,7 +41,8 @@ namespace cds_utils
         size_t len = in.tellg();
         slen = len/sizeof(T);
         if(len%sizeof(T)) slen--;
-        T * ret = loadValue<T>(in,slen);
+        in.seekg(0,ios_base::beg);
+				T * ret = loadValue<T>(in,slen);
         in.close();
         return ret;
     }

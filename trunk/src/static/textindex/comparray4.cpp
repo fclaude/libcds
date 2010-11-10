@@ -611,12 +611,10 @@ namespace cds_static{
 	void csa_free(CSA *csa){
 #ifdef USE_MMAP
 		if(csa->mapp!=NULL && csa->mapi!=NULL){
-			printf("mapp existe\n");
 			free(csa->mapp);
 			free(csa->mapi);
 		}
 		else{
-			printf("mapp NO existe\n");
 			delete [] csa->B;
 			delete [] csa->ISA;
 			delete [] csa->R;

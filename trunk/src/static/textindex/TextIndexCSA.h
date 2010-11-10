@@ -78,6 +78,8 @@ namespace cds_static{
 
 			virtual size_t display (uchar *pattern, ulong length, ulong numc, ulong *numocc, uchar **snippet_text, ulong **snippet_lengths) const;
 
+			/*Return the length of the Index*/
+			virtual size_t index_length() const;
 			
 			/*Get the suffix array at position i*/
 			virtual size_t getSA(size_t i) const; 

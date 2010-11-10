@@ -72,7 +72,9 @@ namespace cds_static{
 
 			virtual size_t display (uchar *pattern, ulong length, ulong numc, ulong *numocc, uchar **snippet_text, ulong **snippet_lengths) const=0;
 
-			
+			/*Return the length of the Index*/
+			virtual size_t index_length() const=0;
+
 			/***The next four methods (getSA, getISA, and getPsi, getT) are
 			 * only valid for text indexes that are base on Suffix 
 			 * Array*/

@@ -14,7 +14,12 @@ STATIC_SEQ_OBJ=static/sequence/Sequence.o static/sequence/BitmapsSequence.o stat
 STATIC_PERM_OBJ=static/permutation/Permutation.o static/permutation/PermutationMRRR.o static/permutation/PermutationBuilderMRRR.o static/permutation/perm.o
 STATIC_TEXTIN_OBJ= static/textindex/mmap.o static/textindex/comparray4.o static/textindex/qsufsort.o static/textindex/suftest3.test.o  static/textindex/TextIndex.o static/textindex/TextIndexCSA.o
 
-STATIC_OBJ=$(STATIC_MAPPER_OBJ) $(STATIC_BITSEQ_OBJ) $(STATIC_CODER_OBJ) $(STATIC_SEQ_OBJ) $(STATIC_PERM_OBJ) $(STATIC_TEXTIN_OBJ)
+#STATIC_TREE_OBJ= static/trees/LCP.o
+
+
+STATIC_OBJ=$(STATIC_MAPPER_OBJ) $(STATIC_BITSEQ_OBJ) $(STATIC_CODER_OBJ) $(STATIC_SEQ_OBJ) $(STATIC_PERM_OBJ) $(STATIC_TEXTIN_OBJ) 
+
+#$(STATIC_TREE_OBJ)
 
 OBJECTS=$(UTILS_OBJ) $(STATIC_OBJ)
 
@@ -42,4 +47,6 @@ pre:
 	@make --no-print-directory -C static/sequence
 	@make --no-print-directory -C static/permutation
 	@make --no-print-directory -C static/textindex
+
+#	@make --no-print-directory -C static/trees
 

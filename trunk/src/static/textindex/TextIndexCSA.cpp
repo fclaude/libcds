@@ -51,6 +51,10 @@ namespace cds_static{
 		return (size_t)cds_static::display(csa, pattern, length, numc, numocc, snippet_text, snippet_lengths);
 	}
 
+	size_t TextIndexCSA::index_length() const{
+		return (size_t)(csa->n);
+	}
+
 	size_t TextIndexCSA::getSA(size_t i) const{
 		return csa_lookup(csa,i+1)-1;
 	}
