@@ -121,6 +121,12 @@ namespace cds_static{
 		nl = (m2-1)/L + 1;
 		lp = new uint[nl+1]; 
 		p = new uint[nl+1]; 
+
+		for(i=0; i<(int)(nl+1); i++){
+			lp[i]=0;
+			p[i]=0;
+		}
+
 		for(r = 0; r < 2; r++){
 			ml = ms = 0;
 			for (il = 0; il < (int)nl; il++){
@@ -166,6 +172,9 @@ namespace cds_static{
 		/*this is for compute rank*/
 		rl = new uint[n/RR+2];
 		rs = new uchar[n/RRR+2];
+		for(i=0; i<(int)(n/RR+2); i++){
+			rl[i]=0;
+		}	
 		r = 0;
 		for (i=0; i < (int)n; i+=RR){
 			rl[i/RR] = r;
