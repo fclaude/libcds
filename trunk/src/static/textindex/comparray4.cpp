@@ -554,6 +554,15 @@ namespace cds_static{
 		return 0;
 	}
 
+	void csa_init(CSA *SA){
+		for(int i=0; i< SIGMA+2; i++)
+			SA->K[i]=0;
+		for(int i=0; i< SIGMA+1; i++){
+			SA->C[i]=0;
+			SA->C2[i]=0;
+		}
+	}
+
 	void csa_save(CSA *SA, ofstream & fp){
 		saveValue(fp, SA->m);
 		saveValue(fp, SA->two);
@@ -579,6 +588,7 @@ namespace cds_static{
 	CSA *csa_load(ifstream & fp){
 		CSA *SA;
 		SA = (CSA *) malloc(sizeof(CSA));
+		csa_init(SA);
 		initranktables();
 		mkdecodetable();
 		SA->m = loadValue<int>(fp);

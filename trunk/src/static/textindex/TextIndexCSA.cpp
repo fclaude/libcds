@@ -33,6 +33,9 @@ namespace cds_static{
 
 	TextIndexCSA::~TextIndexCSA(){
 		csa_free(csa);
+		/*remove files *.idx and *.psi*/
+		/*system("rm -rf *.psi");
+		 * system("rm .rf *.idx");*/
 	}
 
 	size_t TextIndexCSA::count(uchar *pattern, ulong length, ulong *numocc) const{

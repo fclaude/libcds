@@ -82,6 +82,7 @@ namespace cds_static{
 	void csa_save(CSA *csa, ofstream & fp);
 	CSA *csa_load(ifstream & fp);
 	void csa_free(CSA *csa);
+	void csa_init(CSA *csa);
 };
 
 #endif

@@ -139,9 +139,10 @@ namespace cds_static{
 	extern void suffixsort(int *x, int *p, int n, int k, int l);
 
 	int load_index(char *filename, void **index){
-		 char fname1[128],fname2[128];
-		 CSA *SA;
+		 char fname1[128]="",fname2[128]="";
+		 CSA *SA = NULL;
 		 SA = (CSA *) malloc(sizeof(CSA));
+		 csa_init(SA);
 		 initranktables();
 		 mkdecodetable();
 		 sprintf(fname1,"%s.psi",filename);
@@ -153,7 +154,7 @@ namespace cds_static{
 
 	int build_index(uchar *text, ulong length, char *build_options, void **index){
 		char delimiters[] = " =;";
-		char filename[256];
+		char filename[256]="";
 		int j,num_parameters;
 		char ** parameters;
 		int rankb_w=16,rankb_w2=128;
@@ -177,7 +178,7 @@ namespace cds_static{
 		}
 
 		 int n=length;
-		 char fname1[128],fname2[128];
+		 char fname1[128]="",fname2[128]="";
 
 		 /* make the SA */
 		 int  i,  *x, *p;
