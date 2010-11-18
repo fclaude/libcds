@@ -20,12 +20,40 @@
 
 #include <SequenceAlphPart.h>
 
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
 namespace cds_static
 {
 
-#define GROUP((x),(c)) ((c<=x)?x:(floor(log2((x)-(c)+1))))
-#define OFFSET((x),(c),(k)) ((k<=c)?0:(((x)-(c)+1)-(1<<(k))))
-#define MAP((x),
+    uint group(uint x, uint c) {
+        uint ret = 0;
+        if(x<=c)
+            ret = x;
+        else
+            ret = bits(x-c)-1+c;
+        return ret;
+    }
+
+    uint offset(uint c, uint x, uint g) {
+        uint ret = 0;
+        if(x<=c) 
+            ret = 0;
+        else
+            ret = x-c+1-(1<<g);
+        return ret;
+    }
+
+    uint group_length(uint c, uint pos) {
+        uint ret = 0;
+        if(pos<=c)
+            ret = 1;
+        else
+            ret = 1<<(pos-c);
+        return ret;
+    }
 
     SequenceAlphPart::SequenceAlphPart(uint * seq, size_t n, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder) : Sequence(n) { 
         
@@ -42,11 +70,19 @@ namespace cds_static
         for(uint i=0;i<sigma;i++) occ[i] = 0;
         for(uint i=0;i<n;i++) occ[seq[i]]++;
 
-        // Create pairs (frequency,symbol) and then srt by frequency
-        pair<size_t,uint> * pairs = new pair<size_t,uint>[sigma+1];
+        // Create pairs (frequency,symbol) and then sort by frequency
+        pair<size_t,uint> * pairs = new pair<size_t,uint>[sigma+2];
         for(uint i=0;i<=sigma;i++)
             pairs[i] = pair<size_t,uint>(occ[i],i);
-        sort(pairs,pairs+sigma+1,greater<pair<size_t,uint> >);
+        pairs[sigma+1] = pair<size_t,uint>(0,sigma+1);
+        sort(pairs,pairs+sigma+1,greater<pair<size_t,uint> >());
+
+        revPermFreq = new uint[sigma+1];
+        sigma = 0;
+        while(pairs[sigma].first>0) {
+            revPermFreq[pairs[sigma].second]=sigma;
+            sigma++;
+        }
         
         // We don't need occ anymore
         delete [] occ;
@@ -56,20 +92,20 @@ namespace cds_static
         lengthForSymb = new uint[sigma+1];
 
         // We estimate maxLen, it may be smaller if many symbols have 0 frequency
-        maxLen = GROUP(sigma,cut);
+        maxLen = group(sigma,cut);
 
         // Initialize the lengths of each sequence in indexesByLength
-        uint * lenLengths = new uint[maxLen];
+        uint * lenLength = new uint[maxLen];
         for(uint i=0;i<=sigma;i++)
-            lenLengths[i] = 0;
+            lenLength[i] = 0;
 
         // Compute the actual value for lenLengths and maxLen
         for(uint i=0;i<=sigma;i++) {
             if(pairs[i].first==0) break;
             alphSortedByFreq[i] = pairs[i].second;
-            uint sl = GROUP(i,c);
+            uint sl = group(i,cut);
             lengthForSymb[pairs[i].second] = sl; 
-            lenLengths[sl]++;
+            lenLength[sl]++;
             maxLen = sl;
         }
 
@@ -83,7 +119,7 @@ namespace cds_static
         // Now we build the other sequences
         uint ** seqs = new uint*[maxLen-cut+1];
         for(uint i=0;i<maxLen-cut+1;i++) 
-            seqs[i] = new uint[lenLengths[i+cut]];
+            seqs[i] = new uint[lenLength[i+cut]];
         // Lets compute the offsets
         symbOffset = new uint[sigma+1];
         for(uint i=0;i<maxLen;i++)
@@ -114,22 +150,37 @@ namespace cds_static
 
     size_t SequenceAlphPart::rank(uint c, size_t i) const
     {
+        uint pos = revPermFreq[c];
+        if(pos<=cut) {
+            return lengthsIndex->rank(pos,i);
+        }
+        uint g = group(pos,cut);
+        uint o = offset(cut,pos,g);
+        return indexesByLength[g]->rank(o,lengthsIndex->rank(g,i));
     }
 
     size_t SequenceAlphPart::select(uint c, size_t i) const
     {
-    }
-
-    size_t SequenceAlphPart::selectNext(uint c, size_t i) const
-    {
+        uint pos = revPermFreq[c];
+        if(pos<=cut) {
+            return lengthsIndex->select(pos,i);
+        }
+        uint g = group(pos,cut);
+        uint o = offset(cut,pos,g);
+        return lengthsIndex->select(g,indexesByLength[g]->select(o,i));
     }
 
     uint SequenceAlphPart::access(size_t i) const
     {
+        uint g = lengthsIndex->access(i);
+        if(g<=cut) return alphSortedByFreq[g];
+        uint o = indexesByLength[g]->access(lengthsIndex->rank(g,i));
+        return alphSortedByFreq[(1<<(g-cut-1))+o];
     }
 
     size_t SequenceAlphPart::getSize() const
     {
+        return 0;
     }
 
     void SequenceAlphPart::save(ofstream & fp) const

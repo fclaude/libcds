@@ -34,32 +34,32 @@ namespace cds_static
      *
      *  @author Francisco Claude
      */
-    class SequenceAlphPart
-    {
+    class SequenceAlphPart : public Sequence {
 
         public:
 
             SequenceAlphPart(uint * seq, size_t n, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder);
 
+            SequenceAlphPart();
             virtual ~SequenceAlphPart();
 
             virtual size_t rank(uint c, size_t i) const;
 
             virtual size_t select(uint c, size_t i) const;
 
-            virtual size_t selectNext(uint c, size_t i) const;
-
             virtual uint access(size_t i) const;
 
-            virtual size_t getSize() const = 0;
+            virtual size_t getSize() const;
 
             virtual size_t getLength() const { return length; }
 
-            virtual void save(ofstream & fp) const = 0;
+            virtual void save(ofstream & fp) const;
 
             static SequenceAlphPart * load(ifstream & fp);
 
         protected:
+            // reverse permutation for sorted symbols
+            uint * revPermFreq;
             // symbols sorted by frequency
             uint * alphSortedByFreq;
             // offset for each symbol inside their lenght

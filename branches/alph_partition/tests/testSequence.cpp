@@ -75,6 +75,13 @@ int main(int argc, char ** argv) {
   testSequence(a, wt3);
   mapper->unuse();
   mapper2->unuse();
+
+  uint * arr = new uint[len];
+  for(uint i=0;i<len;i++)
+      arr[i] = a.getField(i);
+  SequenceBuilder * sb = new SequenceBuilderWaveletTreeNoptrs(new BitSequenceBuilderRG(20),new MapperCont(a,BitSequenceBuilderRG(20)));
+  SequenceAlphPart sap(arr,len,15,sb,sb);
+  testSequence(a,sap);
   return 0;
 }
 

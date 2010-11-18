@@ -96,6 +96,7 @@ namespace cds_static
 #include <WaveletTreeNoptrs.h>
 #include <SequenceGMR.h>
 #include <SequenceGMRChunk.h>
-
 #include <SequenceBuilder.h>
+#include <SequenceAlphPart.h>
+
 #endif                           /* _SEQUENCE_H */
