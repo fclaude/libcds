@@ -67,7 +67,7 @@ namespace cds_static{
 		delete [] lcp;
 	}
 
-	LCP_Sad::LCP_Sad(LCP *lcp, TextIndex *csa, uint n, uint op_rs){
+	LCP_Sad::LCP_Sad(LCP *lcp, TextIndex *csa, size_t n, size_t op_rs){
 		if(op_rs!= BRW32_HDR && op_rs!= DARRAY_HDR){
 			cout << "Error: op_rs must be BRW32_HDR or DARRAY_HDR\n" << endl;
 			exit(1);
@@ -112,7 +112,7 @@ namespace cds_static{
 			return U->select1(2)-1;
 	}
 
-	size_t LCP_Sad::get_seq_LCP(uint i, TextIndex *csa, size_t **next_pos, size_t *n_next, bool dir) const{
+	size_t LCP_Sad::get_seq_LCP(size_t i, TextIndex *csa, size_t **next_pos, size_t *n_next, bool dir) const{
 		return get_LCP(i,csa);
 	}
 

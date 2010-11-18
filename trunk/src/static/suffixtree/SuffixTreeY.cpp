@@ -17,19 +17,19 @@
  */
 
 
-#include <CST_Y.h>
+#include <SuffixTreeY.h>
 #include <vector>
 
 namespace cds_static{
 
-	CST_Y::CST_Y(){
+	SuffixTreeY::SuffixTreeY(){
 		length = 0;
 		csa = NULL;
 		lcp = NULL;
 		npr = NULL;
 	}
 
-	CST_Y::CST_Y(char *text, size_t n, size_t lcp_type, size_t npr_type, size_t b){
+	SuffixTreeY::SuffixTreeY(char *text, size_t n, size_t lcp_type, size_t npr_type, size_t b){
 		length = n;
 		cout << "Text length: " << n << endl;
 		/*create the index*/
@@ -55,7 +55,7 @@ namespace cds_static{
 		/*here you can free the text*/
 	}
 
-	CST_Y::CST_Y(LCP *_lcp, NPR *_npr, TextIndex *_csa){
+	SuffixTreeY::SuffixTreeY(LCP *_lcp, NPR *_npr, TextIndex *_csa){
 		csa = _csa;
 		cout << "TextIndex bits/c: " << csa->getSize()*8.0/length << endl;
 		lcp = _lcp;
@@ -64,28 +64,28 @@ namespace cds_static{
 		cout << "NPR bits/c: " << npr->getSize()*8.0/length << endl;
 	}
 
-	bool CST_Y::isRoot(size_t vl,size_t vr) const{
+	bool SuffixTreeY::isRoot(size_t vl,size_t vr) const{
 		if(vl==0 && vr==length-1)
 			return true;
 		return false;
 	}
 
-  void CST_Y::Root(size_t *vl, size_t *vr) const{
+  void SuffixTreeY::Root(size_t *vl, size_t *vr) const{
 		*vl = 0;
 		*vr = length-1;
 	}
 
-	size_t CST_Y::Count(size_t vl, size_t vr) const{
+	size_t SuffixTreeY::Count(size_t vl, size_t vr) const{
 		return vr - vl+1;
 	}
 
-	bool CST_Y::Ancestor(size_t wl, size_t wr, size_t vl, size_t vr) const{
+	bool SuffixTreeY::Ancestor(size_t wl, size_t wr, size_t vl, size_t vr) const{
 		if((wl<=vl) && (wr >= vr))
 			return true;
 		return false;
 	}
 
-	size_t CST_Y::SDepth(size_t vl, size_t vr) const{
+	size_t SuffixTreeY::SDepth(size_t vl, size_t vr) const{
 		size_t h,k, val;
 		if(vl!=vr){
 			k = npr->find_RMQ(vl+1, vr, csa, lcp);
@@ -98,14 +98,14 @@ namespace cds_static{
 		return h;
 	}
 
-	size_t CST_Y::Locate(size_t vl, size_t vr) const{
+	size_t SuffixTreeY::Locate(size_t vl, size_t vr) const{
 		 if(vl==vr){
 			 return csa->getSA(vl);
 		 }
 		 return (size_t)-1;
 	}
 
-	void CST_Y::Parent(size_t vl, size_t vr, size_t *parent_l, size_t *parent_r) const{
+	void SuffixTreeY::Parent(size_t vl, size_t vr, size_t *parent_l, size_t *parent_r) const{
 		if(isRoot(vl, vr)){
 			*parent_l = (size_t)-1;
 			*parent_r = (size_t)-1;
@@ -128,7 +128,7 @@ namespace cds_static{
 		*parent_r = p_r;
 	}
 
-	void CST_Y::FChild(size_t vl, size_t vr, size_t *fchild_l, size_t *fchild_r) const{
+	void SuffixTreeY::FChild(size_t vl, size_t vr, size_t *fchild_l, size_t *fchild_r) const{
 		if(vl==vr){
 			*fchild_l = (size_t)-1;
 			*fchild_r = (size_t)-1;
@@ -138,7 +138,7 @@ namespace cds_static{
 		*fchild_r = npr->find_RMQ(vl+1,vr,csa,lcp)-1;
 	}
 
-	void CST_Y::NSibling(size_t vl, size_t vr, size_t *nsibling_l, size_t *nsibling_r) const{
+	void SuffixTreeY::NSibling(size_t vl, size_t vr, size_t *nsibling_l, size_t *nsibling_r) const{
 		size_t wl, wr;
 		Parent(vl, vr, &wl, &wr);
 		if(wl==(size_t)-1){ /*v is the root*/
@@ -166,7 +166,7 @@ namespace cds_static{
 		}
 	}
 
-	void CST_Y::SLink(size_t vl, size_t vr, size_t *slink_l, size_t *slink_r) const{
+	void SuffixTreeY::SLink(size_t vl, size_t vr, size_t *slink_l, size_t *slink_r) const{
 		size_t x,y,k;
 		if(vl==0 && vr == length-1){ /*v is the root*/
 			*slink_l = (size_t)-1;
@@ -184,7 +184,7 @@ namespace cds_static{
 		*slink_r = p_r;
 	}
 
-	void CST_Y::SLink_i(size_t vl, size_t vr, size_t i, size_t *slinki_l, size_t *slinki_r) const{
+	void SuffixTreeY::SLink_i(size_t vl, size_t vr, size_t i, size_t *slinki_l, size_t *slinki_r) const{
 		size_t x,y,k;
 		size_t seq = 1; /*set seq = 0 if you dont want to do it sequentialy*/
 		if(vl==0 && vr == length-1){ /*v is the root*/
@@ -237,7 +237,7 @@ namespace cds_static{
 		}
 	}
 
-	void CST_Y::LCA(size_t vl, size_t vr, size_t wl, size_t wr, size_t *lca_l, size_t *lca_r) const{
+	void SuffixTreeY::LCA(size_t vl, size_t vr, size_t wl, size_t wr, size_t *lca_l, size_t *lca_r) const{
 		size_t k;
 		if(Ancestor(vl, vr, wl, wr)){
 			*lca_l = vl;
@@ -262,7 +262,7 @@ namespace cds_static{
 		*lca_r = p_r;
 	}
 
-	void CST_Y::Child(size_t vl, size_t vr, char a, size_t *child_l, size_t *child_r) const{
+	void SuffixTreeY::Child(size_t vl, size_t vr, char a, size_t *child_l, size_t *child_r) const{
 		int x,y,m, pos_letter;
 		char first_letter;
 		size_t aux_l, aux_r;
@@ -315,7 +315,7 @@ namespace cds_static{
 		*child_r = res_r;
 	}
 
-	char CST_Y::Letter(size_t vl, size_t vr, int i) const{
+	char SuffixTreeY::Letter(size_t vl, size_t vr, int i) const{
 		char l;
 		if(i==1){
 			l = (char)csa->getT(vl);
@@ -333,7 +333,7 @@ namespace cds_static{
 		return Letter(p1, p1,1);//Letter(v_i,v_i, 1);
 	}
 
-	size_t CST_Y::TDepth(size_t vl, size_t vr) const{
+	size_t SuffixTreeY::TDepth(size_t vl, size_t vr) const{
 		size_t depth = 0;
 		size_t aux_l = vl;
 		size_t aux_r = vr;
@@ -344,7 +344,7 @@ namespace cds_static{
 		return depth;
 	}
 
-	void CST_Y::LAQs(size_t vl, size_t vr, size_t d, size_t *laq_s_l, size_t *laq_s_r) const{
+	void SuffixTreeY::LAQs(size_t vl, size_t vr, size_t d, size_t *laq_s_l, size_t *laq_s_r) const{
 		size_t u_l, u_r=0;
 		if(d==0){
 			*laq_s_l = 0;
@@ -365,7 +365,7 @@ namespace cds_static{
 		*laq_s_r = u_r;
 	}
 
-	void CST_Y::LAQt(size_t vl, size_t vr, size_t d, size_t *laq_t_l, size_t *laq_t_r) const{
+	void SuffixTreeY::LAQt(size_t vl, size_t vr, size_t d, size_t *laq_t_l, size_t *laq_t_r) const{
 		size_t depth = 0; 
 		size_t x; 
 		size_t string_depth = d;
@@ -409,15 +409,15 @@ namespace cds_static{
 	}
 
 
-	size_t CST_Y::getSize() const{
-		size_t mem = sizeof(CST_Y);
+	size_t SuffixTreeY::getSize() const{
+		size_t mem = sizeof(SuffixTreeY);
 		mem += lcp->getSize();
 		mem += npr->getSize();
 		mem += csa->getSize();
 		return mem;
 	}
 
-	void CST_Y::save(ofstream & fp) const{
+	void SuffixTreeY::save(ofstream & fp) const{
 		size_t wr =  CSTY;
 		saveValue(fp,wr);
 		saveValue(fp, length);
@@ -426,8 +426,8 @@ namespace cds_static{
 		csa->save(fp);
 	}
 
-	CST_Y * CST_Y::load(ifstream & fp){
-		CST_Y *cst = new CST_Y();
+	SuffixTreeY * SuffixTreeY::load(ifstream & fp){
+		SuffixTreeY *cst = new SuffixTreeY();
 		size_t type = loadValue<size_t>(fp);
 		if(type!=CSTY) {
 			abort();
@@ -439,7 +439,7 @@ namespace cds_static{
 		return cst;
 	}
 
-	CST_Y::~CST_Y(){
+	SuffixTreeY::~SuffixTreeY(){
 		delete (TextIndexCSA *)csa;
 		size_t lcp_type = lcp->lcp_type;
 		switch(lcp_type) {

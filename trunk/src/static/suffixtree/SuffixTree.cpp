@@ -17,17 +17,17 @@
  */
 
 
-#include <CST.h>
+#include <SuffixTree.h>
 
 namespace cds_static{
 
-	CST * CST::load(ifstream & fp){
+	SuffixTree * SuffixTree::load(ifstream & fp){
 		size_t r = loadValue<size_t>(fp);
 		size_t pos = fp.tellg();
 		fp.seekg(pos-sizeof(size_t));
 		cout << "Loading "<< r << endl;
 		switch(r) {
-			case CSTY: return CST_Y::load(fp);
+			case CSTY: return SuffixTreeY::load(fp);
 		}
 		return NULL;
 	}

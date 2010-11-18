@@ -56,7 +56,7 @@ namespace cds_static{
 		min_level[0] = new size_t[level_size[0]];
 		for(size_t i=0; i< level_size[0]; i++)
 			min_level[0][i] = 0;
-		min_pos[0] = new uint[((level_size[0]*bits_b+W-1)/W)];
+		min_pos[0] = new size_t[((level_size[0]*bits_b+W-1)/W)];
 		for(size_t i=0; i<((level_size[0]*bits_b+W-1)/W); i++)
 			min_pos[0][i] = 0;
 		size_t min, min_aux;
@@ -76,7 +76,7 @@ namespace cds_static{
 				}
 			}
 			min_level[0][i] = min;
-			set_field(min_pos[0], bits_b, i, pos);
+			set_field_64(min_pos[0], bits_b, i, pos);
 		}
 
 		/*calculate min for the last block*/
@@ -91,7 +91,7 @@ namespace cds_static{
 			}
 		}    
 		min_level[0][level_size[0]-1] = min;  
-		set_field(min_pos[0], bits_b, level_size[0]-1, pos);
+		set_field_64(min_pos[0], bits_b, level_size[0]-1, pos);
 	}
 	 
 	void NPR_CN::create_next_level(size_t r){
@@ -119,7 +119,7 @@ namespace cds_static{
 				}
 			}    
 			min_level[r][i] = min;  
-			set_field(min_pos[r], bits_b, i, pos);
+			set_field_64(min_pos[r], bits_b, i, pos);
 		}
 						 
 		/*calculate min for the last block*/
@@ -134,7 +134,7 @@ namespace cds_static{
 			}
 		} 
 		min_level[r][level_size[r]-1] = min;
-		set_field(min_pos[r], bits_b, level_size[r]-1, pos);
+		set_field_64(min_pos[r], bits_b, level_size[r]-1, pos);
 	}
 
 
@@ -349,7 +349,7 @@ namespace cds_static{
 		if( (min_val < min_r) || (min_val == min_r && ret < b*next_ret))
 			return ret;
 		else
-			return next_ret*b + get_field(min_pos[0], bits_b, next_ret);
+			return next_ret*b + get_field_64(min_pos[0], bits_b, next_ret);
 		
 		/*this never happen*/
 		cout << "Error" << endl;
@@ -410,7 +410,7 @@ namespace cds_static{
 			return ret;
 		else{
 			*min_r = next_min;
-			return next_ret*b + get_field(min_pos[r+1], bits_b, next_ret);
+			return next_ret*b + get_field_64(min_pos[r+1], bits_b, next_ret);
 		}
 		/*Error if the code reach this return*/
 		//cout << "Error" << endl;

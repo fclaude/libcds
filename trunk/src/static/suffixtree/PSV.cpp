@@ -167,7 +167,7 @@ namespace cds_static{
 	}
 
 	void PSV::create_last_level(LCP *lcp, TextIndex *csa){
-		uint *lcp_r;
+		size_t *lcp_r;
 		uint lcp_value, psv_aux;
 		int j, ini=0;
 			
@@ -229,7 +229,7 @@ namespace cds_static{
 
 	size_t PSV::find_PSV_r(size_t v, size_t level, TextIndex *csa, LCP *lcp) const{
 		if(level == r){
-			return get_field(A, b_A, v);
+			return get_field_64(A, b_A, v);
 		}
 		/*look in the same block*/
 		size_t pos_v = R[level-1]->select1(v+1);

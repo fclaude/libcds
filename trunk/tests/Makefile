@@ -5,8 +5,8 @@ CPPFLAGS=-g3 -Wall -O0 -I../includes/
 #CPPFLAGS=-O3 -Wall -DNDEBUG -I../includes/
 LIB=../lib/libcds.a
 
-OBJECTS= testArray.o testBitSequence.o testSequence.o testHuffman.o testTextIndex.o testLCP.o testNPR.o testCST.o
-BIN= testArray testBitSequence testSequence testHuffman testTextIndex testLCP testNPR testCST
+OBJECTS= testArray.o testBitSequence.o testSequence.o testHuffman.o testTextIndex.o testLCP.o testNPR.o testSuffixTree.o
+BIN= testArray testBitSequence testSequence testHuffman testTextIndex testLCP testNPR testSuffixTree
 
 %.o: %.cpp
 	@echo " [C++] Compiling $<"
@@ -43,9 +43,9 @@ testNPR:
 	@echo " [LNK] Building testNPR"
 	@$(CPP) $(CPPFLAGS) -o testNPR testNPR.o $(LIB)
 
-testCST:
-	@echo " [LNK] Building testCST"
-	@$(CPP) $(CPPFLAGS) -o testCST testCST.o $(LIB)
+testSuffixTree:
+	@echo " [LNK] Building testSuffixTree"
+	@$(CPP) $(CPPFLAGS) -o testSuffixTree testSuffixTree.o $(LIB)
 
 
 

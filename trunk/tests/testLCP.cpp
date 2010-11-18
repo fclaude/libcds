@@ -39,8 +39,8 @@ bool testLCP(LCP *s1, LCP *s2, TextIndex *csa){
 		if(s1->get_LCP(i,csa)!=s2->get_LCP(i,csa))
 			return false;
 	}
-	uint *next;
-	uint n_next = 0;
+	size_t *next;
+	size_t n_next = 0;
 	for(size_t i=0; i<csa->index_length(); i++){
 		if((i%100)==0)
 			n_next = 0;

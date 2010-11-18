@@ -16,23 +16,23 @@
  *
  */
 
-#include <CST.h>
+#include <SuffixTree.h>
 
 using namespace std;
 using namespace cds_utils;
 using namespace cds_static;
 
-CST * saveLoad(CST * bs) {
+SuffixTree * saveLoad(SuffixTree * bs) {
 	ofstream ofs("cst.tmp");
 	bs->save(ofs);
 	ofs.close();
 	ifstream ifs("cst.tmp");
-	CST * ret = CST::load(ifs);
+	SuffixTree * ret = SuffixTree::load(ifs);
 	ifs.close();
 	return ret;
 }
 
-bool testCST(CST *s1){
+bool testSuffixTree(SuffixTree *s1){
 	/*add any test you want*/
 	return true;
 }
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 	size_t length;
 	
 	if(argc!=2) {
-		cout << "Checks if the CST of the file <arch> is save/load correctly" << endl << endl;
+		cout << "Checks if the SuffixTree of the file <arch> is save/load correctly" << endl << endl;
 		cout << "usage: " << argv[0] << " <arch>" << endl;
 		return 0;
 	}
@@ -53,16 +53,16 @@ int main(int argc, char *argv[]){
 	
 	/*create index*/
 
-	CST *cst;
+	SuffixTree *cst;
 	
-	CST_Y csty(text, length, DAC, CN_NPR, 32); 
+	SuffixTreeY csty(text, length, DAC, CN_NPR, 32); 
 	cst	= saveLoad(&csty); 
-	if(!testCST(cst)) {
-		cerr << "ERROR TESTING CST_Y" << endl;
+	if(!testSuffixTree(cst)) {
+		cerr << "ERROR TESTING SuffixTreeY" << endl;
 		return -1;
 	}
-	delete (CST_Y *)cst;
-	cout << "CST_Y OK\n" << endl;
+	delete (SuffixTreeY *)cst;
+	cout << "SuffixTree_Y OK\n" << endl;
 	
 	delete [] text;
 	return 0;

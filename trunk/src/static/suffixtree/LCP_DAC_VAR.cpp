@@ -185,7 +185,7 @@ namespace cds_static{
 		}
 		lcp->n = loadValue<size_t>(fp);
 		lcp->rep = factorization_var::load(fp);
-		lcp->next_p_var = new uint[(uint)((lcp->rep)->nLevels) -1];
+		lcp->next_p_var = new size_t[(size_t)((lcp->rep)->nLevels) -1];
 		return lcp;
 	}
 

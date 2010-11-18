@@ -17,18 +17,18 @@
  */
 
 
-#ifndef CST_Y_H
-#define CST_Y_H
+#ifndef SUFFIXY_H
+#define SUFFIXY_H
 
 #include <LCP.h>
 #include <NPR.h>
-#include <CST.h>
+#include <SuffixTree.h>
 
 namespace cds_static{
 
-	class CST_Y : public CST {
+	class SuffixTreeY : public SuffixTree {
 		private:
-			CST_Y();
+			SuffixTreeY();
 
 			TextIndex *csa;
 			LCP *lcp;
@@ -43,14 +43,14 @@ namespace cds_static{
 			 * @param npr_type The npr data structute that will be use (FMN_NPR|CN_NPR).
 			 * @param b  The block size used in NPR
 			 * */
-			CST_Y(char *text, size_t n, size_t lcp_type = DAC, size_t npr_type = CN_NPR, size_t b = 32); 
+			SuffixTreeY(char *text, size_t n, size_t lcp_type = DAC, size_t npr_type = CN_NPR, size_t b = 32); 
 
 			/*Create the compressed suffix tree data structure base on Canovas and Navarro "Practical Compressed Suffix Trees"
 			 *  @param _lcp The LCP array data structure 
 			 *  @param _npr The NPR data structure
 			 *  @param csa  The Compressed suffix array data structure
 			 *  */
-			CST_Y(LCP *_lcp, NPR *_npr, TextIndex *csa);
+			SuffixTreeY(LCP *_lcp, NPR *_npr, TextIndex *csa);
 	
 			/*Operations*/
 
@@ -110,9 +110,9 @@ namespace cds_static{
 							
 			 virtual void save(ofstream & fp) const;
 
-      static CST_Y * load(ifstream & fp);
+      static SuffixTreeY * load(ifstream & fp);
 
-			virtual ~CST_Y();	
+			virtual ~SuffixTreeY();	
 	};
 
 };

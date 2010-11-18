@@ -17,8 +17,8 @@
  */
 
 
-#ifndef CST_H
-#define CST_H
+#ifndef SUFFIXTREE_H
+#define SUFFIXTREE_H
 
 #include <libcdsTrees.h>
 using namespace cds_utils;
@@ -28,7 +28,7 @@ namespace cds_static{
 
 	static const size_t  CSTY = 1;
 
-	class CST{
+	class SuffixTree{
 		protected:
 			size_t length;
 	
@@ -91,12 +91,12 @@ namespace cds_static{
 			
 			virtual void save(ofstream & fp) const =0;
 
-			static CST * load(ifstream & fp); 
+			static SuffixTree * load(ifstream & fp); 
 
-			virtual ~CST() {};
+			virtual ~SuffixTree() {};
 	};
 
 };
 
-#include <CST_Y.h>
+#include <SuffixTreeY.h>
 #endif

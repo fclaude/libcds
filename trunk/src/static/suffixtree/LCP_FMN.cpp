@@ -99,7 +99,7 @@ namespace cds_static{
 		delete [] Z_aux;
 	}
 
-	LCP_FMN::LCP_FMN(LCP *lcp, TextIndex *csa, uint n, uint op_rs){
+	LCP_FMN::LCP_FMN(LCP *lcp, TextIndex *csa, size_t n, size_t op_rs){
 		uint *O_aux, *Z_aux;
 		if(op_rs!=RRR02_HDR && op_rs!=SDARRAY_HDR){
 			cout << "Error: op_rs must be RRR02_HDR or SDARRAY_HDR\n" << endl;

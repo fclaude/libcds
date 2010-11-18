@@ -41,7 +41,7 @@ namespace cds_static{
 			LCP_Sad(TextIndex *csa, char *text, size_t n, size_t op_rs = BRW32_HDR);
 			
 			/*Create the LCP representation starting from a precomputed LCP array*/
-			LCP_Sad(LCP *lcp, TextIndex *csa, size_t n, uint op_rs = BRW32_HDR); 
+			LCP_Sad(LCP *lcp, TextIndex *csa, size_t n, size_t op_rs = BRW32_HDR); 
 			
 			/**Return LCP[i]*/
 			virtual size_t get_LCP(size_t i, TextIndex *csa) const;

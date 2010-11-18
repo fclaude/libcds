@@ -63,8 +63,8 @@ namespace cds_utils{
 
 
 	/* returns e[p..p+len-1], assuming len <= W*/
-	inline size_t bitread (size_t *e, size_t p, size_t len){ 
-		size_t answ=0;
+	inline size_t bitread (uint *e, uint p, uint len){ 
+		uint answ=0;
 		e += p/W; p %= W;
 		answ = *e >> p;
 		if (len == W){ 
@@ -80,7 +80,7 @@ namespace cds_utils{
 	}
 
 	/* writes e[p..p+len-1] = s, len <= W*/
-	inline void bitwrite (register size_t *e, register size_t p, register size_t len, register size_t s){ 
+	inline void bitwrite (register uint *e, register uint p, register uint len, register uint s){ 
 		e += p/W; 
 		p %= W;
 		if (len == W){ 
