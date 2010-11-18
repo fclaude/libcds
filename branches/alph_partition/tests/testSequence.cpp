@@ -10,7 +10,7 @@ using namespace std;
 using namespace cds_static;
 
 
-void testSequence(Array & a, Sequence & bs) {
+void testSequence(Array & a, Sequence * bs) {
     uint maxv = a.getMax();
     size_t count[maxv+1];
     for(size_t i=0;i<=maxv;i++)
@@ -18,22 +18,23 @@ void testSequence(Array & a, Sequence & bs) {
     for(size_t i=0;i<a.getLength();i++) {
         count[a[i]]++;
         for(uint j=a[i];j<=a[i];j++) { 
-            if(bs.rank(j,i)!=count[j]) {
+            if(bs->rank(j,i)!=count[j]) {
                 cerr << "ERROR RANK " << endl;
-                cerr << " Rank result: " << bs.rank(j,i) << " count=" << count[j] << endl;
                 cerr << " symbol=" << j << " position=" << i << endl;
-                exit(-1);
+                cerr << " Rank result: " << bs->rank(j,i) << " count=" << count[j] << endl;
+                abort();
             }
         }
-        if(bs.select(a[i],count[a[i]])!=i) {
+        if(bs->select(a[i],count[a[i]])!=i) {
             cerr << "ERROR SELECT " << endl;
             cerr << "a[i]=" << a[i] << " maxv=" << maxv << endl;
-            cerr << "bs.select=" << bs.select(a[i],count[a[i]]) << " i=" << i << endl;
-            exit(-2);
+            cerr << "bs.select=" << bs->select(a[i],count[a[i]]) << " i=" << i << endl;
+                abort();
         }
-        if(a[i]!=bs.access(i)) {
+        if(a[i]!=bs->access(i)) {
             cerr << "ERROR ACCESS" << endl;
-            exit(-3);
+            cout << "a[i]=" << a[i] << " bs[i]=" << bs->access(i) << endl;
+                abort();
         }
     }
 }
@@ -61,7 +62,7 @@ int main(int argc, char ** argv) {
   //BitmapsSequence  bs(a,new MapperNone(),new BitSequenceBuilderRRR(33));
   //testSequence(a, bs);
 
-  Mapper * mapper = new MapperCont(a, BitSequenceBuilderRG(20));
+  /*Mapper * mapper = new MapperCont(a, BitSequenceBuilderRG(20));
   Mapper * mapper2 = new MapperNone();
   mapper->use();
   mapper2->use();
@@ -75,13 +76,18 @@ int main(int argc, char ** argv) {
   testSequence(a, wt3);
   mapper->unuse();
   mapper2->unuse();
-
+*/
   uint * arr = new uint[len];
   for(uint i=0;i<len;i++)
       arr[i] = a.getField(i);
-  SequenceBuilder * sb = new SequenceBuilderWaveletTreeNoptrs(new BitSequenceBuilderRG(20),new MapperCont(a,BitSequenceBuilderRG(20)));
-  SequenceAlphPart sap(arr,len,15,sb,sb);
+  BitSequenceBuilder * bsb = new BitSequenceBuilderRG(20);
+  Mapper * mp = new MapperCont(a,new BitSequenceBuilderRG(20));
+  SequenceBuilder * sb = new SequenceBuilderWaveletTreeNoptrs(bsb,mp);
+  SequenceAlphPart * sap = new SequenceAlphPart(arr,len,15,sb,sb);
   testSequence(a,sap);
+  delete sb;
+  delete bsb;
+  delete sap;
   return 0;
 }
 

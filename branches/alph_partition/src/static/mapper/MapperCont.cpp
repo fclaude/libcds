@@ -24,14 +24,14 @@
 namespace cds_static
 {
 
-    MapperCont::MapperCont(const Array & seq, const BitSequenceBuilder & bmb) {
+    MapperCont::MapperCont(const Array & seq, const BitSequenceBuilder * bmb) {
         BitString bs(seq.getMax()+1);
         for(size_t i=0;i<seq.getLength();i++)
             bs.setBit(seq[i]);
-        m = bmb.build(bs);
+        m = bmb->build(bs);
     }
 
-    MapperCont::MapperCont(const uint * A, const size_t len, const BitSequenceBuilder & bmb) {
+    MapperCont::MapperCont(const uint * A, const size_t len, const BitSequenceBuilder * bmb) {
         uint max_v = 0;
         for(uint i=0;i<len;i++)
             max_v = max(max_v,A[i]);
@@ -40,7 +40,7 @@ namespace cds_static
         BitString bs(max_v);
         for(size_t i=0;i<len;i++)
             bs.setBit(A[i]);
-        m = bmb.build(bs);
+        m = bmb->build(bs);
     }
 
     MapperCont::MapperCont() {

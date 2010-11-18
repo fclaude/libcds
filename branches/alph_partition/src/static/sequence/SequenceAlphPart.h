@@ -62,12 +62,8 @@ namespace cds_static
             uint * revPermFreq;
             // symbols sorted by frequency
             uint * alphSortedByFreq;
-            // offset for each symbol inside their lenght
-            uint * symbOffset;
-            // length for each symbol in the alphabet
-            uint * lengthForSymb;
             // the sequence indexing the lengths of the symbol in each position
-            Sequence * lengthsIndex;
+            Sequence * groupsIndex;
             // sequences indexing the elements groupes by length
             Sequence ** indexesByLength;
             // cut corresponds to the number of symbols that are not represented in indexesByLength (the most frequent ones)

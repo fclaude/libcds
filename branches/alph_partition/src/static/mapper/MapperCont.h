@@ -43,8 +43,8 @@ namespace cds_static
     class MapperCont : public Mapper
     {
         public:
-            MapperCont(const Array & seq, const BitSequenceBuilder & bsb);
-            MapperCont(const uint * A, const size_t len, const BitSequenceBuilder & bsb);
+            MapperCont(const Array & seq, const BitSequenceBuilder * bsb);
+            MapperCont(const uint * A, const size_t len, const BitSequenceBuilder * bsb);
 
             virtual ~MapperCont();
 

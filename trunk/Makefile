@@ -1,5 +1,5 @@
 
-CPPFLAGS=-g3 -Wall -O0 -m32 
+CPPFLAGS=-g3 -Wall -O0 
 #CPPFLAGS=-O9 -Wall -DNDEBUG 
 
 all: clean libcompact tests
