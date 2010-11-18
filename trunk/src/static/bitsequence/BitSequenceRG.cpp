@@ -182,7 +182,7 @@ namespace cds_static
 
     size_t BitSequenceRG::getSize() const
     {
-        return sizeof(BitSequenceRG)+SpaceRequirement()/8;
+        return /*sizeof(BitSequenceRG)+*/SpaceRequirementInBits()/8;
     }
 
     size_t BitSequenceRG::SpaceRequirement() const
