@@ -73,7 +73,7 @@ int main(int argc, char ** argv) {
   mapper->use();
   mapper2->use();
   cout << "Test 1 : Wavelet tree with pointers" << endl;
-  WaveletTree wt1(a,new wt_coder_huff(a, mapper),new BitSequenceBuilderRG(20), mapper);
+  WaveletTree wt1(a,new wt_coder_huff(a, mapper),new BitSequenceBuilderDArray(), mapper);
   cout << "bs.size() = " << wt1.getSize() << endl;
   testSequence(a, wt1);
 

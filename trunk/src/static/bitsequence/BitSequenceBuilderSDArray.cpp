@@ -27,6 +27,9 @@ namespace cds_static
     BitSequenceBuilderSDArray::BitSequenceBuilderSDArray() {
     }
 
+    BitSequenceBuilderSDArray::~BitSequenceBuilderSDArray() {
+    }
+
     BitSequence * BitSequenceBuilderSDArray::build(uint * bitseq, size_t len) const
     {
         return new BitSequenceSDArray(bitseq,len);
