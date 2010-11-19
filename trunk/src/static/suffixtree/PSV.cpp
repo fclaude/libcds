@@ -174,7 +174,7 @@ namespace cds_static{
 		/*store the results for the last level*/
 		uint num_elements =  R[r-1]->rank1(n);
 		b_A = bits(num_elements);
-		A = new size_t[(num_elements*b_A + W -1)/W];
+		A = new uint[(num_elements*b_A + W -1)/W];
 		for(size_t i=0; i<((num_elements*b_A + W -1)/W); i++)
 			A[i]=0;
 		lcp_r = new size_t[num_elements];
@@ -348,7 +348,7 @@ namespace cds_static{
 		}
 		size_t tam_A = psv->R[psv->r-1]->rank1(psv->n-1);
 		tam_A = (tam_A*psv->b_A + W -1)/W;
-		psv->A = loadValue<size_t>(fp, tam_A);
+		psv->A = loadValue<uint>(fp, tam_A);
 		return psv;
 	}
 
@@ -358,7 +358,7 @@ namespace cds_static{
 		for(size_t i=0; i<r; i++){
 			size += R[i]->getSize() + P[i]->getSize();
 		}
-		size +=  ((b_A*R[r-1]->rank1(n-1) + W -1)/W)*4;
+		size +=  ((b_A*R[r-1]->rank1(n-1) + W -1)/W)*sizeof(uint);
 		return size;
 	}
 

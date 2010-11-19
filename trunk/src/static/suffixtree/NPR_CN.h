@@ -41,9 +41,9 @@ namespace cds_static{
 			size_t b; //block Size
 			size_t bits_b; //bits for representated b
 			size_t l; //number of levels
-			size_t **min_level; //array for each level that contain the min value of each block
-			size_t **min_pos;  // array for each level that contain the local position of the min value of each block
-			size_t *level_size; //size of each level
+			uint **min_level; //array for each level that contain the min value of each block
+			uint **min_pos;  // array for each level that contain the local position of the min value of each block
+			uint *level_size; //size of each level
 
 		public:
 			/*NPR Data structure base on Canovas and Navarro "Practical Compressed Suffix Trees"

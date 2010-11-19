@@ -427,8 +427,9 @@ namespace cds_static{
 
 	int readint(FILE *f)
 	{
+		int s;
 		int tmp;
-		fread(&tmp,sizeof(int),1,f);
+		s=fread(&tmp,sizeof(int),1,f);
 		return tmp;
 	}
 

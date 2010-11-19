@@ -38,7 +38,7 @@ namespace cds_static{
 			size_t n;					/*number of element of lcp*/
 			BitSequence **P;  		/*bitarray with the pioneer for each level*/
 			BitSequence **R;  		/*bitarray with the pioneer and their answers*/
-			size_t *A;  		/*stored values for the last level*/
+			uint *A;  		/*stored values for the last level*/
 			size_t b_A;  /*bits needed per value in A*/
 
 

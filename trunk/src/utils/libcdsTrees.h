@@ -17,9 +17,9 @@ namespace cds_utils{
 	 * @param len Length in bits of each field
 	 * @param index Position to be retrieved
 	 * */
-	inline size_t get_field_64(size_t *A, size_t len, size_t index) {
+	inline size_t get_field_64(uint *A, size_t len, size_t index) {
 		if(len==0) return 0;
-		size_t result;
+		uint result;
 		long long i=1, j=1;
 		i=i*index*len/W, j=j*index*len-W*i;
 		if (j+len <= W)
@@ -28,14 +28,14 @@ namespace cds_utils{
 			result = A[i] >> j;
 			result = result | (A[i+1] << (WW-j-len)) >> (W-len);
 		}
-		return result;
+		return (size_t)result;
 	}
 
-	inline void set_field_64(size_t *A, size_t len, size_t index, size_t x) {
+	inline void set_field_64(uint *A, size_t len, size_t index, size_t x) {
 		if(len==0) return;
 		long long i=1, j=1;	  
 		i= i*index*len/W, j= j*index*len-i*W;
-		size_t mask = ((j+len) < W ? ~0u << (j+len) : 0)
+		uint mask = ((j+len) < W ? ~0u << (j+len) : 0)
 			| ((W-j) < W ? ~0u >> (W-j) : 0);
 		A[i] = (A[i] & mask) | x << j;
 		if (j+len>W) {

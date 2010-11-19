@@ -38,7 +38,7 @@ namespace cds_static{
 			cout << "Memory limit excess (in LCP)" << endl;
 			exit(1);
 		}
-		lcp_array = new size_t[(size_t)nb];
+		lcp_array = new uint[(size_t)nb];
 		for(size_t i=0; i<(size_t)nb; i++)
 			lcp_array[i]=0;
 		set_field_64(lcp_array, b, 0, 0);
@@ -83,7 +83,7 @@ namespace cds_static{
 		}
 		lcp->length = loadValue<size_t>(fp);
 		lcp->b = loadValue<size_t>(fp);
-		lcp->lcp_array = loadValue<size_t>(fp, ((lcp->b*lcp->length+W-1)/W));
+		lcp->lcp_array = loadValue<uint>(fp, ((lcp->b*lcp->length+W-1)/W));
 		return lcp;
 	}
 

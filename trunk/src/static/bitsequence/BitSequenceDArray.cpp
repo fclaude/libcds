@@ -83,7 +83,6 @@ namespace cds_static{
 			}
 		if(ones)
 			build(tmp_seq,n);
-		delete buf;
 	}
 
 	void BitSequenceDArray::build(uint *buf, size_t n){

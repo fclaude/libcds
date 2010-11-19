@@ -157,7 +157,10 @@ namespace cds_static
 
     BitmapsSequence * BitmapsSequence::load(ifstream & fp) {
         uint type = loadValue<uint>(fp);
-        assert(type==BS_HDR);
+				if(type!=BS_HDR){
+					abort();
+				}
+        //assert(type==BS_HDR);
         BitmapsSequence * ret = new BitmapsSequence();
         ret->length = loadValue<uint>(fp);
         ret->sigma = loadValue<uint>(fp);

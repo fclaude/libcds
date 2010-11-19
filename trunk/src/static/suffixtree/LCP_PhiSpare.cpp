@@ -64,7 +64,7 @@ namespace cds_static{
 	
 			//make a special case of the last one																			
 			if(sa[n-1]%q == 0)																			
-				plcp[sa[n-1]/q] = n;																																					
+				plcp[sa[n-1]/q] = sa[n-2];																																					
 			//all of sparse phi computed
 																			
 			delete [] sa;
@@ -87,7 +87,7 @@ namespace cds_static{
 
 	size_t LCP_PhiSpare::get_LCP(size_t i, TextIndex *csa) const{
 		if(i==0)
-			return 0; 
+			return 0;
 		int iq, h, y;
 		int sa_i = csa->getSA(i); // SA[i]
 		int p0, p1;

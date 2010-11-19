@@ -26,7 +26,7 @@ namespace cds_static{
 	class LCP_naive: public LCP{
 		private:
 			LCP_naive();
-			size_t *lcp_array;
+			uint *lcp_array;
 			size_t  b;
 			size_t  length;
 

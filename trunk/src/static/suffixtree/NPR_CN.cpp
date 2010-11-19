@@ -38,11 +38,11 @@ namespace cds_static{
 		b = block_Size;
 		bits_b = bits(b);
 		l =(size_t)(log(n)/log(b)); 
-		level_size = new size_t[l];
+		level_size = new uint[l];
 		for(size_t i=0; i<l; i++)
 			level_size[i] = 0;
-		min_level = new size_t*[l];
-		min_pos = new size_t*[l];
+		min_level = new uint*[l];
+		min_pos = new uint*[l];
 
 		create_first_level(lcp,csa);
 		for(size_t r=1; r<l; r++){
@@ -53,10 +53,10 @@ namespace cds_static{
 
 	void NPR_CN::create_first_level(LCP *lcp, TextIndex *csa){
 		level_size[0] = (n+b-1)/b;
-		min_level[0] = new size_t[level_size[0]];
+		min_level[0] = new uint[level_size[0]];
 		for(size_t i=0; i< level_size[0]; i++)
 			min_level[0][i] = 0;
-		min_pos[0] = new size_t[((level_size[0]*bits_b+W-1)/W)];
+		min_pos[0] = new uint[((level_size[0]*bits_b+W-1)/W)];
 		for(size_t i=0; i<((level_size[0]*bits_b+W-1)/W); i++)
 			min_pos[0][i] = 0;
 		size_t min, min_aux;
@@ -96,10 +96,10 @@ namespace cds_static{
 	 
 	void NPR_CN::create_next_level(size_t r){
 		level_size[r] = (level_size[r-1]+b-1)/b;
-		min_level[r] = new size_t[level_size[r]];
+		min_level[r] = new uint[level_size[r]];
 		for(size_t i=0; i< level_size[r]; i++)
 			min_level[r][i] = 0;
-		min_pos[r] = new size_t[((level_size[r]*bits_b+W-1)/W)];
+		min_pos[r] = new uint[((level_size[r]*bits_b+W-1)/W)];
 		for(size_t i=0; i<((level_size[r]*bits_b+W-1)/W); i++)
 			min_pos[r][i] = 0;
 		size_t min, min_aux;
@@ -419,10 +419,10 @@ namespace cds_static{
 
 	size_t NPR_CN::getSize() const{
 		size_t mem = sizeof(NPR_CN);
-		mem += sizeof(size_t)*l;  //level size
+		mem += sizeof(uint)*l;  //level size
 		for(size_t i=0; i<l; i++){
-			mem += sizeof(size_t)*level_size[i];  //min_level[i]
-			mem += sizeof(size_t)*((level_size[i]*bits_b+W-1)/W);
+			mem += sizeof(uint)*level_size[i];  //min_level[i]
+			mem += sizeof(uint)*((level_size[i]*bits_b+W-1)/W);
 		}
 		return mem;
 	}
@@ -450,13 +450,13 @@ namespace cds_static{
 		npr->b = loadValue<size_t>(fp);
 		npr->bits_b = loadValue<size_t>(fp);
 		npr->l = loadValue<size_t>(fp);
-		npr->level_size = loadValue<size_t>(fp, npr->l);
-		npr->min_level = new size_t*[npr->l];
+		npr->level_size = loadValue<uint>(fp, npr->l);
+		npr->min_level = new uint*[npr->l];
 		for(size_t i=0; i<npr->l; i++)
-			npr->min_level[i] = loadValue<size_t>(fp, npr->level_size[i]); 
-		npr->min_pos = new size_t*[npr->l];
+			npr->min_level[i] = loadValue<uint>(fp, npr->level_size[i]); 
+		npr->min_pos = new uint*[npr->l];
 		for(size_t i=0; i<npr->l; i++)
-			npr->min_pos[i] = loadValue<size_t>(fp, (npr->level_size[i]*npr->bits_b+W-1)/W);
+			npr->min_pos[i] = loadValue<uint>(fp, (npr->level_size[i]*npr->bits_b+W-1)/W);
 		return npr;
 	}
 
