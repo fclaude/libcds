@@ -39,7 +39,7 @@ namespace cds_static
         public:
             /** Buils a wt_coder_huff using the sequence of length n and the alphabet_mapper
              *  to determine the huffman codes */
-            wt_coder_huff(Array & a, Mapper *am);
+            wt_coder_huff(const Array & a, Mapper *am);
             wt_coder_huff(uint *symbs, size_t n, Mapper * am);
             wt_coder_huff(uchar *symbs, size_t n, Mapper * am);
             virtual ~wt_coder_huff();

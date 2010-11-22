@@ -42,7 +42,7 @@ namespace cds_static
 
         public:
             BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb);
-            BitmapsSequence(Array & a, Mapper * am, BitSequenceBuilder * bsb);
+            BitmapsSequence(const Array & a, Mapper * am, BitSequenceBuilder * bsb);
 
             virtual ~BitmapsSequence();
 

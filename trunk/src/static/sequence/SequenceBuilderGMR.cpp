@@ -36,7 +36,27 @@ namespace cds_static {
     }
 
     Sequence * SequenceBuilderGMR::build(uint * sequence, size_t len) {
-        return new SequenceGMR(sequence, len, chunk_len, bsb, sqb);
+        uint cl = chunk_len;
+        if(chunk_len==0) {
+            uint s=0;
+            for(size_t i=0;i<len;i++)
+                s = max(s,sequence[i]);
+            cl = 2*s;
+        }
+        cl = max(cl,(uint)4);
+        return new SequenceGMR(sequence, len, cl, bsb, sqb);
+    }
+
+    Sequence * SequenceBuilderGMR::build(const Array & seq) {
+        uint cl = chunk_len;
+        if(chunk_len==0) {
+            uint s=0;
+            for(size_t i=0;i<seq.getLength();i++)
+                s = max(s,seq[i]);
+            cl = 2*s;
+        }
+        cl = max(cl,(uint)4);
+        return new SequenceGMR(seq, cl, bsb, sqb);
     }
 };
 

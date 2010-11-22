@@ -36,6 +36,7 @@ namespace cds_static
     #define WVTREE_NOPTRS_HDR 3
     #define GMR_HDR 4
     #define GMR_CHUNK_HDR 5
+    #define ALPHPART_HDR 6
 
     /** Sequence base class
      *
@@ -96,6 +97,7 @@ namespace cds_static
 #include <WaveletTreeNoptrs.h>
 #include <SequenceGMR.h>
 #include <SequenceGMRChunk.h>
+#include <SequenceAlphPart.h>
 
 #include <SequenceBuilder.h>
 #endif                           /* _SEQUENCE_H */

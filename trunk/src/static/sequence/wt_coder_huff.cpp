@@ -24,7 +24,7 @@
 namespace cds_static
 {
 
-    wt_coder_huff::wt_coder_huff(Array & a, Mapper * am) {
+    wt_coder_huff::wt_coder_huff(const Array & a, Mapper * am) {
         size_t n = a.getLength();
         uint * symbs = new uint[n];
         for(uint i=0;i<n;i++)

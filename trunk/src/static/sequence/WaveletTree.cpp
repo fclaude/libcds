@@ -24,7 +24,7 @@
 namespace cds_static
 {
 
-    WaveletTree::WaveletTree(Array & a, wt_coder * coder, BitSequenceBuilder *bmb, Mapper *am) : Sequence(0) {
+    WaveletTree::WaveletTree(const Array & a, wt_coder * coder, BitSequenceBuilder *bmb, Mapper *am) : Sequence(0) {
         bmb->use();
         this->n = a.getLength();
         this->length = n;

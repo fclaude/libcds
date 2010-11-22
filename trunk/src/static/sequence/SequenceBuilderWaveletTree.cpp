@@ -26,8 +26,8 @@ namespace cds_static {
         this->bsb = bsb;
         this->am = am;
         this->wc = wc;
-        am->use();
         bsb->use();
+        am->use();
         wc->use();
     }
 
@@ -38,7 +38,13 @@ namespace cds_static {
     }
 
     Sequence * SequenceBuilderWaveletTree::build(uint * sequence, size_t len) {
-        return new WaveletTree(sequence, len, wc, bsb, am);
+        Sequence * ret = new WaveletTree(sequence, len, wc, bsb, am);
+        return ret;
+    }
+    
+    Sequence * SequenceBuilderWaveletTree::build(const Array & seq) {
+        Sequence * ret = new WaveletTree(seq, wc, bsb, am);
+        return ret;
     }
 };
 

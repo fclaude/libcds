@@ -29,9 +29,10 @@
 namespace cds_static {
     class SequenceBuilderGMR : public SequenceBuilder {
         public:
-            SequenceBuilderGMR(BitSequenceBuilder * bsb, SequenceBuilder * sqb, uint chunk_len);
+            SequenceBuilderGMR(BitSequenceBuilder * bsb, SequenceBuilder * sqb, uint chunk_len=0);
             virtual ~SequenceBuilderGMR();
             virtual Sequence * build(uint * seq, size_t len);
+            virtual Sequence * build(const Array & seq);
 
         protected:
             BitSequenceBuilder * bsb;

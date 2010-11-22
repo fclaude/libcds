@@ -1,6 +1,7 @@
 
-CPPFLAGS=-g3 -Wall -O0 
-#CPPFLAGS=-O9 -Wall -DNDEBUG 
+#CPPFLAGS=-g3 -Wall -O0 
+#-DVERBOSE 
+CPPFLAGS=-O9 -Wall -DNDEBUG 
 
 all: clean libcompact tests
 

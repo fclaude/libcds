@@ -37,6 +37,11 @@ namespace cds_static {
     Sequence * SequenceBuilderGMRChunk::build(uint * sequence, size_t len) {
         return new SequenceGMRChunk(sequence, len, bsb, pmb);
     }
+    
+    Sequence * SequenceBuilderGMRChunk::build(const Array & seq) {
+        return new SequenceGMRChunk(seq, bsb, pmb);
+    }
+
 };
 
 

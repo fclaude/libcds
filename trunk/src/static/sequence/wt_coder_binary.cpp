@@ -24,7 +24,7 @@
 namespace cds_static
 {
 
-    wt_coder_binary::wt_coder_binary(Array & a, Mapper *am) {
+    wt_coder_binary::wt_coder_binary(const Array & a, Mapper *am) {
         //am->use();
         uint maxv = 0;
         for(size_t i=0;i<a.getLength();i++)

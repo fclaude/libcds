@@ -41,6 +41,24 @@ SequenceGMR::SequenceGMR(uint * sequence, size_t n, uint chunk_length, BitSequen
 	delete [] new_seq;
 }
 
+SequenceGMR::SequenceGMR(const Array & sequence, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb) : Sequence(0) {
+  length = sequence.getLength();
+	if(length%chunk_length) length+=chunk_length-length%chunk_length;
+	uint * new_seq = new uint[length];
+  sigma = 0;
+	for(uint i=0;i<sequence.getLength();i++){
+		new_seq[i] = sequence[i]+1;
+    sigma = max(sigma,new_seq[i]);
+	}
+  sigma++;
+	for(uint i=sequence.getLength();i<length;i++)
+		new_seq[i] = sigma;
+	if(length!=sequence.getLength()) sigma++;
+  this->chunk_length = chunk_length;
+  build(new_seq,bmb,ssb);
+	delete [] new_seq;
+}
+
 SequenceGMR::SequenceGMR() : Sequence(0) {
 }
 

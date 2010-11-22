@@ -5,6 +5,9 @@
 #include <libcdsBasics.h>
 #include <cppUtils.h>
 
+#include <vector>
+using namespace std;
+
 namespace cds_utils
 {
 
@@ -46,6 +49,8 @@ namespace cds_utils
         in.close();
         return ret;
     }
+
+    void tokenize(string str, vector<string> &tokens, char delim);
 
 };
 #endif

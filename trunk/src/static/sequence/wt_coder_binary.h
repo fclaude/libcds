@@ -38,7 +38,7 @@ namespace cds_static
     class wt_coder_binary: public wt_coder
     {
         public:
-            wt_coder_binary(Array & a, Mapper *am);
+            wt_coder_binary(const Array & a, Mapper *am);
             /** Buils a wt_coder_binary using the sequence of length n and the alphabet_mapper
              *  to determine the length of the binary codes */
             wt_coder_binary(uint * seq, size_t n, Mapper * am);

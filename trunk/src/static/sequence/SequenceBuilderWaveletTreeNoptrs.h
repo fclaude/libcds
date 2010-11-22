@@ -33,6 +33,7 @@ namespace cds_static {
             SequenceBuilderWaveletTreeNoptrs(BitSequenceBuilder * bsb, Mapper * am);
             virtual ~SequenceBuilderWaveletTreeNoptrs();
             virtual Sequence * build(uint * seq, size_t len);
+            virtual Sequence * build(const Array & seq);
 
         protected:
             BitSequenceBuilder * bsb;

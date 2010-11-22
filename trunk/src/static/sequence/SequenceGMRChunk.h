@@ -52,6 +52,7 @@ namespace cds_static {
          * @param pmb permutation builder for Pi (as named in the paper).
          * */
         SequenceGMRChunk(uint * sequence, uint chunk_length, BitSequenceBuilder *bmb, PermutationBuilder *pmb);
+        SequenceGMRChunk(const Array & sequence, BitSequenceBuilder *bmb, PermutationBuilder *pmb);
 
         /** Destroy the chunk */
         ~SequenceGMRChunk();

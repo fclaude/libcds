@@ -62,7 +62,7 @@ namespace cds_static
         am = NULL;
     }
 
-    BitmapsSequence::BitmapsSequence(Array &a, Mapper * am, BitSequenceBuilder * bsb) : Sequence(0) {
+    BitmapsSequence::BitmapsSequence(const Array &a, Mapper * am, BitSequenceBuilder * bsb) : Sequence(0) {
         bsb->use();
         length = a.getLength();
         //cout << "length=" << length << endl;
@@ -156,7 +156,7 @@ namespace cds_static
     }
 
     BitmapsSequence * BitmapsSequence::load(ifstream & fp) {
-        uint type = loadValue<uint>(fp);
+        uint __attribute__((unused)) type = loadValue<uint>(fp);
 				if(type!=BS_HDR){
 					abort();
 				}

@@ -65,6 +65,47 @@ SequenceGMRChunk::SequenceGMRChunk(uint * sequence, uint chunk_length, BitSequen
 	delete [] counter;
 }
 
+SequenceGMRChunk::SequenceGMRChunk(const Array & sequence, BitSequenceBuilder *bmb, PermutationBuilder *pmb) : Sequence(0){
+    uint chunk_length = sequence.getLength();
+    length = chunk_length;
+  sigma = 0;
+  for(uint i=0;i<chunk_length;i++) {
+    sigma = max(sigma,sequence[i]);
+  }
+  sigma++;
+  uint * X_bitmap = new uint[uint_len(1+chunk_length+sigma,1)];
+  assert(X_bitmap!=NULL);
+  for(uint i=0;i<uint_len(1+chunk_length+sigma,1);i++) X_bitmap[i]=0;
+  uint pi_blen = bits(chunk_length-1);
+  uint * pi = new uint[uint_len(pi_blen,chunk_length)];
+  assert(pi!=NULL);
+  for(uint i=0;i<uint_len(pi_blen,chunk_length);i++) pi[i] = 0;
+  uint X_pos = 0;
+  uint * counter = new uint[sigma+2];
+  for(uint c=0;c<=sigma+1;c++) counter[c]=0;
+  for(uint i=0;i<chunk_length;i++) counter[sequence[i]+1]++;
+
+  for(uint c=0;c<sigma;c++) {
+    X_pos++;
+    for(uint i=0;i<counter[c+1];i++) {
+      bitset(X_bitmap, X_pos);
+      X_pos++;
+    }
+    counter[c+1]+=counter[c];
+  }
+  X_pos++;
+  for(uint i=0;i<chunk_length;i++) {
+    set_field(pi, pi_blen,counter[sequence[i]], i);
+    counter[sequence[i]]++;
+  }
+  this->X = bmb->build(X_bitmap,X_pos); 
+  assert(X!=NULL);
+  delete [] X_bitmap;
+  this->permutation = pmb->build(pi,chunk_length); 
+  assert(permutation!=NULL);
+  this->sigma = sigma;
+	delete [] counter;
+}
 SequenceGMRChunk::SequenceGMRChunk() : Sequence(0) {
 }
 
@@ -95,12 +136,14 @@ size_t SequenceGMRChunk::rank(uint i, size_t j2) const {
   uint ini = X->select0(i+1)-i;
   uint ini_o = ini;
   uint fin = X->select0(i+2);
+  if(fin+1==0) return 0;
 	if(fin<i+2) return 0;
 	fin = fin-(i+2);
 	if(fin<ini) return 0;
 	if(permutation->pi(ini) > j) return 0;
 	if(permutation->pi(ini) == j) return 1;
 	if(ini==fin) return 1;
+    if(ini>fin) return 0;
   while(ini < fin-1) {
 		uint med = (ini+fin)/2;
     uint elem = permutation->pi(med); 

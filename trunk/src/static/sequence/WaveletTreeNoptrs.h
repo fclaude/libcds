@@ -43,7 +43,7 @@ namespace cds_static
              * @param bmb builder for the bitmaps in each level.
              * @param am alphabet mapper (we need all symbols to be used).
              * */
-            WaveletTreeNoptrs(Array & a, BitSequenceBuilder * bmb, Mapper * am);
+            WaveletTreeNoptrs(const Array & a, BitSequenceBuilder * bmb, Mapper * am);
             /** Builds a Wavelet Tree for the string
              * pointed by symbols assuming its length
              * equals n and uses bmb to build the bitsequence

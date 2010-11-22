@@ -39,5 +39,7 @@ namespace cds_static {
     };
 };
 
+#include<PermutationBuilderMRRR.h>
+
 #endif
 

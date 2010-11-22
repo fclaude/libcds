@@ -33,6 +33,7 @@ namespace cds_static {
             SequenceBuilderGMRChunk(BitSequenceBuilder * bsb, PermutationBuilder * pmb);
             virtual ~SequenceBuilderGMRChunk();
             virtual Sequence * build(uint * seq, size_t len);
+            virtual Sequence * build(const Array & seq);
 
         protected:
             BitSequenceBuilder * bsb;

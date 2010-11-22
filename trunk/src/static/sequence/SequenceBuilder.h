@@ -32,6 +32,7 @@ namespace cds_static {
             SequenceBuilder() { userCount=0; }
             virtual ~SequenceBuilder() {}
             virtual Sequence * build(uint * seq, size_t len)=0;
+            virtual Sequence * build(const Array & seq)=0;
             virtual void use() { userCount++; }
             virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
 
@@ -41,8 +42,11 @@ namespace cds_static {
 };
 
 #include <SequenceBuilderWaveletTreeNoptrs.h>
-#include <SequenceBuilderWaveletTree.h>
 #include <SequenceBuilderGMRChunk.h>
 #include <SequenceBuilderGMR.h>
+#include <SequenceBuilderAlphPart.h>
+#include <SequenceBuilderWaveletTree.h>
+#include <SequenceBuilderStr.h>
+
 #endif
 

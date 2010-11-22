@@ -23,7 +23,7 @@
 
 namespace cds_static
 {
-    WaveletTreeNoptrs::WaveletTreeNoptrs(Array & a, BitSequenceBuilder * bmb, Mapper * am) : Sequence(0) {
+    WaveletTreeNoptrs::WaveletTreeNoptrs(const Array & a, BitSequenceBuilder * bmb, Mapper * am) : Sequence(0) {
         bmb->use();
         this->n=a.getLength();
         this->length = n;

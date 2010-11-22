@@ -51,6 +51,28 @@ namespace cds_utils
         }
     }
 
+    Array::Array(const set<uint>::iterator & ini, const set<uint>::iterator & fin, uint bpe) {
+        size_t n = 0;
+        maxValue = 0;
+        for(set<uint>::iterator it = ini; it!=fin ;++it) {
+            maxValue = max(maxValue,*it);
+            n++;
+        }
+        if(bpe!=0) {
+            maxValue = (1<<(bpe-1));
+        }
+        length = n;
+        initData();
+        assert(bpe==0 || bitsPerItem==bpe);
+        n = 0;
+        for(set<uint>::iterator it=ini;it!=fin;++it) {
+            assert(*it <= maxValue);
+            setField(n, *it);
+            n++;
+        }
+    }
+
+
     Array::Array(const vector<uint>::iterator & ini, const vector<uint>::iterator & fin, uint bpe) {
         size_t n = 0;
         maxValue = 0;

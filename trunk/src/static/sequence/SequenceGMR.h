@@ -44,6 +44,7 @@ class SequenceGMR : public Sequence {
        * @param ssb builder for the representation used for each chunk.
        */
     SequenceGMR(uint * sequence, size_t n, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb);
+    SequenceGMR(const Array & sequence, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb);
 
     ~SequenceGMR();
     virtual size_t rank(uint c, size_t j) const;

@@ -21,6 +21,7 @@
 
 #include <fstream>
 #include <vector>
+#include <set>
 
 #ifndef ARRAY_H
 #define ARRAY_H
@@ -70,6 +71,13 @@ namespace cds_utils
              * @bpe bits per element
              */
             Array(const vector<uint>::iterator & ini, const vector<uint>::iterator & fin, uint bpe=0);
+
+            /** Creates an array from a set iterator
+             * @param ini initial position
+             * @param fin final position
+             * @bpe bits per element
+             */
+            Array(const set<uint>::iterator & ini, const set<uint>::iterator & fin, uint bpe=0);
 
             /** Creates an array copying part of a previously existing array
              * @param A source array
