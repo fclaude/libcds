@@ -28,7 +28,7 @@ using namespace std;
 namespace cds_static
 {
 
-    inline uint group(uint pos, uint cut) {
+/*    inline uint group(uint pos, uint cut) {
         uint ret = 0;
         if(pos<=cut)
             ret = pos;
@@ -47,15 +47,30 @@ namespace cds_static
         //cout << "ret=" << ret << endl;
         return ret;
     }
+    */
 
-    inline uint group_length(uint pos, uint cut) {
+    inline uint group(uint pos, uint cut) {
         uint ret = 0;
         if(pos<=cut)
-            ret = 1;
+            ret = pos;
         else
-            ret = 1<<(pos-cut);
+            ret = bits(pos)+1+cut-bits(cut);
         return ret;
     }
+
+    inline uint offset(uint pos, uint cut, uint group) {
+        //cout << "pos=" << pos << " cut=" << cut << " grp=" << group << endl;
+        uint ret = 0;
+        if(pos<=cut) 
+            ret = 0;
+        else
+            ret = pos-(1<<(group-cut-1));
+        //cout << "ret=" << ret << endl;
+        return ret;
+    }
+
+
+
 
     SequenceAlphPart::SequenceAlphPart(const Array & seq, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder) : Sequence(0) { 
         
@@ -133,7 +148,7 @@ namespace cds_static
         for(uint i=0;(maxLen>cut) && i<maxLen-cut;i++) { 
             seqs[i] = new uint[lenLength[i+cut+1]];
             sum += lenLength[i+cut+1];
-            cout << "len=" << lenLength[i+cut+1] << " sum=" << sum << endl;
+            //cout << "len=" << lenLength[i+cut+1] << " sum=" << sum << endl;
         }
 
         // Lets compute the offsets
@@ -143,6 +158,7 @@ namespace cds_static
         for(uint i=0;i<n;i++) {
             if(groupForSymb[seq[i]]>cut) {
                 seqs[groupForSymb[seq[i]]-cut-1][lenLength[groupForSymb[seq[i]]]++] = offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]);
+                //cout << "Group=" << groupForSymb[seq[i]] << " offset=" << offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]) << endl;
             }
         }
 
@@ -240,6 +256,7 @@ namespace cds_static
         for(uint i=0;i<n;i++) {
             if(groupForSymb[seq[i]]>cut) {
                 seqs[groupForSymb[seq[i]]-cut-1][lenLength[groupForSymb[seq[i]]]++] = offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]);
+                cout << "Group=" << groupForSymb[seq[i]] << " offset=" << offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]) << endl;
             }
         }
 
