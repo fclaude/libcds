@@ -43,7 +43,7 @@ namespace cds_static {
                 s = max(s,sequence[i]);
             cl = 2*s;
         }
-        cl = max(cl,(uint)4);
+        cl = max(cl,(uint)64);
         return new SequenceGMR(sequence, len, cl, bsb, sqb);
     }
 
@@ -55,7 +55,7 @@ namespace cds_static {
                 s = max(s,seq[i]);
             cl = 2*s;
         }
-        cl = max(cl,(uint)4);
+        cl = max(cl,(uint)64);
         return new SequenceGMR(seq, cl, bsb, sqb);
     }
 };

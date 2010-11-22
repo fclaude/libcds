@@ -105,7 +105,7 @@ namespace cds_static
         maxLen = group(sigma,cut);
 
         // Initialize the lengths of each sequence in indexesByLength
-        uint * lenLength = new uint[maxLen+1];
+        size_t * lenLength = new size_t[maxLen+1];
         for(uint i=0;i<=maxLen;i++)
             lenLength[i] = 0;
 
@@ -128,9 +128,13 @@ namespace cds_static
         delete [] tmpSeq;
 
         // Now we build the other sequences
+        size_t sum = 0;
         uint ** seqs = new uint*[(maxLen<=cut)?0:maxLen-cut+1];
-        for(uint i=0;(maxLen>cut) && i<maxLen-cut;i++) 
+        for(uint i=0;(maxLen>cut) && i<maxLen-cut;i++) { 
             seqs[i] = new uint[lenLength[i+cut+1]];
+            sum += lenLength[i+cut+1];
+            cout << "len=" << lenLength[i+cut+1] << " sum=" << sum << endl;
+        }
 
         // Lets compute the offsets
         for(uint i=0;i<maxLen+1;i++)
@@ -305,9 +309,12 @@ namespace cds_static
     size_t SequenceAlphPart::getSize() const
     {
         size_t ret = 0;
-        for(uint i=0;maxLen>cut && i<maxLen-cut;i++)
+        for(uint i=0;maxLen>cut && i<maxLen-cut;i++) {
+            cout << "i=" << i << " len=" << indexesByLength[i]->getLength() << " size=" << indexesByLength[i]->getSize() << endl;
             ret += indexesByLength[i]->getSize();
+        }
         ret += groupsIndex->getSize();
+        cout << "groupsIndex->getSize()=" << groupsIndex->getSize() << endl;
         ret += sizeof(SequenceAlphPart);
         return ret;
     }
