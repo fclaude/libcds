@@ -54,7 +54,7 @@ namespace cds_static
         if(pos<=cut)
             ret = pos;
         else
-            ret = bits(pos)+1+cut-bits(cut);
+            ret = bits(pos)+cut-bits(cut);
         return ret;
     }
 
@@ -64,7 +64,7 @@ namespace cds_static
         if(pos<=cut) 
             ret = 0;
         else
-            ret = pos-(1<<(group-cut-1));
+            ret = pos-(1<<(group-cut+bits(cut)-1));
         //cout << "ret=" << ret << endl;
         return ret;
     }
@@ -72,7 +72,7 @@ namespace cds_static
 
 
 
-    SequenceAlphPart::SequenceAlphPart(const Array & seq, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder) : Sequence(0) { 
+    SequenceAlphPart::SequenceAlphPart(const Array & seq, uint _cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder) : Sequence(0) { 
         
         size_t n = seq.getLength();
         length = n;
@@ -80,6 +80,7 @@ namespace cds_static
         lenIndexBuilder->use();
         seqsBuilder->use();
         
+	this->cut = (1<<_cut);
         // Compute the size of the alphabet
         sigma = 0;
         for(uint i=0;i<n;i++) sigma=max(sigma,seq[i]);
