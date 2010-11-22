@@ -48,7 +48,7 @@ namespace cds_static
         public:
             /** Builds and sets the length */
             Sequence(size_t length);
-            ~Sequence() {}
+            virtual ~Sequence() {}
 
             /** Count the number of occurrences of c up to position i included
              */
