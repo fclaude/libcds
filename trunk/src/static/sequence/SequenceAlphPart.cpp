@@ -80,7 +80,7 @@ namespace cds_static
         lenIndexBuilder->use();
         seqsBuilder->use();
         
-	this->cut = (1<<_cut);
+        this->cut = (1<<_cut)-1;
         // Compute the size of the alphabet
         sigma = 0;
         for(uint i=0;i<n;i++) sigma=max(sigma,seq[i]);
@@ -177,7 +177,6 @@ namespace cds_static
         lenIndexBuilder->unuse();
         seqsBuilder->unuse();
 
-        this->cut = cut;
         this->maxLen = maxLen;
         this->sigma = sigma;
     }

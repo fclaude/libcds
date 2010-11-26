@@ -104,7 +104,7 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
     }
     //printf("\n");
     P->bmap = bmb->build(b, nelems);
-    //delete [] P->bmap;
+    //delete  P->bmap;
     delete [] b;
     delete [] (baux);
     delete [] (auxbwdptr);
