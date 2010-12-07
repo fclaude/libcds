@@ -1,12 +1,12 @@
 
-#include <ssa_words.h>
+#include "ssa.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 using namespace std;
 
-uint brute_check(uint * text, uint n, uint * pattern, uint m) {
+uint brute_check(uchar * text, uint n, uchar * pattern, uint m) {
   uint ret = 0;
   for(uint i=0;i<n-m;i++) {
     uint match_index=0;
@@ -42,10 +42,16 @@ int main(int argc, char ** argv) {
   text[n] = 0;
 
   bool err;
-  FILE * fp = fopen(argv[2],"r");
-  ssa_words * ssa = new ssa_words(fp,err);
-  fclose(fp);
-  ssa->print_stats();
+  ssa * _ssa = new ssa(text,n);
+  Mapper * am = new MapperNone();
+  wt_coder * wc = new wt_coder_huff(text,n+1,am);
+  BitSequenceBuilder * sbb = new BitSequenceBuilderRG(20);
+  SequenceBuilder * ssb = new SequenceBuilderWaveletTree(sbb,am,wc);
+  _ssa->set_static_sequence_builder(ssb);
+  _ssa->set_samplepos(8);
+  _ssa->set_samplesuff(8);
+  _ssa->build_index();
+  _ssa->print_stats();
 
   uint m;
   {
@@ -68,7 +74,7 @@ int main(int argc, char ** argv) {
     for(uint k=0;k<m;k++)
       pattern[k] = text[pos+k];
     pattern[m] = 0;
-    uint occ = ssa->count(pattern,m);
+    uint occ = _ssa->count(pattern,m);
     uint real_occ = brute_check(text,n,pattern,m);
     if(occ!=real_occ) {
       cout << "Error for pattern " << i+1 << endl;
@@ -82,7 +88,7 @@ int main(int argc, char ** argv) {
   cout << "Total occ: " << total_occ << endl;
 
   delete [] pattern;
-  delete ssa;
+  delete _ssa;
   delete [] text;
 
   return 0;

@@ -1,7 +1,7 @@
 
-#include <ssa.h>
+#include "ssa.h"
 
-ssa_words::ssa_words(uint *text, uint n, bool free_text) {
+ssa::ssa(uchar *text, uint n, bool free_text) {
   assert(n>0);
 
   // Initial values and default constructors
@@ -18,7 +18,7 @@ ssa_words::ssa_words(uint *text, uint n, bool free_text) {
   samplesuff = 64;
 
   #ifdef VERBOSE
-  cout << "ssa_words" << endl;
+  cout << "ssa" << endl;
   cout << " n=" << n << endl;
   cout << " free_text=" << free_text << endl;
   #endif
@@ -33,7 +33,7 @@ ssa_words::ssa_words(uint *text, uint n, bool free_text) {
 }
 
 
-ssa_words::~ssa_words() {
+ssa::~ssa() {
   if(_seq!=NULL && free_text)
     delete [] _seq;
   if(_bwt!=NULL)
@@ -56,7 +56,7 @@ ssa_words::~ssa_words() {
 }
 
 
-bool ssa_words::save(FILE * fp) {
+bool ssa::save(FILE * fp) {
   bool ret = false;
   /*ret &= (1==fwrite(&n,sizeof(uint),1,fp));
   ret &= (1==fwrite(&sigma,sizeof(uint),1,fp));
@@ -70,12 +70,12 @@ bool ssa_words::save(FILE * fp) {
 }
 
 
-uint ssa_words::length() {
+uint ssa::length() {
   return n;
 }
 
 
-ssa_words::ssa_words(FILE * fp, bool & error) {
+ssa::ssa(FILE * fp, bool & error) {
   error = true;
   built = true;
   _sa = NULL;
@@ -105,18 +105,18 @@ ssa_words::ssa_words(FILE * fp, bool & error) {
 }
 
 
-uint ssa_words::size() {
+uint ssa::size() {
   uint size = bwt->getSize();
   size += sizeof(uint)*(2+n/samplepos);
   size += sizeof(uint)*(1+n/samplesuff);
-  size += sizeof(ssa_words);
+  size += sizeof(ssa);
   size += sizeof(uint)*(1+samplepos);
   return size;
 }
 
 
-void ssa_words::print_stats() {
-  cout << "ssa_words stats:" << endl;
+void ssa::print_stats() {
+  cout << "ssa stats:" << endl;
   cout << "****************" << endl;
   cout << "Total space  : " << size() << endl;
   cout << endl;
@@ -127,7 +127,7 @@ void ssa_words::print_stats() {
 }
 
 
-bool ssa_words::set_static_sequence_builder(SequenceBuilder *ssb) {
+bool ssa::set_static_sequence_builder(SequenceBuilder *ssb) {
   if(built) return false;
   if(_ssb!=NULL) delete _ssb;
   _ssb = ssb;
@@ -135,7 +135,7 @@ bool ssa_words::set_static_sequence_builder(SequenceBuilder *ssb) {
 }
 
 
-bool ssa_words::set_static_bitsequence_builder(BitSequenceBuilder * sbb) {
+bool ssa::set_static_bitsequence_builder(BitSequenceBuilder * sbb) {
   if(built) return false;
   if(_sbb!=NULL) delete _sbb;
   _sbb=sbb;
@@ -143,21 +143,21 @@ bool ssa_words::set_static_bitsequence_builder(BitSequenceBuilder * sbb) {
 }
 
 
-bool ssa_words::set_samplepos(uint sample) {
+bool ssa::set_samplepos(uint sample) {
   if(built) return false;
   samplepos = sample;
   return true;
 }
 
 
-bool ssa_words::set_samplesuff(uint sample) {
+bool ssa::set_samplesuff(uint sample) {
   if(built) return false;
   samplesuff = sample;
   return true;
 }
 
 
-bool ssa_words::build_index() {
+bool ssa::build_index() {
   built = true;
   assert(_seq!=NULL);
   assert(_ssb!=NULL);
@@ -230,7 +230,7 @@ bool ssa_words::build_index() {
 }
 
 
-void ssa_words::build_bwt() {
+void ssa::build_bwt() {
   assert(_seq!=NULL);
   assert(_sbb!=NULL);
   if(_bwt!=NULL)
@@ -270,7 +270,7 @@ void ssa_words::build_bwt() {
 }
 
 
-void ssa_words::build_sa() {
+void ssa::build_sa() {
   assert(_seq!=NULL);
   if(_sa!=NULL)
     delete [] _sa;
@@ -284,7 +284,7 @@ void ssa_words::build_sa() {
 }
 
 
-uint ssa_words::locate(uint * pattern, uint m, uint ** occs) {
+uint ssa::locate(uchar * pattern, uint m, uint ** occs) {
   assert(m>0);
   assert(pattern!=NULL);
   assert(bwt!=NULL);
@@ -328,7 +328,7 @@ uint ssa_words::locate(uint * pattern, uint m, uint ** occs) {
 }
 
 
-uint ssa_words::count(uint * pattern, uint m) {
+uint ssa::count(uchar * pattern, uint m) {
   assert(m>0);
   assert(pattern!=NULL);
   assert(bwt!=NULL);
@@ -351,7 +351,7 @@ uint ssa_words::count(uint * pattern, uint m) {
 }
 
 
-uchar * ssa_words::rebuild() {
+uchar * ssa::rebuild() {
   uchar * text = new uchar[n];
   /*uint p = pos_sample[0];
   uint c =  bwt->access(p);
@@ -368,7 +368,7 @@ uchar * ssa_words::rebuild() {
 }
 
 
-void ssa_words::fill_buffer(uint i, uint j) {
+void ssa::fill_buffer(uint i, uint j) {
   assert(j>=i);
   assert(j<n);
   assert(bwt!=NULL);
@@ -390,7 +390,7 @@ void ssa_words::fill_buffer(uint i, uint j) {
 }
 
 
-/*uint ssa_words::extract_pos(uint k) {
+/*uint ssa::extract_pos(uint k) {
   uint block = k/samplepos;
   if(block!=spos)
     fill_buffer(samplepos*block,min(samplepos*block+(samplepos-1),n-1));
@@ -400,7 +400,7 @@ void ssa_words::fill_buffer(uint i, uint j) {
   return sbuff[samplepos-1-k];
 }*/
 
-uchar ssa_words::extract_pos(uint k) {
+uchar ssa::extract_pos(uint k) {
   uint block = k/samplepos;
   if(block!=spos)
     fill_buffer(samplepos*block,min(samplepos*block+(samplepos-1),n));
@@ -411,7 +411,7 @@ uchar ssa_words::extract_pos(uint k) {
 }
 
 
-uchar * ssa_words::extract(uint i, uint j) {
+uchar * ssa::extract(uint i, uint j) {
   assert(j>=i);
   assert(j<n);
   assert(bwt!=NULL);
@@ -422,7 +422,7 @@ uchar * ssa_words::extract(uint i, uint j) {
 }
 
 
-void ssa_words::sort_sa(uint ini, uint fin) {
+void ssa::sort_sa(uint ini, uint fin) {
   if(ini>=fin || ini>=(fin+1)) return;
   uint piv = ini;
   piv = pivot(ini,fin,piv);
@@ -431,7 +431,7 @@ void ssa_words::sort_sa(uint ini, uint fin) {
 }
 
 
-int ssa_words::cmp(uint i, uint j) {
+int ssa::cmp(uint i, uint j) {
   while(i<n && j<n) {
     if(_seq[i]!=_seq[j])
       return (int)_seq[i]-_seq[j];
@@ -443,14 +443,14 @@ int ssa_words::cmp(uint i, uint j) {
 }
 
 
-void ssa_words::swap(uint i, uint j) {
+void ssa::swap(uint i, uint j) {
   uint tmp = _sa[i];
   _sa[i]=_sa[j];
   _sa[j]=tmp;
 }
 
 
-uint ssa_words::pivot(uint ini, uint fin, uint piv) {
+uint ssa::pivot(uint ini, uint fin, uint piv) {
   swap(ini,piv);
   uint i=ini+1;
   while(i<=fin) {

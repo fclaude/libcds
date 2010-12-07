@@ -1,5 +1,5 @@
 
-#include <ssa_words.h>
+#include "ssa.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -29,23 +29,23 @@ int main(int argc, char ** argv) {
   for(uint i=0;i<n;i++) text[i]++;
   text[n]=0;
 
-  ssa_words * ssa = new ssa_words(text,n);
+  ssa * _ssa = new ssa(text,n);
   Mapper * am = new MapperNone();
   wt_coder * wc = new wt_coder_huff(text,n+1,am);
   SequenceBuilder * ssb = new SequenceBuilderWaveletTree(wc,sbb,am);
-  ssa->set_static_sequence_builder(ssb);
-  ssa->set_samplepos(8);
-  ssa->set_samplesuff(8);
-  ssa->build_index();
+  _ssa->set_static_sequence_builder(ssb);
+  _ssa->set_samplepos(8);
+  _ssa->set_samplesuff(8);
+  _ssa->build_index();
 
-  cout << "Index size: " << ssa->size() << endl;
+  cout << "Index size: " << _ssa->size() << endl;
 
   FILE * fp = fopen(argv[2],"w");
-  cout << "Save: " << ssa->save(fp) << endl;
+  cout << "Save: " << _ssa->save(fp) << endl;
   fclose(fp);
 
   delete sbb;
-  delete ssa;
+  delete _ssa;
   delete [] text;
 
   return 0;

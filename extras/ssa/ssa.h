@@ -14,12 +14,12 @@ using namespace std;
 using namespace cds_static;
 
 
-class ssa_words
+class ssa
 {
   public:
-    ssa_words(uint * seq, uint n, bool free_text=false);
-    ssa_words(FILE *fp, bool & error);
-    ~ssa_words();
+    ssa(uchar * seq, uint n, bool free_text=false);
+    ssa(FILE *fp, bool & error);
+    ~ssa();
 
     bool set_static_sequence_builder(SequenceBuilder * ssb);
     bool set_static_bitsequence_builder(BitSequenceBuilder * sbb);
@@ -32,8 +32,8 @@ class ssa_words
     void print_stats();
     uint length();
 
-    uint locate(uint * pattern, uint m, uint ** occ);
-    uint count(uint * pattern, uint m);
+    uint locate(uchar * pattern, uint m, uint ** occ);
+    uint count(uchar * pattern, uint m);
     uchar * extract(uint i, uint j);
     uchar extract_pos(uint i);
 
@@ -55,7 +55,7 @@ class ssa_words
 
     bool built;
     bool free_text;
-    uint * _seq;
+    uchar * _seq;
     uint * _bwt;
     uint * _sa;
     SequenceBuilder * _ssb;
