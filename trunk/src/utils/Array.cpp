@@ -40,7 +40,7 @@ namespace cds_utils
                 maxValue = max(maxValue,A[k]);
         }
         else {
-            maxValue = (1<<(bpe-1));
+            maxValue = (1<<(bpe))-1;
         }
         length = n;
         initData();
@@ -59,7 +59,7 @@ namespace cds_utils
             n++;
         }
         if(bpe!=0) {
-            maxValue = (1<<(bpe-1));
+            maxValue = (1<<(bpe))-1;
         }
         length = n;
         initData();
@@ -81,7 +81,7 @@ namespace cds_utils
             n++;
         }
         if(bpe!=0) {
-            maxValue = (1<<(bpe-1));
+            maxValue = (1<<(bpe))-1;
         }
         length = n;
         initData();
@@ -107,7 +107,7 @@ namespace cds_utils
                 maxValue = max(maxValue,A[k]);
         }
         else {
-            maxValue = (1<<(bpe-1));
+            maxValue = (1<<(bpe))-1;
         }
         length = n;
         initData();
@@ -125,7 +125,7 @@ namespace cds_utils
                 maxValue = max(maxValue,A[k]);
         }
         else {
-            maxValue = (1<<(bpe-1));
+            maxValue = (1<<(bpe))-1;
         }
         length = j-i+1;
         initData();
@@ -157,3 +157,4 @@ namespace cds_utils
             data[i] = 0;
     }
 };
+
