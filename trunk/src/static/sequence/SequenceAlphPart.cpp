@@ -59,13 +59,11 @@ namespace cds_static
     }
 
     inline uint offset(uint pos, uint cut, uint group) {
-        //cout << "pos=" << pos << " cut=" << cut << " grp=" << group << endl;
         uint ret = 0;
         if(pos<=cut) 
             ret = 0;
         else
-            ret = pos-(1<<(group-cut+bits(cut)-1));
-        //cout << "ret=" << ret << endl;
+            ret = pos-((1<<(group-cut+bits(cut)-1)));
         return ret;
     }
 
@@ -320,7 +318,7 @@ namespace cds_static
         uint g = groupsIndex->access(i);
         if(g<=cut) return alphSortedByFreq[g];
         uint o = indexesByLength[g-cut-1]->access(groupsIndex->rank(g,i)-1);
-        return alphSortedByFreq[cut+(1<<(g-cut-1))+o];
+        return alphSortedByFreq[(1<<(g-cut+bits(cut)-1))+o];
     }
 
     size_t SequenceAlphPart::getSize() const

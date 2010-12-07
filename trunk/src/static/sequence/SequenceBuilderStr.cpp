@@ -234,7 +234,7 @@ namespace cds_static {
                 delete am;
                 return NULL;
             }
-            SequenceBuilder * fstin = new SequenceBuilderWaveletTree(bsb,am,wc);
+            SequenceBuilder * fstin = new SequenceBuilderWaveletTree(bsb,am);
             if(values.find("cut")==values.end()) return NULL;
             uint cut = transform(values["cut"]);
             if(values.find("permsamp")==values.end()) return NULL;

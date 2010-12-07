@@ -153,6 +153,7 @@ namespace cds_static
     size_t BitSequenceRRR::rank1(size_t i) const
     {
         if(i+1==0) return 0;
+        if((uint)(i+1)==0) return 0; // patch for 32-64 bits bad coding, to be removed in the future
         uint nearest_sampled_value = i/BLOCK_SIZE/sample_rate;
         uint sum = get_field(C_sampling,C_sampling_field_bits,nearest_sampled_value);
         uint pos_O = get_field(O_pos,O_pos_field_bits,nearest_sampled_value);

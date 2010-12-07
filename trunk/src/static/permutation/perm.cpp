@@ -25,6 +25,7 @@
 namespace cds_static {
 
 int compare(const void *p1, const void *p2) {
+    assert(((auxbwd *)p1)->key - ((auxbwd *)p2)->key != 0);
   return  ((auxbwd *)p1)->key - ((auxbwd *)p2)->key;
 }
 
@@ -40,6 +41,22 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
   P->nbits  = bits(nelems-1);
   nbits = bits(nelems-1);
   P->t = t;
+    uint *occ = new uint[nelems];
+    for(uint i=0;i<nelems;i++)
+        occ[i] = 0;
+    for(uint i=0;i<nelems;i++) {
+        if(get_field(elems,nbits,i)>=nelems) { 
+            cout << "Wrong permutation 1" << endl;
+            cout << "elems[" << i << "]=" << get_field(elems,nbits,i) << endl;
+        }
+        occ[get_field(elems,nbits,i)]++;
+    }
+    for(uint i=0;i<nelems;i++) {
+        if(occ[i]!=1) cout << "Wrong permutation 2" << endl;
+        cout << " " << get_field(elems,nbits,i);
+    }
+    cout << endl;
+    delete [] occ;
   if (t==1) {
     P->bwdptrs = new uint[uint_len(nelems,nbits)];
     assert(P->bwdptrs!=NULL);

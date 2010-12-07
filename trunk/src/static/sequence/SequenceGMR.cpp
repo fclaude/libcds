@@ -25,7 +25,10 @@ namespace cds_static {
 using std::max;
 SequenceGMR::SequenceGMR(uint * sequence, size_t n, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb) : Sequence(n) {
   length = n;
+
+  cout << "length1=" << length << endl;
 	if(length%chunk_length) length+=chunk_length-length%chunk_length;
+  cout << "length2=" << length << endl;
 	uint * new_seq = new uint[length];
   sigma = 0;
 	for(uint i=0;i<n;i++){
@@ -33,17 +36,23 @@ SequenceGMR::SequenceGMR(uint * sequence, size_t n, uint chunk_length, BitSequen
     sigma = max(sigma,new_seq[i]);
 	}
   sigma++;
+  cout << "sigma=" << sigma << endl;
 	for(uint i=n;i<length;i++)
 		new_seq[i] = sigma;
 	if(length!=n) sigma++;
+  cout << "sigma=" << sigma << endl;
   this->chunk_length = chunk_length;
+  cout << "chunk_length=" << chunk_length << endl;
+  cout << "total_chunks=" << length/chunk_length << endl;
   build(new_seq,bmb,ssb);
 	delete [] new_seq;
 }
 
 SequenceGMR::SequenceGMR(const Array & sequence, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb) : Sequence(0) {
   length = sequence.getLength();
+  cout << "length1=" << length << endl;
 	if(length%chunk_length) length+=chunk_length-length%chunk_length;
+  cout << "length2=" << length << endl;
 	uint * new_seq = new uint[length];
   sigma = 0;
 	for(uint i=0;i<sequence.getLength();i++){
@@ -51,10 +60,14 @@ SequenceGMR::SequenceGMR(const Array & sequence, uint chunk_length, BitSequenceB
     sigma = max(sigma,new_seq[i]);
 	}
   sigma++;
+  cout << "sigma=" << sigma << endl;
 	for(uint i=sequence.getLength();i<length;i++)
 		new_seq[i] = sigma;
 	if(length!=sequence.getLength()) sigma++;
+  cout << "sigma=" << sigma << endl;
   this->chunk_length = chunk_length;
+  cout << "chunk_length=" << chunk_length << endl;
+  cout << "total_chunks=" << length/chunk_length << endl;
   build(new_seq,bmb,ssb);
 	delete [] new_seq;
 }
@@ -165,6 +178,7 @@ uint SequenceGMR::access(size_t j) const{
 
 
 size_t SequenceGMR::getSize() const{
+  cout << "chunk_length=" << chunk_length << " sigma=" << sigma << endl;
   uint s = 0;
   for (uint i=0;i<length/chunk_length;i++)
     s += sizeof(void*)+chunk[i]->getSize();

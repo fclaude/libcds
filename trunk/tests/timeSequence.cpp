@@ -51,6 +51,42 @@ Array extract_alphabet(const Array & values) {
     return Array(sigma.begin(),sigma.end());
 }
 
+void measure_select(const Array & sigma, Sequence * seq) {
+    pair<uint,size_t> *queries = new pair<uint,size_t>[numqueries];
+    for(uint i=0;i<numqueries;i++) {
+        queries[i].first = sigma[rand()%sigma.getLength()];
+        queries[i].second = rand()%seq->rank(queries[i].first,seq->getLength()-2);
+    }
+    size_t acc = 0;
+    start_timing();
+    for(uint i=0;i<numqueries;i++) {
+        acc += seq->select(queries[i].first,queries[i].second+1);
+    }
+    double time = get_timing();
+    cout << "*************************" << endl;
+    cout << " SELECT QUERIES" << endl;
+    cout << " time: " << time << "ms" << endl;
+    cout << " acc:  " << acc << endl;
+}
+
+void measure_access(const Array & sigma, Sequence * seq) {
+    size_t *queries = new size_t[numqueries];
+    for(uint i=0;i<numqueries;i++) {
+        queries[i] = rand()%seq->getLength();
+    }
+    size_t acc = 0;
+    start_timing();
+    for(uint i=0;i<numqueries;i++) {
+        acc += seq->access(queries[i]);
+    }
+    double time = get_timing();
+    cout << "*************************" << endl;
+    cout << " ACCESS QUERIES" << endl;
+    cout << " time: " << time << "ms" << endl;
+    cout << " acc:  " << acc << endl;
+}
+
+
 void measure_rank(const Array & sigma, Sequence * seq) {
     pair<uint,size_t> *queries = new pair<uint,size_t>[numqueries];
     for(uint i=0;i<numqueries;i++) {
@@ -94,7 +130,9 @@ int main(int argc, char **argv) {
     cout << "builderopt=" << builderopt << endl;
     cout << "size=" << seq->getSize() << endl;
     Array sigma = extract_alphabet(values);
+    measure_access(sigma,seq);
     measure_rank(sigma,seq);
+    measure_select(sigma,seq);
     return 0;
 }
 

@@ -63,6 +63,12 @@ namespace cds_static
         return (uint)-1;
     }
 
+    uint Sequence::access(size_t i, size_t & _rank) const
+    {
+        uint s = access(i);
+        _rank = rank(s,i);
+    }
+
     Sequence * Sequence::load(ifstream & fp) {
         uint type = loadValue<uint>(fp);
 	size_t pos = fp.tellg();

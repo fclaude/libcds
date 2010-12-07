@@ -30,7 +30,7 @@
 namespace cds_static {
     class SequenceBuilderWaveletTree : public SequenceBuilder {
         public:
-            SequenceBuilderWaveletTree(BitSequenceBuilder * bsb, Mapper * am, wt_coder * wc);
+            SequenceBuilderWaveletTree(BitSequenceBuilder * bsb, Mapper * am, wt_coder * wc=NULL);
             virtual ~SequenceBuilderWaveletTree();
             virtual Sequence * build(uint * seq, size_t len);
             virtual Sequence * build(const Array & seq);

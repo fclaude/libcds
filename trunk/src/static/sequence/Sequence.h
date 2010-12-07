@@ -69,6 +69,10 @@ namespace cds_static
              */
             virtual uint access(size_t i) const;
 
+            /** Retrieve the symbol at position i and its rank.
+             */
+            virtual uint access(size_t i, size_t & r) const;
+
             /** Size of the structure in bytes.
              */
             virtual size_t getSize() const = 0;

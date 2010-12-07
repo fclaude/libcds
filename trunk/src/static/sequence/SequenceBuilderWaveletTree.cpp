@@ -28,22 +28,40 @@ namespace cds_static {
         this->wc = wc;
         bsb->use();
         am->use();
-        wc->use();
+        if(wc!=NULL)
+            wc->use();
     }
 
     SequenceBuilderWaveletTree::~SequenceBuilderWaveletTree() {
         bsb->unuse();
         am->unuse();
-        wc->unuse();
+        if(wc!=NULL)
+            wc->unuse();
     }
 
     Sequence * SequenceBuilderWaveletTree::build(uint * sequence, size_t len) {
-        Sequence * ret = new WaveletTree(sequence, len, wc, bsb, am);
+        Sequence * ret;
+        if(wc==NULL) {
+            wt_coder * wcaux = new wt_coder_huff(sequence,len,am);
+            wcaux->use();
+            ret = new WaveletTree(sequence, len, wcaux, bsb, am);
+            wcaux->unuse();
+        } else {
+            ret = new WaveletTree(sequence, len, wc, bsb, am);
+        }
         return ret;
     }
     
     Sequence * SequenceBuilderWaveletTree::build(const Array & seq) {
-        Sequence * ret = new WaveletTree(seq, wc, bsb, am);
+        Sequence * ret;
+        if(wc==NULL) {
+            wt_coder * wcaux = new wt_coder_huff(seq,am);
+            wcaux->use();
+            ret = new WaveletTree(seq, wcaux, bsb, am);
+            wcaux->unuse();
+        } else {
+            ret = new WaveletTree(seq, wc, bsb, am);
+        }
         return ret;
     }
 };
