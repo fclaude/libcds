@@ -44,12 +44,12 @@ int main(int argc, char ** argv) {
   ssa * _ssa = new ssa(text,n);
   Mapper * am = new MapperNone();
   wt_coder * wc = new wt_coder_huff(text,n+1,am);
-  BitSequenceBuilder * sbb = new BitSequenceBuilderRG(20);
+  BitSequenceBuilder * sbb = new BitSequenceBuilderRRR(32);
   _ssa->set_static_bitsequence_builder(sbb);
   SequenceBuilder * ssb = new SequenceBuilderWaveletTree(sbb,am,wc);
   _ssa->set_static_sequence_builder(ssb);
-  _ssa->set_samplepos(8);
-  _ssa->set_samplesuff(8);
+  _ssa->set_samplepos(1024*1024);
+  _ssa->set_samplesuff(1024*1024);
   _ssa->build_index();
   _ssa->print_stats();
 
