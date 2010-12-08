@@ -52,6 +52,7 @@ class ssa
     uint * sbuff;
     uint spos;
     uint * occ;
+    uint maxV;
 
     bool built;
     bool free_text;

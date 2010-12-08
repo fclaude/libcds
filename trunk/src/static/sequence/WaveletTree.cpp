@@ -117,6 +117,7 @@ namespace cds_static
 
     uint WaveletTree::access(size_t pos, size_t &rank) const
     {
+        cout << ".";
         return root->access(pos, rank);
     }
 

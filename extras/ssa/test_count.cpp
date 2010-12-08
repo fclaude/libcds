@@ -8,7 +8,7 @@ using namespace std;
 
 uint brute_check(uchar * text, uint n, uchar * pattern, uint m) {
   uint ret = 0;
-  for(uint i=0;i<n-m;i++) {
+  for(uint i=0;i<n-m+1;i++) {
     uint match_index=0;
     for(;match_index<m;match_index++)
       if(text[i+match_index]!=pattern[match_index])
@@ -41,11 +41,11 @@ int main(int argc, char ** argv) {
   //for(uint i=0;i<n;i++) text[i]++;
   text[n] = 0;
 
-  bool err;
   ssa * _ssa = new ssa(text,n);
   Mapper * am = new MapperNone();
   wt_coder * wc = new wt_coder_huff(text,n+1,am);
   BitSequenceBuilder * sbb = new BitSequenceBuilderRG(20);
+  _ssa->set_static_bitsequence_builder(sbb);
   SequenceBuilder * ssb = new SequenceBuilderWaveletTree(sbb,am,wc);
   _ssa->set_static_sequence_builder(ssb);
   _ssa->set_samplepos(8);

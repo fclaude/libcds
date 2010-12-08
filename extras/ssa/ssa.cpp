@@ -11,7 +11,9 @@ ssa::ssa(uchar *text, uint n, bool free_text) {
   this->built = false;
   this->free_text=free_text;
   _sbb = new BitSequenceBuilderRG(20);
+  _sbb->use();
   _ssb = new SequenceBuilderWaveletTreeNoptrs(_sbb,new MapperNone());
+  _ssb->use();
 
   // Default sampling values
   samplepos = 64;
@@ -111,6 +113,7 @@ uint ssa::size() {
   size += sizeof(uint)*(1+n/samplesuff);
   size += sizeof(ssa);
   size += sizeof(uint)*(1+samplepos);
+  size += (1+maxV)*sizeof(uint);
   return size;
 }
 
@@ -123,13 +126,15 @@ void ssa::print_stats() {
   cout << " bwt         : " << bwt->getSize() << endl;
   cout << " pos sample  : " << sizeof(uint)*(2+n/samplepos) << endl;
   cout << " suff sample : " << sizeof(uint)*(1+n/samplesuff) << endl;
+  cout << " occ         : " << (maxV+1)*sizeof(uint) << endl;
   cout << endl;
 }
 
 
 bool ssa::set_static_sequence_builder(SequenceBuilder *ssb) {
   if(built) return false;
-  if(_ssb!=NULL) delete _ssb;
+  ssb->use();
+  if(_ssb!=NULL) _ssb->unuse();
   _ssb = ssb;
   return true;
 }
@@ -137,7 +142,8 @@ bool ssa::set_static_sequence_builder(SequenceBuilder *ssb) {
 
 bool ssa::set_static_bitsequence_builder(BitSequenceBuilder * sbb) {
   if(built) return false;
-  if(_sbb!=NULL) delete _sbb;
+  sbb->use();
+  if(_sbb!=NULL) _sbb->unuse();
   _sbb=sbb;
   return true;
 }
@@ -166,12 +172,6 @@ bool ssa::build_index() {
     bwt = NULL;
   }
   #ifdef VERBOSE
-  cout << "Building OCC" << endl;
-  #endif
-  #ifdef VERBOSE
-  cout << "Done with OCC" << endl;
-  #endif
-  #ifdef VERBOSE
   cout << "Building the BWT" << endl;
   #endif
   build_bwt();
@@ -187,19 +187,21 @@ bool ssa::build_index() {
   #endif
   bwt = (_ssb->build(_bwt,n+1));
 
-  uint maxV = 0;
+  maxV = 0;
   for(uint i=0;i<n+1;i++)
     maxV = max(_bwt[i],maxV);
   maxV++;
 
   cout << " Max value: " << maxV << endl;
-  occ = new uint[maxV];
-  for(uint i=0;i<maxV;i++)
+  occ = new uint[maxV+1];
+  for(uint i=0;i<maxV+1;i++)
     occ[i]=0;
 
+  #ifdef TESTING
   cout << " Testing rank and select" << endl;
+  #endif
   for(uint i=0;i<=n;i++) {
-    occ[_bwt[i]]++;
+    occ[_bwt[i]+1]++;
   #ifdef TESTING
     assert(bwt->select(_bwt[i],occ[_bwt[i]])==i);
     assert(bwt->rank(_bwt[i],i)==occ[_bwt[i]]);
@@ -212,7 +214,7 @@ bool ssa::build_index() {
   }
 
 
-  for(uint i=1;i<maxV;i++)
+  for(uint i=1;i<=maxV;i++)
     occ[i] += occ[i-1];
 
   #ifdef VERBOSE
@@ -220,9 +222,9 @@ bool ssa::build_index() {
   #endif
   delete [] _bwt;
   _bwt = NULL;
-  delete _ssb;
+  _ssb->unuse();
   _ssb = NULL;
-  delete _sbb;
+  _sbb->unuse();
   _sbb = NULL;
   sbuff = new uint[samplepos+1];
   spos = (uint)-(samplepos+1);
@@ -332,16 +334,17 @@ uint ssa::count(uchar * pattern, uint m) {
   assert(m>0);
   assert(pattern!=NULL);
   assert(bwt!=NULL);
-  uint c = pattern[m-1]+1; ulong i=m-1;
+  ulong i=m-1;
+  uint c = pattern[i]; 
   uint sp = occ[c];
-  c++;
-  uint ep = occ[c]-1;
-  c--;
+  uint ep = occ[c+1]-1;
   while (sp<=ep && i>=1) {
-    c = pattern[--i]+1;
+    c = pattern[--i];
+    //cout << "sp=" << sp << " ep=" << ep << endl;
     sp = occ[c]+bwt->rank(c,sp-1);
     ep = occ[c]+bwt->rank(c,ep)-1;
   }
+  //cout << "*sp=" << sp << " *ep=" << ep << endl;
   if (sp<=ep) {
     return ep-sp+1;
   }
