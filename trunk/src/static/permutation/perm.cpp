@@ -25,7 +25,6 @@
 namespace cds_static {
 
 int compare(const void *p1, const void *p2) {
-    assert(((auxbwd *)p1)->key - ((auxbwd *)p2)->key != 0);
   return  ((auxbwd *)p1)->key - ((auxbwd *)p2)->key;
 }
 
@@ -33,7 +32,7 @@ int compare(const void *p1, const void *p2) {
 perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
   perm P;
   uint *b, *baux, nextelem, i, j, bptr,
-    aux, antbptr,nbwdptrs, elem,nbits, firstelem, cyclesize;
+    aux, antbptr,nbwdptrs, elem,nbits, cyclesize;
   auxbwd *auxbwdptr;
   P = new struct sperm;
   P->elems  = elems;
@@ -41,22 +40,6 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
   P->nbits  = bits(nelems-1);
   nbits = bits(nelems-1);
   P->t = t;
-    /*uint *occ = new uint[nelems];
-    for(uint i=0;i<nelems;i++)
-        occ[i] = 0;
-    for(uint i=0;i<nelems;i++) {
-        if(get_field(elems,nbits,i)>=nelems) { 
-            cout << "Wrong permutation 1" << endl;
-            cout << "elems[" << i << "]=" << get_field(elems,nbits,i) << endl;
-        }
-        occ[get_field(elems,nbits,i)]++;
-    }
-    for(uint i=0;i<nelems;i++) {
-        if(occ[i]!=1) cout << "Wrong permutation 2" << endl;
-        cout << " " << get_field(elems,nbits,i);
-    }
-    cout << endl;
-    delete [] occ;*/
   if (t==1) {
     P->bwdptrs = new uint[uint_len(nelems,nbits)];
     assert(P->bwdptrs!=NULL);
@@ -69,8 +52,6 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
     P->bmap = NULL;
   }
   else {
-    auxbwdptr = new auxbwd[(2*t+((int)ceil((double)nelems/t)))];
-    assert(auxbwdptr!=NULL);
     b = new uint[uint_len(nelems,1)];
     for(i=0;i<uint_len(nelems,1);i++)
       b[i]=0;
@@ -86,13 +67,43 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
         aux = 0;
         bitset(baux, j);
         cyclesize = 0;
-        firstelem = j;
         while ((elem=get_field(elems,nbits,j)) != nextelem) {
           j = elem;
           bitset(baux, j);
           aux++;
           if (aux >= t) {
-              //cout << "nbwdptrs=" << nbwdptrs << " (t+((int)ceil((double)nelems/t)))=" << (t+((int)ceil((double)nelems/t))) << endl;
+            nbwdptrs++;
+            antbptr = bptr;
+            bptr    = j;
+            aux     = 0;
+            bitset(b, j);
+          }
+          cyclesize++;
+        }
+        if (cyclesize >= t) {
+          nbwdptrs++;
+          bitset(b, nextelem);
+        }
+      }
+    }
+    auxbwdptr = new auxbwd[nbwdptrs];
+    assert(auxbwdptr!=NULL);
+    for(i=0;i<uint_len(nelems,1);i++)
+      b[i]=0;
+    for(i=0;i<uint_len(nelems,1);i++)
+      baux[i] = 0;
+    nbwdptrs = 0;
+    for (i = 0; i < nelems; i++) {
+      if (bitget(baux,i) == 0) {
+        nextelem = j = bptr = antbptr = i;
+        aux = 0;
+        bitset(baux, j);
+        cyclesize = 0;
+        while ((elem=get_field(elems,nbits,j)) != nextelem) {
+          j = elem;
+          bitset(baux, j);
+          aux++;
+          if (aux >= t) {
             auxbwdptr[nbwdptrs].key = j;
             auxbwdptr[nbwdptrs++].pointer = bptr;
             antbptr = bptr;
@@ -122,7 +133,7 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
     }
     //printf("\n");
     P->bmap = bmb->build(b, nelems);
-    //delete  P->bmap;
+    //delete [] P->bmap;
     delete [] b;
     delete [] (baux);
     delete [] (auxbwdptr);

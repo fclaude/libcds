@@ -130,6 +130,7 @@ int main(int argc, char **argv) {
     cout << "builderopt=" << builderopt << endl;
     cout << "size=" << seq->getSize() << endl;
     cout << "plain size=" << values.getSize() << endl;
+    cout << "sigma=" << values.getMax() << endl;
     Array sigma = extract_alphabet(values);
     measure_access(sigma,seq);
     measure_rank(sigma,seq);

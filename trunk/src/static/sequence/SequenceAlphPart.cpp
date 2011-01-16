@@ -289,7 +289,7 @@ namespace cds_static
         for(uint i=0;i<n;i++) {
             if(groupForSymb[seq[i]]>cut) {
                 seqs[groupForSymb[seq[i]]-cut-1][lenLength[groupForSymb[seq[i]]]++] = offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]);
-                cout << "Group=" << groupForSymb[seq[i]] << " offset=" << offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]) << endl;
+                //cout << "Group=" << groupForSymb[seq[i]] << " offset=" << offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]) << endl;
             }
         }
 
@@ -360,11 +360,11 @@ namespace cds_static
     {
         size_t ret = 0;
         for(uint i=0;maxLen>cut && i<maxLen-cut;i++) {
-            cout << "i=" << i << " len=" << indexesByLength[i]->getLength() << " size=" << indexesByLength[i]->getSize() << endl;
+            //cout << "i=" << i << " len=" << indexesByLength[i]->getLength() << " size=" << indexesByLength[i]->getSize() << endl;
             ret += indexesByLength[i]->getSize();
         }
         ret += groupsIndex->getSize();
-        cout << "groupsIndex->getSize()=" << groupsIndex->getSize() << endl;
+        //cout << "groupsIndex->getSize()=" << groupsIndex->getSize() << endl;
         ret += sizeof(SequenceAlphPart);
         return ret;
     }

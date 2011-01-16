@@ -226,7 +226,7 @@ namespace cds_static {
             if(values.find("shape")==values.end()) return NULL;
             wt_coder * wc = NULL;
             if(values["shape"]=="Huffman") {
-                wc = new wt_coder_huff(seq,am);
+                wc = NULL; // new wt_coder_huff(seq,am);
             } else if(values["shape"]=="Plain") {
                 wc = new wt_coder_binary(seq,am);
             } else {
@@ -234,7 +234,7 @@ namespace cds_static {
                 delete am;
                 return NULL;
             }
-            SequenceBuilder * fstin = new SequenceBuilderWaveletTree(bsb,am);
+            SequenceBuilder * fstin = new SequenceBuilderWaveletTree(bsb,am,wc);
             if(values.find("cut")==values.end()) return NULL;
             uint cut = transform(values["cut"]);
             if(values.find("permsamp")==values.end()) return NULL;
