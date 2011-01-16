@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <wt_coder.h>
 
 using namespace std;
 
@@ -26,23 +25,26 @@ int main(int argc, char ** argv) {
   input.seekg(0,ios::beg);
   input.read((char*)text,sizeof(uchar)*n);
   input.close();
-  for(uint i=0;i<n;i++) text[i]++;
+  //for(uint i=0;i<n;i++) text[i]++;
   text[n]=0;
 
   ssa * _ssa = new ssa(text,n);
   Mapper * am = new MapperNone();
   wt_coder * wc = new wt_coder_huff(text,n+1,am);
-  SequenceBuilder * ssb = new SequenceBuilderWaveletTree(wc,sbb,am);
+  BitSequenceBuilder * sbb = new BitSequenceBuilderRRR(32);
+  _ssa->set_static_bitsequence_builder(sbb);
+  SequenceBuilder * ssb = new SequenceBuilderWaveletTree(sbb,am,wc);
   _ssa->set_static_sequence_builder(ssb);
-  _ssa->set_samplepos(8);
-  _ssa->set_samplesuff(8);
+  _ssa->set_samplepos(32);
+  _ssa->set_samplesuff(32);
   _ssa->build_index();
+  _ssa->print_stats();
 
   cout << "Index size: " << _ssa->size() << endl;
 
-  FILE * fp = fopen(argv[2],"w");
-  cout << "Save: " << _ssa->save(fp) << endl;
-  fclose(fp);
+  ofstream fp(argv[2]);
+  _ssa->save(fp);
+  fp.close();
 
   delete sbb;
   delete _ssa;
@@ -50,3 +52,4 @@ int main(int argc, char ** argv) {
 
   return 0;
 }
+

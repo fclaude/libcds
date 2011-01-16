@@ -85,20 +85,34 @@ namespace cds_static
         
         // Compute the frequency of each symbol
         size_t * occ = new size_t[sigma+1];
-        for(uint i=0;i<=sigma;i++) occ[i] = 0;
-        for(uint i=0;i<n;i++) occ[seq[i]]++;
+        for(uint i=0;i<=sigma;i++) {
+            assert(i<=sigma);
+            occ[i] = 0;
+        }
+        for(uint i=0;i<n;i++) {
+            assert(seq[i]<=sigma);
+            occ[seq[i]]++;
+        }
 
         // Create pairs (frequency,symbol) and then sort by frequency
         pair<size_t,uint> * pairs = new pair<size_t,uint>[sigma+2];
-        for(uint i=0;i<=sigma;i++)
+        for(uint i=0;i<=sigma;i++) {
+            assert(i<=sigma+1);
             pairs[i] = pair<size_t,uint>(occ[i],i);
+        }
         pairs[sigma+1] = pair<size_t,uint>(0,sigma+1);
         sort(pairs,pairs+sigma+2,greater<pair<size_t,uint> >());
 
         revPermFreq = new uint[sigma+1];
+        for(uint i=0;i<=sigma;i++) {
+            assert(i<=sigma);
+            revPermFreq[i] = 0;
+        }
         origsigma = sigma;
         sigma = 0;
         while(pairs[sigma].first>0) {
+            assert(sigma<=origsigma);
+            assert(pairs[sigma].second<=origsigma);
             revPermFreq[pairs[sigma].second]=sigma;
             sigma++;
         }
@@ -108,55 +122,76 @@ namespace cds_static
 
         // Fill alphSortedbyFreq and lengthForSymb
         alphSortedByFreq = new uint[sigma+1];
-        for(uint i=0;i<sigma+1;i++)
+        for(uint i=0;i<sigma+1;i++) {
+            assert(i<=sigma);
             alphSortedByFreq[i] = 0;
+        }
 
         uint * groupForSymb = new uint[origsigma+1];
-        for(uint i=0;i<origsigma+1;i++)
+        for(uint i=0;i<origsigma+1;i++) {
+            assert(i<=origsigma);
             groupForSymb[i] = 0;
+        }
 
         // We estimate maxLen, it may be smaller if many symbols have 0 frequency
         maxLen = group(sigma,cut);
 
         // Initialize the lengths of each sequence in indexesByLength
         size_t * lenLength = new size_t[maxLen+1];
-        for(uint i=0;i<=maxLen;i++)
+        for(uint i=0;i<=maxLen;i++) {
+            assert(i<=maxLen);
             lenLength[i] = 0;
+        }
 
         // Compute the actual value for lenLengths and maxLen
         for(uint i=0;i<=sigma;i++) {
             if(pairs[i].first==0) break;
+            assert(i<sigma);
             alphSortedByFreq[i] = pairs[i].second;
             uint sl = group(i,cut);
+            assert(pairs[i].second<=origsigma);
             groupForSymb[pairs[i].second] = sl; 
             //cout << "groupForSymb[" << pairs[i].second << "]=" << sl << endl;
+            assert(sl<=maxLen);
             lenLength[sl]+=pairs[i].first;
-            maxLen = sl;
+            //maxLen = sl;
         }
 
         // Now we build lengthsIndex
         uint * tmpSeq = new uint[n];
-        for(uint i=0;i<n;i++)
+        for(uint i=0;i<n;i++) {
+            assert(i<n);
+            assert(seq[i] <= origsigma);
             tmpSeq[i] = groupForSymb[seq[i]];
+        }
         groupsIndex = lenIndexBuilder->build(tmpSeq,n);
-        delete [] tmpSeq;
+        //delete [] tmpSeq;
 
         // Now we build the other sequences
         size_t sum = 0;
         uint ** seqs = new uint*[(maxLen<=cut)?0:maxLen-cut+1];
         for(uint i=0;(maxLen>cut) && i<maxLen-cut;i++) { 
+            assert(i<maxLen-cut);
+            assert(i+cut+1<=maxLen);
             seqs[i] = new uint[lenLength[i+cut+1]];
             sum += lenLength[i+cut+1];
             //cout << "len=" << lenLength[i+cut+1] << " sum=" << sum << endl;
         }
 
         // Lets compute the offsets
-        for(uint i=0;i<maxLen+1;i++)
-            lenLength[i] = 0;
+        uint * lenLength2 = new uint[maxLen+1];
+        for(uint i=0;i<maxLen+1;i++) {
+            assert(i<=maxLen);
+            lenLength2[i] = 0;
+        }
 
         for(uint i=0;i<n;i++) {
             if(groupForSymb[seq[i]]>cut) {
-                seqs[groupForSymb[seq[i]]-cut-1][lenLength[groupForSymb[seq[i]]]++] = offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]);
+                assert(seq[i]<=origsigma);
+                assert(groupForSymb[seq[i]]<=maxLen);
+                assert(groupForSymb[seq[i]]-cut-1<=maxLen-cut);
+                assert(lenLength2[groupForSymb[seq[i]]]<lenLength[groupForSymb[seq[i]]]);
+                seqs[groupForSymb[seq[i]]-cut-1][lenLength2[groupForSymb[seq[i]]]++] = offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]);
                 //cout << "Group=" << groupForSymb[seq[i]] << " offset=" << offset(revPermFreq[seq[i]],cut,groupForSymb[seq[i]]) << endl;
             }
         }

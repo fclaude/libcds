@@ -41,6 +41,10 @@ int main(int argc, char ** argv) {
   //for(uint i=0;i<n;i++) text[i]++;
   text[n] = 0;
 
+  ifstream ssainput(argv[2]);
+  ssa * _ssa = new ssa(ssainput);
+  ssainput.close();
+  /*
   ssa * _ssa = new ssa(text,n);
   Mapper * am = new MapperNone();
   wt_coder * wc = new wt_coder_huff(text,n+1,am);
@@ -50,7 +54,7 @@ int main(int argc, char ** argv) {
   _ssa->set_static_sequence_builder(ssb);
   _ssa->set_samplepos(1024*1024);
   _ssa->set_samplesuff(1024*1024);
-  _ssa->build_index();
+  _ssa->build_index();*/
   _ssa->print_stats();
 
   uint m;

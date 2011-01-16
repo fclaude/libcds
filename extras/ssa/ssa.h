@@ -13,12 +13,13 @@
 using namespace std;
 using namespace cds_static;
 
+#define SSA_HDR 29
 
 class ssa
 {
   public:
     ssa(uchar * seq, uint n, bool free_text=false);
-    ssa(FILE *fp, bool & error);
+    ssa(ifstream & fp);
     ~ssa();
 
     bool set_static_sequence_builder(SequenceBuilder * ssb);
@@ -26,7 +27,7 @@ class ssa
     bool set_samplepos(uint sample);
     bool set_samplesuff(uint sample);
 
-    bool build_index();
+    bool build_index(Array * a=NULL, BitSequence * b=NULL);
 
     uint size();
     void print_stats();
@@ -38,7 +39,8 @@ class ssa
     uchar extract_pos(uint i);
 
     uchar * rebuild();
-    bool save(FILE * fp);
+    void save(ofstream & fp);
+
 
   protected:
     uint n,n1;
@@ -49,7 +51,7 @@ class ssa
     uint samplesuff;
     uint * pos_sample;
     uint * suff_sample;
-    uint * sbuff;
+    uchar * sbuff;
     uint spos;
     uint * occ;
     uint maxV;

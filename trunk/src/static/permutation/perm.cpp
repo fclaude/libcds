@@ -41,7 +41,7 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
   P->nbits  = bits(nelems-1);
   nbits = bits(nelems-1);
   P->t = t;
-    uint *occ = new uint[nelems];
+    /*uint *occ = new uint[nelems];
     for(uint i=0;i<nelems;i++)
         occ[i] = 0;
     for(uint i=0;i<nelems;i++) {
@@ -56,7 +56,7 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
         cout << " " << get_field(elems,nbits,i);
     }
     cout << endl;
-    delete [] occ;
+    delete [] occ;*/
   if (t==1) {
     P->bwdptrs = new uint[uint_len(nelems,nbits)];
     assert(P->bwdptrs!=NULL);
@@ -69,7 +69,7 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
     P->bmap = NULL;
   }
   else {
-    auxbwdptr = new auxbwd[(t+((int)ceil((double)nelems/t)))];
+    auxbwdptr = new auxbwd[(2*t+((int)ceil((double)nelems/t)))];
     assert(auxbwdptr!=NULL);
     b = new uint[uint_len(nelems,1)];
     for(i=0;i<uint_len(nelems,1);i++)
@@ -92,6 +92,7 @@ perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb) {
           bitset(baux, j);
           aux++;
           if (aux >= t) {
+              //cout << "nbwdptrs=" << nbwdptrs << " (t+((int)ceil((double)nelems/t)))=" << (t+((int)ceil((double)nelems/t))) << endl;
             auxbwdptr[nbwdptrs].key = j;
             auxbwdptr[nbwdptrs++].pointer = bptr;
             antbptr = bptr;

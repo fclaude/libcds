@@ -129,6 +129,7 @@ int main(int argc, char **argv) {
     Sequence * seq = sb->build(values);
     cout << "builderopt=" << builderopt << endl;
     cout << "size=" << seq->getSize() << endl;
+    cout << "plain size=" << values.getSize() << endl;
     Array sigma = extract_alphabet(values);
     measure_access(sigma,seq);
     measure_rank(sigma,seq);

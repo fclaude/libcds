@@ -57,18 +57,20 @@ ssa::~ssa() {
   delete [] sbuff;
 }
 
+#include <cppUtils.h>
+using namespace cds_utils;
 
-bool ssa::save(FILE * fp) {
-  bool ret = false;
-  /*ret &= (1==fwrite(&n,sizeof(uint),1,fp));
-  ret &= (1==fwrite(&sigma,sizeof(uint),1,fp));
-  ret &= (1==fwrite(&samplepos,sizeof(uint),1,fp));
-  ret &= (1==fwrite(&samplesuff,sizeof(uint),1,fp));
-  ret &= !bwt->save(fp);
-  ret &= !sampled->save(fp);
-  ret &= ((2+n/samplepos)==fwrite(pos_sample,sizeof(uint),(2+n/samplepos),fp));
-  ret &= ((1+n/samplesuff)==fwrite(suff_sample,sizeof(uint),(1+n/samplesuff),fp));*/
-  return ret;
+void ssa::save(ofstream & fp) {
+  saveValue(fp,n);
+  saveValue(fp,sigma);
+  saveValue(fp,maxV);
+  saveValue(fp,samplepos);
+  saveValue(fp,samplesuff);
+  bwt->save(fp);
+  sampled->save(fp);
+  saveValue(fp,pos_sample,2+n/samplepos);
+  saveValue(fp,suff_sample,1+n/samplesuff);
+  saveValue(fp,occ,maxV+1);
 }
 
 
@@ -77,8 +79,7 @@ uint ssa::length() {
 }
 
 
-ssa::ssa(FILE * fp, bool & error) {
-  error = true;
+ssa::ssa(ifstream & fp) {
   built = true;
   _sa = NULL;
   bwt = NULL;
@@ -91,19 +92,18 @@ ssa::ssa(FILE * fp, bool & error) {
   _ssb=NULL;
   _sbb=NULL;
 
-  /*error &= (1==fread(&n,sizeof(uint),1,fp));
-  error &= (1==fread(&sigma,sizeof(uint),1,fp));
-  error &= (1==fread(&samplepos,sizeof(uint),1,fp));
-  sbuff = new uint[samplepos+1];
-  spos = (uint)-(samplepos+1);
-  error &= (1==fread(&samplesuff,sizeof(uint),1,fp));
-  error &= (NULL != (bwt=static_sequence::load(fp)));
-  error &= (NULL!=(sampled = static_bitsequence::load(fp)));
-  pos_sample = new uint[(2+n/samplepos)];
-  error &= ((2+n/samplepos)==fread(pos_sample,sizeof(uint),(2+n/samplepos),fp));
-  suff_sample = new uint[(1+n/samplesuff)];
-  error &= ((1+n/samplesuff)==fread(suff_sample,sizeof(uint),(1+n/samplesuff),fp));
-  error = !error;*/
+  n = loadValue<uint>(fp);
+  sigma = loadValue<uint>(fp);
+  maxV = loadValue<uint>(fp);
+  samplepos = loadValue<uint>(fp);
+  samplesuff = loadValue<uint>(fp);
+  bwt = Sequence::load(fp);
+  sampled = BitSequence::load(fp);
+  pos_sample = loadValue<uint>(fp,2+n/samplepos);
+  suff_sample = loadValue<uint>(fp,1+n/samplesuff);
+  occ = loadValue<uint>(fp,maxV+1);
+  sbuff = new uchar[samplepos+1];
+  spos = (uchar)-(samplepos+1);
 }
 
 
@@ -112,7 +112,7 @@ uint ssa::size() {
   size += sizeof(uint)*(2+n/samplepos);
   size += sizeof(uint)*(1+n/samplesuff);
   size += sizeof(ssa);
-  size += sizeof(uint)*(1+samplepos);
+  size += sizeof(uchar)*(1+samplepos);
   size += (1+maxV)*sizeof(uint);
   return size;
 }
@@ -163,7 +163,7 @@ bool ssa::set_samplesuff(uint sample) {
 }
 
 
-bool ssa::build_index() {
+bool ssa::build_index(Array * v, BitSequence * b) {
   built = true;
   assert(_seq!=NULL);
   assert(_ssb!=NULL);
@@ -171,6 +171,16 @@ bool ssa::build_index() {
     delete bwt;
     bwt = NULL;
   }
+  #ifdef VERBOSE
+  cout << "Building the SA" << endl;
+  #endif
+  build_sa();
+  #ifdef VERBOSE
+  cout << "Done with the SA" << endl;
+  #endif
+  if(v!=NULL)
+      for(uint i=0;i<=n;i++)
+          v->setField(i,b->rank1(_sa[i]));
   #ifdef VERBOSE
   cout << "Building the BWT" << endl;
   #endif
@@ -226,8 +236,8 @@ bool ssa::build_index() {
   _ssb = NULL;
   _sbb->unuse();
   _sbb = NULL;
-  sbuff = new uint[samplepos+1];
-  spos = (uint)-(samplepos+1);
+  sbuff = new uchar[samplepos+1];
+  spos = (uchar)-(samplepos+1);
   return true;
 }
 
@@ -238,13 +248,6 @@ void ssa::build_bwt() {
   if(_bwt!=NULL)
     delete [] _bwt;
   _bwt = new uint[n+2];
-  #ifdef VERBOSE
-  cout << "Building the SA" << endl;
-  #endif
-  build_sa();
-  #ifdef VERBOSE
-  cout << "Done with the SA" << endl;
-  #endif
   for(uint i=0;i<n+1;i++) {
     if(_sa[i]==0) _bwt[i]=0;
     else _bwt[i] = _seq[_sa[i]-1];
@@ -271,6 +274,33 @@ void ssa::build_bwt() {
   _sa = NULL;
 }
 
+class comparator {
+    public:
+
+        comparator(uchar * seq, uint n) {
+            this->seq = seq;
+            this->n = n;
+        }
+
+        bool operator()(uint i, uint j) {
+            while(i<n && j<n) {
+                if(seq[i]!=seq[j]) {
+                    if(seq[i]>seq[j]) return false;
+                    else return true;
+                }
+                i++; j++;
+            }
+            //assert(i!=j);
+            if(j<i) return false;
+            return true;
+        }
+
+    protected:
+        uchar * seq;
+        uint n;
+};
+
+
 
 void ssa::build_sa() {
   assert(_seq!=NULL);
@@ -280,6 +310,7 @@ void ssa::build_sa() {
   for(uint i=0;i<n+1;i++)
     _sa[i] = i;
   sort_sa(0,n);
+  //sort(_sa,_sa+n+1,comparator(_seq,n));
   assert(_sa[0]==n);
   for(uint i=0;i<n;i++)
     assert(cmp(_sa[i],_sa[i+1])<=0);
@@ -290,23 +321,20 @@ uint ssa::locate(uchar * pattern, uint m, uint ** occs) {
   assert(m>0);
   assert(pattern!=NULL);
   assert(bwt!=NULL);
-  uint c = pattern[m-1]+1; ulong i=m-1;
+  ulong i=m-1;
+  uint c = pattern[i]; 
   uint sp = occ[c];
-  c++;
-  uint ep = occ[c]-1;
-  c--;
+  uint ep = occ[c+1]-1;
   while (sp<=ep && i>=1) {
-    c = pattern[--i]+1;
+    c = pattern[--i];
     //cout << "sp=" << sp << " ep=" << ep << endl;
     sp = occ[c]+bwt->rank(c,sp-1);
     ep = occ[c]+bwt->rank(c,ep)-1;
   }
-  //cout << "* sp=" << sp << " ep=" << ep << endl;
+  //cout << "*sp=" << sp << " *ep=" << ep << endl;
   if(sp<=ep) {
     uint matches = ep-sp+1;
     *occs = new uint[matches];
-
-    //*occs = new uint[matches];
     uint i = sp;
     uint j,dist;
     size_t rank_tmp;
@@ -315,6 +343,7 @@ uint ssa::locate(uchar * pattern, uint m, uint ** occs) {
       dist = 0;
       while(!sampled->access(j)) {
         c = bwt->access(j,rank_tmp);
+        rank_tmp--;
         j = occ[c]+rank_tmp;
         dist++;
       }

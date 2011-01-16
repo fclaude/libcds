@@ -67,6 +67,7 @@ namespace cds_static
     {
         uint s = access(i);
         _rank = rank(s,i);
+        return s;
     }
 
     Sequence * Sequence::load(ifstream & fp) {
