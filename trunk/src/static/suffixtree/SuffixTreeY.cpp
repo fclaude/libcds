@@ -322,7 +322,7 @@ namespace cds_static{
 			return l;
 		}
 		/*else return Letter(psi_{i-1}(vl),1)*/
-		size_t p1 = vl+1;
+		size_t p1 = vl;
 		for(size_t j=0; j<(size_t)(i-1); j++)
 			p1 = csa->getPsi(p1);
 	/*
