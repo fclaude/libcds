@@ -262,9 +262,9 @@ namespace cds_static{
 		*lca_r = p_r;
 	}
 
-	void SuffixTreeY::Child(size_t vl, size_t vr, char a, size_t *child_l, size_t *child_r) const{
+	void SuffixTreeY::Child(size_t vl, size_t vr, uchar a, size_t *child_l, size_t *child_r) const{
 		int x,y,m, pos_letter;
-		char first_letter;
+		uchar first_letter;
 		size_t aux_l, aux_r;
 		size_t res_l = (size_t)-1;
 		size_t res_r = (size_t)-1;
@@ -315,10 +315,10 @@ namespace cds_static{
 		*child_r = res_r;
 	}
 
-	char SuffixTreeY::Letter(size_t vl, size_t vr, int i) const{
-		char l;
+	uchar SuffixTreeY::Letter(size_t vl, size_t vr, int i) const{
+		uchar l;
 		if(i==1){
-			l = (char)csa->getT(vl);
+			l = (uchar)csa->getT(vl);
 			return l;
 		}
 		/*else return Letter(psi_{i-1}(vl),1)*/

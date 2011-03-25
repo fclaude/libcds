@@ -91,10 +91,10 @@ namespace cds_static{
 			 virtual void LCA(size_t vl, size_t vr, size_t wl, size_t wr, size_t *lca_l, size_t *lca_r) const;
 
 			 //Return, in [child_l, child_r], the child of the node [vl,vr] which label path start with the char a
-			 virtual void Child(size_t vl, size_t vr, char a, size_t *child_l, size_t *child_r) const;
+			 virtual void Child(size_t vl, size_t vr, uchar a, size_t *child_l, size_t *child_r) const;
 
 			 //Return the i-th letter of the label-path of the node [vl,vr]
-			 virtual char Letter(size_t vl, size_t vr, int i) const;
+			 virtual uchar Letter(size_t vl, size_t vr, int i) const;
 
 			 //Return the tree depth of the node [vl,vr]
 			 virtual size_t TDepth(size_t vl, size_t vr) const;
