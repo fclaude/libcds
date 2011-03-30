@@ -244,7 +244,7 @@ namespace cds_static{
 			*lca_r = vr;
 			return;
 		}
-		if(Ancestor(wl, wr, vl, wr)){
+		if(Ancestor(wl, wr, vl, vr)){
 			*lca_l = wl;
 			*lca_r = wr;
 			return;
