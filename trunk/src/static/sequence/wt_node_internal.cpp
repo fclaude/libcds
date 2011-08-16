@@ -219,6 +219,24 @@ namespace cds_static
         }
     }
 
+    pair<uint,size_t> wt_node_internal::quantile_freq(size_t left,size_t right,uint q) const
+    {
+        /* number of 1s before T[l..r] */
+        size_t rank_before_left = bitmap->rank1(left-1);
+        /* number of 1s before T[r] */
+        size_t rank_before_right = bitmap->rank1(right);
+        /* number of 1s in T[l..r] */
+        size_t num_ones = rank_before_right - rank_before_left;
+        /* number of 0s in T[l..r] */
+        size_t num_zeros = (right-left+1) - num_ones;
+
+        if(q >= num_zeros) {
+            return right_child->quantile_freq(rank_before_left,rank_before_left+num_ones-1,q-num_zeros);
+        } else {
+            return left_child->quantile_freq((left-rank_before_left),(left-rank_before_left)+num_zeros-1,q);
+        }
+    }
+
     size_t wt_node_internal::getSize() const
     {
         uint s = bitmap->getSize()+sizeof(wt_node_internal);

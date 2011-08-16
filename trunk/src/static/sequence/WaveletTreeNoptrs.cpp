@@ -492,4 +492,72 @@ namespace cds_static
         return occ->select1(am->map(symbol))-occ->select1(am->map(symbol)-1)+1;
     }
 
+    uint WaveletTreeNoptrs::quantile(size_t left,size_t right,uint q)
+    {
+        pair<uint,size_t> res = quantile_freq(left,right,q);
+        return res.first;
+    }
+
+    pair<uint32_t,size_t> WaveletTreeNoptrs::quantile_freq(size_t left,size_t right,uint q)
+    {
+        /* decrease q as the smallest element q=1 is        
+         * found by searching for 0 */
+        q--;
+
+        assert( right >= left );
+        assert( (right-left+1) >= q );
+        assert( right < length );
+
+        uint sym = 0;
+        uint freq = 0;
+        uint level = 0;
+        size_t start = 0, end = n-1;
+        size_t before;
+        BitSequence* bs;
+
+        while(level<height)
+        {
+            bs = bitstring[level];
+
+            /* calc start of level bound */
+            if(start == 0) before = 0;
+            else before = bs->rank1(start-1);
+
+            /* number of 1s before T[l..r] */
+            size_t rank_before_left = bs->rank1(start+left-1);
+            /* number of 1s before T[r] */
+            size_t rank_before_right = bs->rank1(start+right);
+            /* number of 1s in T[l..r] */
+            size_t num_ones = rank_before_right - rank_before_left;
+            /* number of 0s in T[l..r] */
+            size_t num_zeros = (right-left+1) - num_ones;
+
+            /* if there are more than q 0s we go right. left otherwise */
+            if(q >= num_zeros) { /* go right */
+                freq = num_ones; /* calc freq */
+                /* set bit to 1 in sym */
+                sym = set(sym,level);
+                /* number of 1s before T[l..r] within the current node */
+                left = rank_before_left - before;
+                /* number of 1s in T[l..r] */
+                right = rank_before_right - before - 1;
+                q = q - num_zeros;
+                /* calc starting pos of right childnode */
+                start = end - (bs->rank1(end)-before) + 1;
+            } else { /* go left q = q // sym == sym */
+                freq = num_zeros; /* calc freq */
+                /* number of zeros before T[l..r] within the current node */
+                left = left - (rank_before_left - before);
+                /* number of zeros in T[l..r] + left bound */
+                right = right - (rank_before_right - before);
+                /* calc end pos of left childnode */
+                end = end - (bs->rank1(end) - before);
+            }
+            level++;
+        }
+
+        /* unmap symbol */
+        return pair<uint,size_t>(am->unmap(sym),static_cast<uint>(freq));
+    }
+
 };

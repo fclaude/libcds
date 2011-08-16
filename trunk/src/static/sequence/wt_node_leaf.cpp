@@ -60,6 +60,11 @@ namespace cds_static
         return symbol;
     }
 
+    pair<uint,size_t> wt_node_leaf::quantile_freq(size_t left,size_t right,uint q) const
+    {
+        return std::make_pair(symbol,right-left+1);
+    }
+
     size_t wt_node_leaf::getSize() const
     {
         return sizeof(wt_node_leaf);
