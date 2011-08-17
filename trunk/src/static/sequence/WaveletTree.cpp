@@ -115,9 +115,22 @@ namespace cds_static
         return am->unmap(root->access(pos));
     }
 
+    uint WaveletTree::quantile(size_t left,size_t right,uint q) const
+    {
+        return quantile_freq(left,right,q).first;
+    }
+    
+    pair<uint,size_t> WaveletTree::quantile_freq(size_t left,size_t right,uint q) const
+    {
+        /* q=1 -> q=0 */
+        q--;
+
+        pair<uint,size_t> res = root->quantile_freq(left,right,q);
+        return std::make_pair( am->unmap(res.first) , res.second );
+    }
+
     uint WaveletTree::access(size_t pos, size_t &rank) const
     {
-        cout << ".";
         return root->access(pos, rank);
     }
 

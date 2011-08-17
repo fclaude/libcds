@@ -42,6 +42,7 @@ namespace cds_static
             virtual ~wt_node_leaf();
             virtual size_t rank(uint symbol, size_t pos, uint l, wt_coder * c) const;
             virtual size_t select(uint symbol, size_t pos, uint l, wt_coder * c) const;
+            virtual pair<uint,size_t> quantile_freq(size_t left,size_t right,uint q) const;
             virtual uint access(size_t pos) const;
             virtual uint access(size_t pos, size_t &rank) const;
             virtual size_t getSize() const;

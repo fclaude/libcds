@@ -79,6 +79,11 @@ namespace cds_static
             virtual uint access(size_t pos) const;
             virtual uint access(size_t pos, size_t &rank) const;
 
+            /* find the q-th smallest element in T[l..r] */
+            uint quantile(size_t left,size_t right,uint q) const;
+            /* find the q-th smallest element in T[l..r] and return it's freq */
+            pair<uint,size_t> quantile_freq(size_t left,size_t right,uint q) const;
+
             virtual size_t count(uint s) const;
 
             virtual size_t getSize() const;

@@ -69,6 +69,12 @@ namespace cds_static
             virtual uint access(size_t pos) const;
             virtual size_t getSize() const;
 
+            /* find the q-th smallest element in T[l..r] */
+            virtual uint quantile(size_t left,size_t right,uint q);
+
+            /* find the q-th smallest element in T[l..r] and return the freq */
+            pair<uint32_t,size_t> quantile_freq(size_t left,size_t right,uint q);
+
             virtual size_t count(uint symbol) const;
 
             virtual void save(ofstream & fp) const;
