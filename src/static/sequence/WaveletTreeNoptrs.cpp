@@ -311,6 +311,7 @@ namespace cds_static
         uint ret=0;
         size_t start=0;
         size_t end=n-1;
+	size_t before=0;
         while(level<height) {
 	  if(start==0) before = 0;
 	  else before = bitstring[level]->rank1(start-1);
