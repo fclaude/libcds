@@ -312,17 +312,19 @@ namespace cds_static
         size_t start=0;
         size_t end=n-1;
         while(level<height) {
+	  if(start==0) before = 0;
+	  else before = bitstring[level]->rank1(start-1);
             assert(pos>=start && pos<=end);
             if(bitstring[level]->access(pos)) {
                 ret=set(ret,level);
-                pos=bitstring[level]->rank1(pos-1)-bitstring[level]->rank1(start-1);
-                start=(bitstring[level]->rank1(end)-bitstring[level]->rank1(start-1));
+                pos=bitstring[level]->rank1(pos-1)-before;
+                start=(bitstring[level]->rank1(end)-before);
                 start=end-start+1;
                 pos+=start;
             }
             else {
-                pos=pos-start-(bitstring[level]->rank1(pos)-bitstring[level]->rank1(start-1));
-                end=end-start-(bitstring[level]->rank1(end)-bitstring[level]->rank1(start-1));
+                pos=pos-start-(bitstring[level]->rank1(pos)-before);
+                end=end-start-(bitstring[level]->rank1(end)-before);
                 end+=start;
                 pos+=start;
             }
