@@ -80,6 +80,7 @@ namespace cds_static
 	    case BS_HDR: return BitmapsSequence::load(fp);
 	    case WVTREE_HDR: return WaveletTree::load(fp);
 	    case WVTREE_NOPTRS_HDR: return WaveletTreeNoptrs::load(fp);
+	case ALPHPART_HDR: return SequenceAlphPart::load(fp);
 	}
         return NULL;
     }

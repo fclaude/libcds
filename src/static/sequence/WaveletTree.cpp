@@ -154,6 +154,7 @@ namespace cds_static
         if(rd!=WVTREE_HDR) return NULL;
         WaveletTree * ret = new WaveletTree();
         ret->n = loadValue<size_t>(fp);
+	ret->length = ret->n;
         ret->c = wt_coder::load(fp);
         ret->c->use();
         assert(ret->c!=NULL);

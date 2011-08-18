@@ -373,6 +373,7 @@ namespace cds_static
     {
         uint type = ALPHPART_HDR;
         saveValue(fp,type);
+	saveValue(fp,length);
         saveValue(fp,sigma);
         saveValue(fp,origsigma);
         saveValue(fp,maxLen);
@@ -389,6 +390,7 @@ namespace cds_static
         if(type!=ALPHPART_HDR)
             return NULL;
         SequenceAlphPart * ret = new SequenceAlphPart();
+	ret->length = loadValue<size_t>(fp);
         ret->sigma = loadValue<uint>(fp);
         ret->origsigma = loadValue<uint>(fp);
         ret->maxLen = loadValue<uint>(fp);

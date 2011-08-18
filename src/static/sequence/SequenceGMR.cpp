@@ -200,7 +200,7 @@ SequenceGMR * SequenceGMR::load(ifstream & fp) {
   uint rd = loadValue<uint>(fp);
   if(rd!=GMR_HDR) return NULL;
   SequenceGMR * ret = new SequenceGMR();
-  ret->length = loadValue<uint>(fp);
+  ret->length = loadValue<size_t>(fp);
   ret->sigma = loadValue<uint>(fp);
   ret->chunk_length = loadValue<uint>(fp);
   ret->B = BitSequence::load(fp);
