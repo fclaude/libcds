@@ -1,3 +1,0 @@
-
-all:
-	@cp *.h ../../../includes/
