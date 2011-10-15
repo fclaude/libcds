@@ -1,5 +1,5 @@
 /**
- *    SequenceWaveletTreeExample.cpp
+ *    SequenceGMRExample.cpp
  *    Copyright (C) 2011  Francisco Claude F.
  *
  *    This program is free software: you can redistribute it and/or modify
