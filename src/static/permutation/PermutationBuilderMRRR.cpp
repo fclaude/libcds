@@ -25,9 +25,11 @@ namespace cds_static {
 PermutationBuilderMRRR::PermutationBuilderMRRR(uint sample, BitSequenceBuilder * bmb) {
     this->sample = sample;
     this->bmb = bmb;
+    bmb->use();
 }
 
 PermutationBuilderMRRR::~PermutationBuilderMRRR() {
+  bmb->unuse();
 }
 
 Permutation * PermutationBuilderMRRR::build(uint * perm, uint len) const {

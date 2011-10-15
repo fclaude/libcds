@@ -24,6 +24,8 @@ namespace cds_static {
   
 using std::max;
 SequenceGMR::SequenceGMR(uint * sequence, size_t n, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb) : Sequence(n) {
+  bmb->use();
+  ssb->use();
   length = n;
 
   //cout << "length1=" << length << endl;
@@ -46,9 +48,13 @@ SequenceGMR::SequenceGMR(uint * sequence, size_t n, uint chunk_length, BitSequen
   //cout << "total_chunks=" << length/chunk_length << endl;
   build(new_seq,bmb,ssb);
 	delete [] new_seq;
+  bmb->unuse();
+  ssb->unuse();
 }
 
 SequenceGMR::SequenceGMR(const Array & sequence, uint chunk_length, BitSequenceBuilder * bmb, SequenceBuilder * ssb) : Sequence(0) {
+  bmb->use();
+  ssb->use();
   length = sequence.getLength();
   //cout << "length1=" << length << endl;
 	if(length%chunk_length) length+=chunk_length-length%chunk_length;
@@ -70,6 +76,8 @@ SequenceGMR::SequenceGMR(const Array & sequence, uint chunk_length, BitSequenceB
   //cout << "total_chunks=" << length/chunk_length << endl;
   build(new_seq,bmb,ssb);
 	delete [] new_seq;
+  bmb->unuse();
+  ssb->unuse();
 }
 
 SequenceGMR::SequenceGMR() : Sequence(0) {

@@ -250,6 +250,7 @@ namespace cds_static
 
         // Fill alphSortedbyFreq and lengthForSymb
         alphSortedByFreq = new uint[sigma+1];
+
         uint * groupForSymb = new uint[sigma+1];
 
         // We estimate maxLen, it may be smaller if many symbols have 0 frequency
@@ -302,6 +303,7 @@ namespace cds_static
         delete [] seqs;
         delete [] groupForSymb;
         delete [] lenLength;
+	delete [] pairs;
 
         // We are done with the builders
         lenIndexBuilder->unuse();
@@ -322,6 +324,8 @@ namespace cds_static
             delete indexesByLength[i];
         delete [] indexesByLength;
         delete groupsIndex;
+	delete [] revPermFreq;
+	delete [] alphSortedByFreq;
     }
 
     size_t SequenceAlphPart::rank(uint c, size_t i) const

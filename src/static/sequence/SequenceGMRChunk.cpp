@@ -26,6 +26,8 @@ namespace cds_static {
 using std::max;
 
 SequenceGMRChunk::SequenceGMRChunk(uint * sequence, uint chunk_length, BitSequenceBuilder *bmb, PermutationBuilder *pmb) : Sequence(chunk_length){
+  pmb->use();
+  bmb->use();
   sigma = 0;
   for(uint i=0;i<chunk_length;i++) {
     sigma = max(sigma,sequence[i]);
@@ -63,9 +65,13 @@ SequenceGMRChunk::SequenceGMRChunk(uint * sequence, uint chunk_length, BitSequen
   assert(permutation!=NULL);
   this->sigma = sigma;
 	delete [] counter;
+  pmb->unuse();
+  bmb->unuse();
 }
 
 SequenceGMRChunk::SequenceGMRChunk(const Array & sequence, BitSequenceBuilder *bmb, PermutationBuilder *pmb) : Sequence(0){
+  pmb->use();
+  bmb->use();
     uint chunk_length = sequence.getLength();
     length = chunk_length;
   sigma = 0;
@@ -105,6 +111,8 @@ SequenceGMRChunk::SequenceGMRChunk(const Array & sequence, BitSequenceBuilder *b
   assert(permutation!=NULL);
   this->sigma = sigma;
 	delete [] counter;
+  pmb->unuse();
+  bmb->unuse();
 }
 SequenceGMRChunk::SequenceGMRChunk() : Sequence(0) {
 }
