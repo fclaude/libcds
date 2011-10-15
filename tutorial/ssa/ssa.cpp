@@ -171,7 +171,7 @@ bool ssa::build_index(Array * v, BitSequence * b) {
   bwt = new WaveletTree(_bwt, n+1, 
 			new wt_coder_huff(_bwt, n+1,
 					  new MapperNone()),
-			new BitSequenceBuilderRG(20), 
+			new BitSequenceBuilderRRR(32), 
 			new MapperNone());
 
   maxV = 0;
