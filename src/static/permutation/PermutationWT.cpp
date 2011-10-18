@@ -16,6 +16,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include<PermutationWT.h>
+
+namespace cds_static {
+
 PermutationWT::PermutationWT(uint *perm, size_t len) {
   uint * seq = new uint[len];
   uint * marker = new uint[uint_len(len,1)];
@@ -35,7 +39,7 @@ PermutationWT::PermutationWT(uint *perm, size_t len) {
   }
 
   wt = new WaveletTree(seq, len, new wt_coder_huff(seq, len, new MapperNone()), new BitSequenceBuilderRG(20), new MapperNone());
-  marks = new BitSequenceBuilderRG(marker, len, 20);
+  marks = new BitSequenceRG(marker, len, 20);
   delete [] seq;
 }
 
@@ -43,18 +47,19 @@ PermutationWT::~PermutationWT(){
   delete wt;
 }
 
-uint PermutationWT::pi(uint k) {
+uint PermutationWT::pi(uint k) const {
   uint v = (uint)marks->rank1(k);
   return (uint)wt->select(v, v-marks->select1(v)+1);
 }
 
-uint PermutationWT::revpi(uint k) {
+uint PermutationWT::revpi(uint k) const {
   size_t val = 0;
   uint s = wt->access(k, val);
   return marks->select1(s+1) + val - 1;
 }
 
-size_t PermutationWT::getSize() {
+size_t PermutationWT::getSize() const {
   return marks->getSize()+wt->getSize()+sizeof(PermutationWT);
 }
 
+};
