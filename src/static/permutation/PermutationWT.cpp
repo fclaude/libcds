@@ -41,7 +41,7 @@ PermutationWT::PermutationWT(uint *perm, size_t len) {
     last = get_field(perm,b,i);
   }
 
-  wt = new WaveletTree(seq, len, new wt_coder_huff(seq, len, new MapperNone()), new BitSequenceBuilderRG(20), new MapperNone());
+  wt = new WaveletTreeNoptrs(seq, len, new BitSequenceBuilderRRR(40), new MapperNone());
   marks = new BitSequenceRG(marker, len, 20);
   delete [] seq;
 }
