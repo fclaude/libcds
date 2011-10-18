@@ -18,18 +18,18 @@
  *
  */
 
+
+#ifndef __PERMUTATIONWT_H
+#define __PERMUTATIONWT_H
+
+
 #include <libcdsBasics.h>
 
 #include <Sequence.h>
 #include <BitSequence.h>
 #include <Permutation.h>
 
-#ifndef __PERMUTATIONWT_H
-#define __PERMUTATIONWT_H
-
 using namespace cds_utils;
-using namespace cds_static;
-
 
 namespace cds_static {
   class WaveletTree;
@@ -57,8 +57,9 @@ namespace cds_static {
       static PermutationWT * load(ifstream & fp); 
       
   protected:
+      PermutationWT() {}
       BitSequence * marks;
-      WaveletTree * wt;
+      Sequence * wt;
       uint runs;
   };
 };

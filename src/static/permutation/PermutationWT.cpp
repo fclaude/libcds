@@ -62,4 +62,20 @@ size_t PermutationWT::getSize() const {
   return marks->getSize()+wt->getSize()+sizeof(PermutationWT);
 }
 
+  void PermutationWT::save(ofstream & out) const {
+    saveValue(out,WTPERM);
+    saveValue(out, length);
+    wt->save(out);
+    marks->save(out);
+  }
+
+  PermutationWT * PermutationWT::load(ifstream &in) {
+    uint rd = loadValue<uint>(in);
+    if(rd!=WTPERM) return NULL;
+    PermutationWT * ret = new PermutationWT();
+    ret->length = loadValue<size_t>(in);
+    ret->wt = Sequence::load(in);
+    ret->marks = BitSequence::load(in);
+    return ret;
+  }
 };

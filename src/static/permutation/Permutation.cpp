@@ -64,6 +64,8 @@ namespace cds_static {
         switch(rd) {
             case MRRRPERM: return PermutationMRRR::load(fp); 
                 break;
+            case WTPERM: return PermutationWT::load(fp); 
+                break;
         }
         return NULL;
     }

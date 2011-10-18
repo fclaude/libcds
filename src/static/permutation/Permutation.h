@@ -66,6 +66,7 @@ namespace cds_static {
 };
 
 #define MRRRPERM 1
+#define WTPERM 2
 
 #include<PermutationMRRR.h>
 #include<PermutationWT.h>
