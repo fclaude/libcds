@@ -1,5 +1,5 @@
-/*  PermutationBuilder.h
- * Copyright (C) 2010, Francisco Claude, all rights reserved.
+/*  PermutationBuilderWT.h
+ * Copyright (C) 2011, Francisco Claude, all rights reserved.
  *
  * Francisco Claude <fclaude@cs.uwaterloo.ca>
  *
@@ -18,29 +18,22 @@
  *
  */
 
-#ifndef PERMUTATIONBUILDER_H
-#define PERMUTATIONBUILDER_H
+#ifndef PERMUTATIONBUILDERWT_H
+#define PERMUTATIONBUILDERWT_H
 
 #include <libcdsBasics.h>
 #include <Permutation.h>
+#include <PermutationBuilder.h>
 
 namespace cds_static {
-    
-    class PermutationBuilder {
-        public:
-            PermutationBuilder() { userCount=0; }
-            virtual ~PermutationBuilder() {}
-            virtual Permutation * build(uint * perm, uint n) const = 0;
-            virtual void use() { userCount++; }
-            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
 
-        protected:
-            int userCount;
-    };
+  class PermutationBuilderWT : public PermutationBuilder {
+  public:
+    PermutationBuilderWT() {}
+    virtual ~PermutationBuilderWT() {}
+    virtual Permutation * build(uint * perm, uint len) const;
+  };
 };
-
-#include<PermutationBuilderMRRR.h>
-#include<PermutationBuilderWT.h>
 
 #endif
 

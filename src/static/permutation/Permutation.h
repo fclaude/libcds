@@ -69,5 +69,6 @@ namespace cds_static {
 
 #include<PermutationMRRR.h>
 #include<PermutationWT.h>
+
 #endif
 
