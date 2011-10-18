@@ -30,10 +30,12 @@ PermutationWT::PermutationWT(uint *perm, size_t len) {
   runs = 0;
   uint last = get_field(perm,b,0);
   seq[get_field(perm,b,0)] = 0;
+  bitset(marker,0);
 
   for(size_t i=1;i<len;i++) {
     if(last > get_field(perm,b,i)) {
       runs++;
+      bitset(marker,runs);
       last = get_field(perm,b,i);
     }
     seq[get_field(perm,b,i)] = runs;
