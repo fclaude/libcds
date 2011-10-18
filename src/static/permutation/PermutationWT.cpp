@@ -35,10 +35,10 @@ PermutationWT::PermutationWT(uint *perm, size_t len) {
   for(size_t i=1;i<len;i++) {
     if(last > get_field(perm,b,i)) {
       runs++;
-      bitset(marker,runs);
-      last = get_field(perm,b,i);
+      bitset(marker,i);
     }
     seq[get_field(perm,b,i)] = runs;
+    last = get_field(perm,b,i);
   }
 
   wt = new WaveletTree(seq, len, new wt_coder_huff(seq, len, new MapperNone()), new BitSequenceBuilderRG(20), new MapperNone());
@@ -52,7 +52,7 @@ PermutationWT::~PermutationWT(){
 
 uint PermutationWT::pi(uint k) const {
   uint v = (uint)marks->rank1(k);
-  return (uint)wt->select(v, v-marks->select1(v)+1);
+  return (uint)wt->select(v-1, k - marks->select1(v) + 1);
 }
 
 uint PermutationWT::revpi(uint k) const {
