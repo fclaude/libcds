@@ -21,21 +21,22 @@
 namespace cds_static {
 
 PermutationWT::PermutationWT(uint *perm, size_t len) {
+  uint b = bits(len-1);
   uint * seq = new uint[len];
   uint * marker = new uint[uint_len(len,1)];
   for(size_t i=0;i<uint_len(len,1);i++)
     marker[i] = 0;
 
   runs = 0;
-  uint last = perm[0];
-  seq[perm[0]] = 0;
+  uint last = get_field(perm,b,0);
+  seq[get_field(perm,b,0)] = 0;
 
   for(size_t i=1;i<len;i++) {
-    if(last > perm[i]) {
+    if(last > get_field(perm,b,i)) {
       runs++;
-      last = perm[i];
+      last = get_field(perm,b,i);
     }
-    seq[perm[i]] = runs;
+    seq[get_field(perm,b,i)] = runs;
   }
 
   wt = new WaveletTree(seq, len, new wt_coder_huff(seq, len, new MapperNone()), new BitSequenceBuilderRG(20), new MapperNone());
