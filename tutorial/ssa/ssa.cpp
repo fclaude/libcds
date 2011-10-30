@@ -83,6 +83,10 @@ void ssa::save(ofstream & fp) {
   saveValue(fp,occ,maxV+1);
 }
 
+void ssa::print_bwt() {
+  for(size_t i=0;i<=n;i++)
+    cout << (uchar)bwt->access(i);
+}
 
 uint ssa::length() {
   return n;

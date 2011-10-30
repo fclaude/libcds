@@ -301,10 +301,20 @@ namespace cds_static
         return pos;
     }
 
+
+  // bool show_once = false;
     size_t BitSequenceRRR::getSize() const
     {
+      // if(!show_once) {
+      // 	show_once=true;
+      // 	cout << "This bitmap has " << length << " bits, ie ~" << length/8 << " bytes plain" << endl;
+      // 	cout << "C     :   " << uint_len(C_len,C_field_bits)*sizeof(uint) << endl;
+      // 	cout << "O     :   " << O_len*sizeof(uint) << endl;
+      // 	cout << "SampC :   " << uint_len(C_sampling_len,C_sampling_field_bits)*sizeof(uint) << endl;
+      // 	cout << "SampO :   " << uint_len(O_pos_len,O_pos_field_bits)*sizeof(uint) << endl;
+      // }
         // we consider E to be free (64K shared among all the RRR02 bitmaps)
-        size_t sum = sizeof(BitSequenceRRR);
+      size_t sum = sizeof(BitSequenceRRR);
         sum += uint_len(C_len,C_field_bits)*sizeof(uint);
         sum += O_len*sizeof(uint);
         sum += uint_len(C_sampling_len,C_sampling_field_bits)*sizeof(uint);

@@ -54,6 +54,8 @@ class ssa
     uchar * extract(uint i, uint j);
     uchar extract_pos(uint i);
 
+    void print_bwt();
+
     uchar * rebuild();
     void save(ofstream & fp);
 

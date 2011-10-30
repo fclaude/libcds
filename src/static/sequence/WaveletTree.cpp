@@ -136,7 +136,11 @@ namespace cds_static
 
     size_t WaveletTree::getSize() const
     {
-        return sizeof(WaveletTree)+sizeof(uint)+root->getSize()+am->getSize()+c->getSize();
+      // cout << "sizeof(WT): " << sizeof(WaveletTree) << endl;
+      // cout << "root: " << root->getSize() << endl;
+      // cout << "am: " << am->getSize() << endl;
+      // cout << "cdr: " << c->getSize() << endl;
+      return sizeof(WaveletTree)+root->getSize()+am->getSize()+c->getSize();
     }
 
     void WaveletTree::save(ofstream & fp) const
