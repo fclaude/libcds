@@ -84,8 +84,11 @@ void ssa::save(ofstream & fp) {
 }
 
 void ssa::print_bwt() {
-  for(size_t i=0;i<=n;i++)
-    cout << (uchar)bwt->access(i);
+  for(size_t i=0;i<=n;i++) {
+    uint symbol = bwt->access(i);
+    if(symbol>0)
+      cout << (uchar)symbol;
+  }
 }
 
 uint ssa::length() {

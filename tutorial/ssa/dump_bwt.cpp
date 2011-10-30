@@ -25,15 +25,9 @@
 using namespace std;
 
 int main(int argc, char ** argv) {
-  if(argc!=5) {
+  if(argc!=2) {
     cout << "usage: " << argv[0] << " <index-file>" << endl;
     return 0;
-  }
-
-  fstream input(argv[1],ios::in | ios::binary);
-  if(!input.is_open()) {
-    cout << "Error opening file: " << argv[1] << endl;
-    return -1;
   }
 
   ifstream ssainput(argv[1]);
