@@ -57,6 +57,12 @@ namespace cds_static
         return false;
     }
 
+  uint * wt_coder_binary::get_symbol(uint symbol) const {
+    uint * ret = new uint[1];
+    *ret = symbol;
+    return ret;
+  }
+
     bool wt_coder_binary::done(uint symbol, uint l) const
     {
         if(l==h) return true;

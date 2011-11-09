@@ -41,9 +41,9 @@ namespace cds_static
             wt_node_internal(uint * seq, size_t n, uint l, wt_coder * c, BitSequenceBuilder * bmb);
             wt_node_internal(uchar * seq, size_t n, uint l, wt_coder * c, BitSequenceBuilder * bmb, size_t left, uint * done);
             virtual ~wt_node_internal();
-            virtual size_t rank(uint symbol, size_t pos, uint level, wt_coder * c) const;
+            virtual size_t rank(uint *symbol, size_t pos, uint level) const;
             //virtual size_t rankLessThan(uint &symbol, size_t pos) const;
-            virtual size_t select(uint symbol, size_t pos, uint level, wt_coder * c) const;
+            virtual size_t select(uint *symbol, size_t pos, uint level) const;
             virtual pair<uint,size_t> quantile_freq(size_t left,size_t right,uint q) const;
             virtual uint access(size_t pos) const;
             virtual uint access(size_t pos, size_t & rankp) const;

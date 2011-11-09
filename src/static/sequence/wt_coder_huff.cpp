@@ -64,6 +64,12 @@ namespace cds_static
         delete hc;
     }
 
+  uint * wt_coder_huff::get_symbol(uint symbol) const {
+    uint * ret = new uint[maxBuffer];
+    hc->encode(symbol, ret, (size_t)0);
+    return ret;
+  }
+
                                  // TODO: it could be implemented in a more efficient (low level) way
     bool wt_coder_huff::is_set(uint symbol, uint l) const
     {

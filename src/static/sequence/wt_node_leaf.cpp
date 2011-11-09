@@ -33,18 +33,18 @@ namespace cds_static
 
     wt_node_leaf::~wt_node_leaf() {}
 
-    size_t wt_node_leaf::rank(uint symbol, size_t pos, uint l, wt_coder * c) const
+    size_t wt_node_leaf::rank(uint *symbol, size_t pos, uint l) const
     {
-        if(symbol!=this->symbol) {
+      /*if(symbol!=this->symbol) {
             return 0;
-        }
-        pos++;
-        return pos;
+	    }*/
+      //pos++;
+        return pos+1;
     }
 
-    size_t wt_node_leaf::select(uint symbol, size_t pos, uint l, wt_coder * c) const
+    size_t wt_node_leaf::select(uint *symbol, size_t pos, uint l) const
     {
-        if(symbol!=this->symbol) return (size_t)-1;
+      //if(symbol!=this->symbol) return (size_t)-1;
         if(pos==0 || pos>count) return (size_t)-1;
         return pos;
     }

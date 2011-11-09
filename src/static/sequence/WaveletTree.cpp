@@ -95,18 +95,25 @@ namespace cds_static
 
     size_t WaveletTree::rank(uint symbol, size_t pos) const
     {
-        return root->rank(am->map(symbol), pos, 0, c);
+      uint * s = c->get_symbol(am->map(symbol));
+        return root->rank(s, pos, 0);
+	delete [] s;
     }
 
     size_t WaveletTree::count(uint s) const
     {
-        return root->rank(am->map(s), length-1, 0, c);
+      uint * s2 = c->get_symbol(am->map(s));
+      size_t ret = root->rank(s2, length-1, 0);
+      delete [] s2;
+      return ret;
     }
 
     size_t WaveletTree::select(uint symbol, size_t pos) const
     {
-        uint ret = root->select(am->map(symbol), pos, 0, c);
-        if(ret==((uint)-1)) return (uint)-1;
+      uint * s = c->get_symbol(am->map(symbol));
+        uint ret = root->select(s, pos, 0);
+        if(ret==((uint)-1)) { delete [] s; return (uint)-1;}
+	delete [] s;
         return ret-1;
     }
 

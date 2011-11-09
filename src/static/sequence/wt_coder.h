@@ -51,6 +51,7 @@ namespace cds_static
             virtual bool is_set(uint symbol, uint l) const=0;
             /** Tells if the path of symbol becomes unique at level l */
             virtual bool done(uint symbol, uint l) const =0;
+	    virtual uint * get_symbol(uint symbol) const = 0;
             /** Returns the size of the coder */
             virtual size_t getSize() const = 0;
             /** Returns the depth of the tree */

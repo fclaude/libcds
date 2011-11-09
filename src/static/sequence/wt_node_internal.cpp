@@ -149,40 +149,40 @@ namespace cds_static
         if(left_child!=NULL) delete left_child;
     }
 
-    size_t wt_node_internal::rank(uint symbol, size_t pos, uint l, wt_coder * c) const
+    size_t wt_node_internal::rank(uint * symbol, size_t pos, uint l) const
     {
-        bool is_set = c->is_set(symbol,l);
+        bool is_set = bitget(symbol,l);
         if(!is_set) {
-            if(left_child==NULL) {
+	  /*if(left_child==NULL) {
                 cout << "symbol1=" << symbol << endl;
                 return 0;
-            }
-            return left_child->rank(symbol, bitmap->rank0(pos)-1,l+1,c);
+		}*/
+            return left_child->rank(symbol, bitmap->rank0(pos)-1,l+1);
         }
         else {
-            if(right_child==NULL) {
+	  /*if(right_child==NULL) {
                 cout << "symbol2=" << symbol << endl;
                 return 0;
-            }
-            return right_child->rank(symbol, bitmap->rank1(pos)-1,l+1,c);
+		}*/
+            return right_child->rank(symbol, bitmap->rank1(pos)-1,l+1);
         }
     }
 
-    size_t wt_node_internal::select(uint symbol, size_t pos, uint l, wt_coder * c) const
+    size_t wt_node_internal::select(uint * symbol, size_t pos, uint l) const
     {
-        bool is_set = c->is_set(symbol, l);
+      bool is_set = bitget(symbol,l); //c->is_set(symbol, l);
         size_t ret = 0;
         if(!is_set) {
-            if(left_child==NULL)
-                return (size_t)(-1);
-            size_t new_pos = left_child->select(symbol, pos, l+1,c);
+	  /*if(left_child==NULL)
+	    return (size_t)(-1);*/
+            size_t new_pos = left_child->select(symbol, pos, l+1);
             if(new_pos+1==0) return (uint)(-1);
             ret = bitmap->select0(new_pos)+1;
         }
         else {
-            if(right_child==NULL)
-                return (size_t)(-1);
-            size_t new_pos = right_child->select(symbol, pos, l+1,c);
+	  /*if(right_child==NULL)
+	    return (size_t)(-1);*/
+            size_t new_pos = right_child->select(symbol, pos, l+1);
             if(new_pos+1==0) return (uint)(-1);
             ret = bitmap->select1(new_pos)+1;
         }
