@@ -335,6 +335,38 @@ namespace cds_static
         return am->unmap(ret);
     }
 
+  uint WaveletTreeNoptrs::access(size_t pos, size_t &r) const
+    {
+        uint level=0;
+        uint ret=0;
+        size_t start=0;
+        size_t end=n-1;
+	size_t before=0;
+        while(level<height) {
+	  if(start==0) before = 0;
+	  else before = bitstring[level]->rank1(start-1);
+            assert(pos>=start && pos<=end);
+	    size_t optR = 0;
+            if(bitstring[level]->access(pos,optR)) {
+                ret=set(ret,level);
+                pos=optR-1-before;
+		r=pos+1;
+                start=(bitstring[level]->rank1(end)-before);
+                start=end-start+1;
+                pos+=start;
+            }
+            else {
+                pos=pos-start-(pos-optR+1-before);
+                end=end-start-(bitstring[level]->rank1(end)-before);
+		r = pos+1;
+                end+=start;
+                pos+=start;
+            }
+            level++;
+        }
+        return am->unmap(ret);
+    }
+
     size_t WaveletTreeNoptrs::rank(uint symbol, size_t pos) const
     {
         symbol = am->map(symbol);

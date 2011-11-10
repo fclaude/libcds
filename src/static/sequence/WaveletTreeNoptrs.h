@@ -67,6 +67,7 @@ namespace cds_static
             virtual size_t rank(uint symbol, size_t pos) const;
             virtual size_t select(uint symbol, size_t j) const;
             virtual uint access(size_t pos) const;
+            virtual uint access(size_t pos, size_t &r) const;
             virtual size_t getSize() const;
 
             /* find the q-th smallest element in T[l..r] */
