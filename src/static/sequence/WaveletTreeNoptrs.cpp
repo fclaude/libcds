@@ -316,15 +316,16 @@ namespace cds_static
 	  if(start==0) before = 0;
 	  else before = bitstring[level]->rank1(start-1);
             assert(pos>=start && pos<=end);
-            if(bitstring[level]->access(pos)) {
+	    size_t optR = 0;
+            if(bitstring[level]->access(pos,optR)) {
                 ret=set(ret,level);
-                pos=bitstring[level]->rank1(pos-1)-before;
+                pos=optR-1-before;
                 start=(bitstring[level]->rank1(end)-before);
                 start=end-start+1;
                 pos+=start;
             }
             else {
-                pos=pos-start-(bitstring[level]->rank1(pos)-before);
+                pos=pos-start-(pos-optR+1-before);
                 end=end-start-(bitstring[level]->rank1(end)-before);
                 end+=start;
                 pos+=start;

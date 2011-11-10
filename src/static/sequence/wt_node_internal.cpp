@@ -192,30 +192,30 @@ namespace cds_static
 
     uint wt_node_internal::access(size_t pos) const
     {
-        bool is_set = bitmap->access(pos);
+      size_t rOpt = 0;
+      bool is_set = bitmap->access(pos,rOpt);
         if(!is_set) {
             assert(left_child!=NULL);
-            return left_child->access(bitmap->rank0(pos)-1);
+            return left_child->access(rOpt-1);
         }
         else {
             assert(right_child!=NULL);
-            return right_child->access(bitmap->rank1(pos)-1);
+            return right_child->access(rOpt-1);
         }
     }
 
     // Returns the value at given position and its rank
     uint wt_node_internal::access(size_t pos, size_t &rankp) const
     {
-        bool is_set = bitmap->access(pos);
+      size_t rOpt = 0;
+      bool is_set = bitmap->access(pos,rOpt);
         if(!is_set) {
             // recurse left
-            pos = bitmap->rank0(pos)-1;
-            return left_child->access(pos, rankp);
+            return left_child->access(rOpt-1, rankp);
         }
         else {
             // recurse right
-            pos = bitmap->rank1(pos)-1;
-            return right_child->access(pos, rankp);
+            return right_child->access(rOpt-1, rankp);
         }
     }
 

@@ -92,6 +92,7 @@ namespace cds_static
 
             /** Returns the i-th bit */
             virtual bool access(const size_t i) const;
+	    virtual bool access(const size_t i, size_t &r) const;
 
             /** Returns the length in bits of the bitmap */
             virtual size_t getLength() const;

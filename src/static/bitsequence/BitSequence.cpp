@@ -114,6 +114,17 @@ namespace cds_static
         return (rank1(i)-(i!=0?rank1(i-1):0))>0;
     }
 
+  bool BitSequence::access(const size_t i, size_t &r) const
+    {
+      r = rank1(i);
+      if(!access(i)) {
+	r = i-r+1;
+	return false;
+      } else {
+	return true;
+      }
+    }
+
     size_t BitSequence::getLength() const
     {
         return length;

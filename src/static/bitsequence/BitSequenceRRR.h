@@ -76,6 +76,8 @@ namespace cds_static
 
             virtual bool access(const size_t i) const;
 
+	    virtual bool access(const size_t i, size_t &r) const;
+
             virtual size_t getSize() const;
 
             virtual void save(ofstream & fp) const;

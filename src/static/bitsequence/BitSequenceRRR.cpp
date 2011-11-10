@@ -130,7 +130,7 @@ namespace cds_static
         }
     }
 
-    bool BitSequenceRRR::access(size_t i) const
+    bool BitSequenceRRR::access(const size_t i) const
     {
         size_t nearest_sampled_value = i/BLOCK_SIZE/sample_rate;
         size_t pos_O = get_field(O_pos,O_pos_field_bits,nearest_sampled_value);
@@ -143,6 +143,51 @@ namespace cds_static
         size_t c = get_field(C,C_field_bits,pos);
         return ((1<<(i%BLOCK_SIZE))&E->short_bitmap(c,get_var_field(O,pos_O,pos_O+E->get_log2binomial(BLOCK_SIZE,c)-1)))!=0;
     }
+
+  bool BitSequenceRRR::access(const size_t i, size_t &r) const
+    {
+        if(i+1==0) return 0;
+        if((uint)(i+1)==0) return 0; // patch for 32-64 bits bad coding, to be removed in the future
+        uint nearest_sampled_value = i/BLOCK_SIZE/sample_rate;
+        uint sum = get_field(C_sampling,C_sampling_field_bits,nearest_sampled_value);
+        uint pos_O = get_field(O_pos,O_pos_field_bits,nearest_sampled_value);
+        uint pos = i/BLOCK_SIZE;
+        uint k=nearest_sampled_value*sample_rate;
+        if(k%2==1 && k<pos) {
+            uint aux = get_field(C,C_field_bits,k);
+            sum += aux;
+            pos_O += E->get_log2binomial(BLOCK_SIZE,aux);
+            k++;
+        }
+        unsigned char * a = (unsigned char *)C;
+        size_t mask = 0x0F;
+        a += k/2;
+        while(k<(uint)max(0,(int)pos-1)) {
+            assert(((*a)&mask)==get_field(C,C_field_bits,k));
+            assert((*a)/16==get_field(C,C_field_bits,k+1));
+            sum += ((*a)&mask)+(*a)/16;
+            pos_O += E->get_log2binomial(BLOCK_SIZE,((*a)&mask))+E->get_log2binomial(BLOCK_SIZE,((*a)/16));
+            a++;
+            k+=2;
+        }
+        if(k<pos) {
+            size_t aux = get_field(C,C_field_bits,k);
+            sum += aux;
+            pos_O += E->get_log2binomial(BLOCK_SIZE,aux);
+            k++;
+        }
+        size_t c = get_field(C,C_field_bits,pos);
+	short v = E->short_bitmap(c,get_var_field(O,pos_O,pos_O+E->get_log2binomial(BLOCK_SIZE,c)-1));
+        sum += popcount(((2<<(i%BLOCK_SIZE))-1) & v);
+	r = sum;
+        if( ((1<<(i%BLOCK_SIZE)) & v) != 0 ) {
+	  return true;
+	} else {
+	  r = i-r+1;
+	  return false;
+	}
+    }
+
 
     size_t BitSequenceRRR::rank0(size_t i) const
     {
