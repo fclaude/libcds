@@ -237,7 +237,9 @@ namespace cds_static
         pairs[sigma+1] = pair<size_t,uint>(0,sigma+1);
         sort(pairs,pairs+sigma+2,greater<pair<size_t,uint> >());
 
-        revPermFreq = new uint[sigma+1];
+        uint * groupForSymb = new uint[sigma+2];
+        revPermFreq = new uint[sigma+2];
+        
         origsigma = sigma;
         sigma = 0;
         while(pairs[sigma].first>0) {
@@ -251,7 +253,6 @@ namespace cds_static
         // Fill alphSortedbyFreq and lengthForSymb
         alphSortedByFreq = new uint[sigma+1];
 
-        uint * groupForSymb = new uint[sigma+1];
 
         // We estimate maxLen, it may be smaller if many symbols have 0 frequency
         maxLen = group(sigma,cut);
