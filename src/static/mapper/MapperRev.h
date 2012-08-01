@@ -36,7 +36,8 @@ using namespace cds_utils;
 namespace cds_static
 {
 
-	/** Mapper that doesn't change the value (identity)
+	/** Mapper that reverses the bits (considering how many bits are required 
+	 *  to represent the maximum value in the sequence)
 	 *
 	 *  @author Francisco Claude
 	 */
