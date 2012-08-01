@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef _WVTREE_NOPTRS_H
-#define _WVTREE_NOPTRS_H
+#ifndef _WVTREE_MATRIX_H
+#define _WVTREE_MATRIX_H
 
 #include <iostream>
 #include <cassert>
@@ -35,56 +35,37 @@ using namespace std;
 namespace cds_static
 {
 
-    class WaveletTreeNoptrs : public Sequence
+    class WaveletMatrix : public Sequence
     {
         public:
 
-            /** Builds a Wavelet Tree for the string stored in a.
-             * @param bmb builder for the bitmaps in each level.
-             * @param am alphabet mapper (we need all symbols to be used).
-             * */
-            WaveletTreeNoptrs(const Array & a, BitSequenceBuilder * bmb, Mapper * am);
             /** Builds a Wavelet Tree for the string
              * pointed by symbols assuming its length
              * equals n and uses bmb to build the bitsequence
              * @param bmb builder for the bitmaps in each level.
              * @param am alphabet mapper (we need all symbols to be used).
              * */
-            WaveletTreeNoptrs(uint * symbols, size_t n, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols = false);
+            WaveletMatrix(uint * symbols, size_t n, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols = false);
+            WaveletMatrix(const Array &symbols2, BitSequenceBuilder * bmb, Mapper * am);
 
             //
-            /** Builds a Wavelet Tree for the string
-             * pointed by symbols is an array of elements of "width" bits and length
-             * n.
-             * @param bmb builder for the bitmaps in each level.
-             * @param am alphabet mapper (we need all symbols to be used).
-             * */
-            WaveletTreeNoptrs(uint * symbols, size_t n, uint width, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols = false);
-
             /** Destroys the Wavelet Tree */
-            virtual ~WaveletTreeNoptrs();
+            virtual ~WaveletMatrix();
 
             virtual size_t rank(uint symbol, size_t pos) const;
             virtual size_t select(uint symbol, size_t j) const;
             virtual uint access(size_t pos) const;
-            virtual uint access(size_t pos, size_t &r) const;
             virtual size_t getSize() const;
 
-            /* find the q-th smallest element in T[l..r] */
-            virtual uint quantile(size_t left,size_t right,uint q);
-
-            /* find the q-th smallest element in T[l..r] and return the freq */
-            pair<uint32_t,size_t> quantile_freq(size_t left,size_t right,uint q);
-
-            virtual size_t count(uint symbol) const;
+            size_t count(uint symbol) const;
 
             virtual void save(ofstream & fp) const;
-            static WaveletTreeNoptrs * load(ifstream & fp);
+            static WaveletMatrix * load(ifstream & fp);
 
         protected:
-            WaveletTreeNoptrs();
+            WaveletMatrix();
 
-            size_t rselect(uint symbol, size_t j, uint level, size_t start, size_t end) const;
+            size_t rselect(uint symbol, size_t j, uint level, size_t pos) const;
             Mapper * am;
             /** Only one bit-string for the Wavelet Tree. */
             BitSequence **bitstring, *occ;
@@ -94,11 +75,11 @@ namespace cds_static
 
             /** Height of the Wavelet Tree. */
             uint height, max_v;
+            uint *C;
 
             /** Obtains the maximum value from the string
              * symbols of length n */
-            uint max_value(uint * symbols, size_t n);
-            uint max_value(uint * symbols, unsigned width, size_t n);
+            uint max_value(uint *symbols, size_t n);
 
             /** How many bits are needed to represent val */
             uint bits(uint val);
@@ -111,8 +92,7 @@ namespace cds_static
             uint set(uint val, uint ind) const;
 
             /** Recursive function for building the Wavelet Tree. */
-            void build_level(uint **bm, uint *symbols, uint level, uint length, uint offset);
-            void build_level(uint **bm, uint *symbols, unsigned width, uint level, uint length, uint offset);
+            void build_level(uint **bm, uint *symbols, uint length, uint *occs);
     };
 };
 #endif

@@ -7,12 +7,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -66,7 +66,7 @@ namespace cds_static {
             tokenize(params[i],res,'=');
             if(res.size()==2)
                 values[res[0]]=res[1];
-            else 
+            else
                 values[params[i]]="";
         }
         #ifdef VERBOSE
@@ -164,6 +164,33 @@ namespace cds_static {
                 return NULL;
             }
             return new SequenceBuilderWaveletTreeNoptrs(bsb,am);
+        } else if(params[0]=="WaveletMatrix") {
+            BitSequenceBuilder * bsb = NULL;
+            if(values.find("bitseq")==values.end()) return NULL;
+            if(values.find("bitsamp")==values.end()) return NULL;
+            uint samp = transform(values["bitsamp"]);
+            if(values["bitseq"]=="BitSequenceRG") {
+                bsb = new BitSequenceBuilderRG(samp);
+            } else if(values["bitseq"]=="BitSequenceRRR") {
+                bsb = new BitSequenceBuilderRRR(samp);
+            } else if(values["bitseq"]=="BitSequenceSDArray") {
+                bsb = new BitSequenceBuilderSDArray();
+            } else if(values["bitseq"]=="BitSequenceDArray") {
+                bsb = new BitSequenceBuilderDArray();
+            } else {
+                return NULL;
+            }
+            if(values.find("mapper")==values.end()) return NULL;
+            Mapper * am = NULL;
+            if(values["mapper"]=="MapperCont") {
+                am = new MapperCont(seq,*bsb);
+            } else if(values["mapper"]=="MapperNone") {
+                am = new MapperNone();
+            } else {
+                delete bsb;
+                return NULL;
+            }
+            return new SequenceBuilderWaveletMatrix(bsb,am);
         } else if(params[0]=="SequenceGMR") {
             BitSequenceBuilder * bsb = NULL;
             if(values.find("bitseq")==values.end()) return NULL;
@@ -242,9 +269,9 @@ namespace cds_static {
             PermutationBuilder * pb = new PermutationBuilderMRRR(permsamp,bsb);
             SequenceBuilder * scb = new SequenceBuilderGMRChunk(bsb,pb);
             SequenceBuilder * sec = new SequenceBuilderGMR(bsb,scb);
-            return new SequenceBuilderAlphPart(fstin,sec,cut); 
+            return new SequenceBuilderAlphPart(fstin,sec,cut);
             //return new SequenceBuilderAlphPart(fstin,fstin,cut);
-        } 
+        }
         return NULL;
     }
 };

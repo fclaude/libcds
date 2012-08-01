@@ -267,7 +267,7 @@ namespace cds_static
         }
         ret->am->use();
         ret->bitstring = new BitSequence*[ret->height];
-        for(uint i=0;i<ret->height;i++) 
+        for(uint i=0;i<ret->height;i++)
             ret->bitstring[i] = NULL;
         for(uint i=0;i<ret->height;i++) {
             ret->bitstring[i] = BitSequence::load(fp);
@@ -400,32 +400,56 @@ namespace cds_static
         return count;
     }
 
+    size_t WaveletTreeNoptrs::rselect(uint symbol, size_t j, uint level, size_t start, size_t end) const {
+        if (is_set(symbol, level)) {
+            size_t before = 0;
+            if (start > 0)
+                before = bitstring[level]->rank1(start - 1);
+            if (level == height - 1)
+                return bitstring[level]->select1(before + j) - start ;
+            size_t after = bitstring[level]->rank1(end);
+            size_t pos = rselect(symbol, j, level + 1, end - after + before + 1, end);
+            // cout << " 1 " << pos << " " << before << " " << bitstring[level]->select1(before + pos + 1) - start << endl;
+            return bitstring[level]->select1(before + pos + 1) - start;
+        } else {
+            size_t before = 0;
+            if (start > 0)
+                before = bitstring[level]->rank0(start - 1);
+            if (level == height - 1)
+                return bitstring[level]->select0(before + j) - start;
+            size_t after = bitstring[level]->rank0(end);
+            size_t pos = rselect(symbol, j, level + 1, start, start + after - before - 1);
+            // cout << " 0 " << pos << endl;
+            return bitstring[level]->select0(before + pos + 1) - start;
+        }
+    }
     size_t WaveletTreeNoptrs::select(uint symbol, size_t j) const
     {
         symbol = am->map(symbol);
-        uint mask = (1<<height)-2;
-        uint sum=2;
-        uint level = height-1;
-        size_t pos=j;
-        while(true) {
-            size_t start = get_start(symbol,mask);
-            size_t end = min((size_t)max_v+1,start+sum);
-            start = (start==0)?0:(occ->select1(start)+1);
-            end = occ->select1(end+1)-1;
-            if(is_set(symbol,level)) {
-                uint ones_start = bitstring[level]->rank1(start-1);
-                pos = bitstring[level]->select1(ones_start+pos)-start+1;
-            }
-            else {
-                uint ones_start = bitstring[level]->rank1(start-1);
-                pos = bitstring[level]->select0(start-ones_start+pos)-start+1;
-            }
-            mask <<=1;
-            sum <<=1;
-            if(level==0) break;
-            level--;
-        }
-        return pos-1;
+        return rselect(symbol, j, 0, 0, n - 1);
+        // uint mask = (1<<height)-2;
+        // uint sum=2;
+        // uint level = height-1;
+        // size_t pos=j;
+        // while(true) {
+        //     size_t start = get_start(symbol,mask);
+        //     size_t end = min((size_t)max_v+1,start+sum);
+        //     start = (start==0)?0:(occ->select1(start)+1);
+        //     end = occ->select1(end+1)-1;
+        //     if(is_set(symbol,level)) {
+        //         uint ones_start = bitstring[level]->rank1(start-1);
+        //         pos = bitstring[level]->select1(ones_start+pos)-start+1;
+        //     }
+        //     else {
+        //         uint ones_start = bitstring[level]->rank1(start-1);
+        //         pos = bitstring[level]->select0(start-ones_start+pos)-start+1;
+        //     }
+        //     mask <<=1;
+        //     sum <<=1;
+        //     if(level==0) break;
+        //     level--;
+        // }
+        // return pos-1;
     }
 
     size_t WaveletTreeNoptrs::getSize() const
@@ -434,7 +458,7 @@ namespace cds_static
         size_t bytesBitstrings = 0;
         for(uint i=0;i<height;i++)
             bytesBitstrings += bitstring[i]->getSize();
-        return bytesBitstrings+occ->getSize()+ptrs;
+        return bytesBitstrings /* +occ->getSize() */ + ptrs;
     }
 
     void WaveletTreeNoptrs::build_level(uint **bm, uint *symbols, uint level, uint length, uint offset) {
@@ -541,7 +565,7 @@ namespace cds_static
 
     pair<uint32_t,size_t> WaveletTreeNoptrs::quantile_freq(size_t left,size_t right,uint q)
     {
-        /* decrease q as the smallest element q=1 is        
+        /* decrease q as the smallest element q=1 is
          * found by searching for 0 */
         q--;
 

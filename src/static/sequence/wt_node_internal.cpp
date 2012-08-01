@@ -98,7 +98,7 @@ namespace cds_static
             uchar swap = symbols[j+left];
                                  // swapping
             while (!get_field(done, 1, j+left)) {
-                ulong k = j;
+                uint k = j;
                 if (!c->is_set(swap,l))
                     j = bitmap->rank0(k)-1;
                 else

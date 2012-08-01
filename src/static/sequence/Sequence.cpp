@@ -20,6 +20,14 @@
 
 #include <Sequence.h>
 
+#include <BitmapsSequence.h>
+#include <WaveletTree.h>
+#include <WaveletTreeNoptrs.h>
+#include <WaveletMatrix.h>
+#include <SequenceGMR.h>
+#include <SequenceGMRChunk.h>
+#include <SequenceAlphPart.h>
+
 namespace cds_static
 {
 
@@ -75,12 +83,13 @@ namespace cds_static
 	size_t pos = fp.tellg();
 	fp.seekg(pos-sizeof(uint),ios::beg);
 	switch(type) {
-	    case GMR_CHUNK_HDR: return SequenceGMRChunk::load(fp);
-	    case GMR_HDR: return SequenceGMR::load(fp);
-	    case BS_HDR: return BitmapsSequence::load(fp);
-	    case WVTREE_HDR: return WaveletTree::load(fp);
-	    case WVTREE_NOPTRS_HDR: return WaveletTreeNoptrs::load(fp);
-	case ALPHPART_HDR: return SequenceAlphPart::load(fp);
+	   case GMR_CHUNK_HDR: return SequenceGMRChunk::load(fp);
+	   case GMR_HDR: return SequenceGMR::load(fp);
+	   case BS_HDR: return BitmapsSequence::load(fp);
+	   case WVTREE_HDR: return WaveletTree::load(fp);
+	   case WVTREE_NOPTRS_HDR: return WaveletTreeNoptrs::load(fp);
+	   case ALPHPART_HDR: return SequenceAlphPart::load(fp);
+       case WVMATRIX_HDR: return WaveletMatrix::load(fp);
 	}
         return NULL;
     }

@@ -41,7 +41,7 @@ namespace cds_static
         } s;
         uint *num;               // first pos of each length (dec), number of each length (enc)
         uint *fst;               // first code (numeric) of each length (dec)
-        ulong total;             // total length to achieve, in bits
+        unsigned long long total;             // total length to achieve, in bits
     } THuff;
 
     /** Creates Huffman encoder given symbols 0..lim with frequencies

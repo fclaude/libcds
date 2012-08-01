@@ -37,6 +37,7 @@ namespace cds_static
     #define GMR_HDR 4
     #define GMR_CHUNK_HDR 5
     #define ALPHPART_HDR 6
+    #define WVMATRIX_HDR 7
 
     /** Sequence base class
      *
@@ -55,7 +56,7 @@ namespace cds_static
             virtual size_t rank(uint c, size_t i) const;
 
             /** Retrieve the i-th position where c appears.
-             * It returns (size_t)-1 if i=0 and length if the number of 
+             * It returns (size_t)-1 if i=0 and length if the number of
              * c's is less than i
              */
             virtual size_t select(uint c, size_t i) const;
@@ -81,7 +82,7 @@ namespace cds_static
              */
             virtual size_t getLength() const { return length; }
 
-            /** Saves the structure to the stream 
+            /** Saves the structure to the stream
              */
             virtual void save(ofstream & fp) const = 0;
 
@@ -99,6 +100,7 @@ namespace cds_static
 #include <BitmapsSequence.h>
 #include <WaveletTree.h>
 #include <WaveletTreeNoptrs.h>
+#include <WaveletMatrix.h>
 #include <SequenceGMR.h>
 #include <SequenceGMRChunk.h>
 #include <SequenceAlphPart.h>

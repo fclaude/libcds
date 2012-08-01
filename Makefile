@@ -1,21 +1,21 @@
 
-CPPFLAGS=-g3 -Wall -O0 
-#-DVERBOSE 
-#CPPFLAGS=-O9 -Wall -DNDEBUG 
+CPPFLAGS=-g3 -Wall -O0
+#-DVERBOSE
+# CPPFLAGS=-O9 -Wall -DNDEBUG
 
-all: clean libcompact tests
+all: libcompact tests
 
 doc:
 	@echo " [DOC] Generating documentation"
 	@doxygen
 
-libcompact: 
+libcompact:
 	@echo " [MSG] Entering directory src"
 	@CPPFLAGS="$(CPPFLAGS)" make --no-print-directory -C src
 
 tests: libcompact
 	@echo " [MSG] Entering directory tests"
-	@CPPFLAGS="$(CPPFLAGS)" make --no-print-directory -C tests 
+	@CPPFLAGS="$(CPPFLAGS)" make --no-print-directory -C tests
 
 clean:
 	@echo " [MSG] Entering directory src"

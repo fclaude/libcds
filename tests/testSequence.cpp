@@ -23,7 +23,12 @@ void testSequence(Array & a, Sequence & bs) {
         count[i] = 0;
     for(size_t i=0;i<a.getLength();i++) {
         count[a[i]]++;
-        for(uint j=a[i];j<=a[i];j++) { 
+        if(a[i]!=seq->access(i)) {
+            cerr << "ERROR ACCESS" << endl;
+            cerr << "Got:" << seq->access(i) << " Expected:" << a[i] << endl;
+            exit(-3);
+        }
+        for(uint j=a[i];j<=a[i];j++) {
             if(seq->rank(j,i)!=count[j]) {
                 cerr << "ERROR RANK " << endl;
                 cerr << " Rank result: " << bs.rank(j,i) << " count=" << count[j] << endl;
@@ -37,10 +42,7 @@ void testSequence(Array & a, Sequence & bs) {
             cerr << "bs.select=" << bs.select(a[i],count[a[i]]) << " i=" << i << endl;
             exit(-2);
         }
-        if(a[i]!=seq->access(i)) {
-            cerr << "ERROR ACCESS" << endl;
-            exit(-3);
-        }
+
     }
     delete seq;
 }
@@ -64,7 +66,7 @@ int main(int argc, char ** argv) {
   for(uint i=0;i<len;i++) {
     a.setField(i,rand()%maxv);
   }
-  
+
   //BitmapsSequence  bs(a,new MapperNone(),new BitSequenceBuilderRRR(33));
   //testSequence(a, bs);
 
@@ -73,12 +75,18 @@ int main(int argc, char ** argv) {
   mapper->use();
   mapper2->use();
   cout << "Test 1 : Wavelet tree with pointers" << endl;
-  WaveletTree wt1(a,new wt_coder_huff(a, mapper),new BitSequenceBuilderRRR(32), mapper);
+  // WaveletTree wt1(a,new wt_coder_binary(a, mapper),new BitSequenceBuilderRRR(32), mapper);
+  WaveletTreeNoptrs wt1(a, new BitSequenceBuilderRRR(32), mapper);
   cout << "bs.size() = " << wt1.getSize() << endl;
   testSequence(a, wt1);
 
   cout << "Test 2 : Wavelet tree without pointers" << endl;
-  WaveletTreeNoptrs wt3(a, new BitSequenceBuilderRRR(32), mapper);
+  // uint *tmp = new uint[a.getLength()];
+  // for (uint i=0; i < a.getLength(); i++)
+  //   tmp[i] = a.getField(i);
+  // WaveletMatrix wt3(tmp, a.getLength(), new BitSequenceBuilderRRR(32), mapper);
+  WaveletMatrix wt3(a, new BitSequenceBuilderRRR(32), mapper);
+  // WaveletTreeNoptrs wt3(tmp, a.getLength(), new BitSequenceBuilderRRR(32), mapper);
   cout << "bs.size() = " << wt3.getSize() << endl;
   testSequence(a, wt3);
   mapper->unuse();

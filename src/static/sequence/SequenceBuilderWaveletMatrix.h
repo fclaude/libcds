@@ -1,4 +1,4 @@
-/*  SequenceBuilder.h
+/*  SequenceBuilderWaveletTreeNoptrs.h
  * Copyright (C) 2010, Francisco Claude, all rights reserved.
  *
  * Francisco Claude <fclaude@cs.uwaterloo.ca>
@@ -20,34 +20,26 @@
 
 #include <libcdsBasics.h>
 
-#include <Sequence.h>
+#include <Mapper.h>
+#include <SequenceBuilder.h>
+#include <BitSequenceBuilder.h>
 
-#ifndef SEQUENCEBUILDER_H
-#define SEQUENCEBUILDER_H
+#ifndef SEQUENCEBUILDERWAVELETMATRIX_H
+#define SEQUENCEBUILDERWAVELETMATRIX_H
 
 namespace cds_static {
-
-    class SequenceBuilder {
+    class SequenceBuilderWaveletMatrix : public SequenceBuilder {
         public:
-            SequenceBuilder() { userCount=0; }
-            virtual ~SequenceBuilder() {}
-            virtual Sequence * build(uint * seq, size_t len)=0;
-            virtual Sequence * build(const Array & seq)=0;
-            virtual void use() { userCount++; }
-            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
+            SequenceBuilderWaveletMatrix(BitSequenceBuilder * bsb, Mapper * am);
+            virtual ~SequenceBuilderWaveletMatrix();
+            virtual Sequence * build(uint * seq, size_t len);
+            virtual Sequence * build(const Array & seq);
 
         protected:
-            int userCount;
+            BitSequenceBuilder * bsb;
+            Mapper * am;
     };
 };
-
-#include <SequenceBuilderWaveletTreeNoptrs.h>
-#include <SequenceBuilderGMRChunk.h>
-#include <SequenceBuilderGMR.h>
-#include <SequenceBuilderAlphPart.h>
-#include <SequenceBuilderWaveletTree.h>
-#include <SequenceBuilderWaveletMatrix.h>
-#include <SequenceBuilderStr.h>
 
 #endif
 
