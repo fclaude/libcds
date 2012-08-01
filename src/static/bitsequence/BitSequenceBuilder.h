@@ -30,26 +30,26 @@ using namespace cds_utils;
 
 namespace cds_static
 {
-    /** Base class for BitSequence builders, it defines the build function
-     * that takes only a bitmap. The parameters for construction are can
-     * be set in any way by the builder, but none are received when
-     * the actual building takes place.
-     *
-     * @author Francisco Claude
-     */
-    class BitSequenceBuilder
-    {
-        public:
-            BitSequenceBuilder() { userCount=0; }
-            ~BitSequenceBuilder() {}
-            virtual void use() { userCount++; }
-            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
-            virtual BitSequence * build(uint * bitseq, size_t len) const = 0;
-            virtual BitSequence * build(const BitString & bs) const = 0;
+	/** Base class for BitSequence builders, it defines the build function
+	 * that takes only a bitmap. The parameters for construction are can
+	 * be set in any way by the builder, but none are received when
+	 * the actual building takes place.
+	 *
+	 * @author Francisco Claude
+	 */
+	class BitSequenceBuilder
+	{
+		public:
+			BitSequenceBuilder() { userCount=0; }
+			~BitSequenceBuilder() {}
+			virtual void use() { userCount++; }
+			virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
+			virtual BitSequence * build(uint * bitseq, size_t len) const = 0;
+			virtual BitSequence * build(const BitString & bs) const = 0;
 
-        protected:
-            int userCount;
-    };
+		protected:
+			int userCount;
+	};
 };
 
 #include <BitSequenceBuilderRG.h>

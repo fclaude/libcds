@@ -33,7 +33,7 @@ namespace cds_static
 
     wt_node_leaf::~wt_node_leaf() {}
 
-    size_t wt_node_leaf::rank(uint *symbol, size_t pos, uint l) const
+    size_t wt_node_leaf::rank(uint *symbol, size_t pos, uint l, wt_coder *c) const
     {
       /*if(symbol!=this->symbol) {
             return 0;
@@ -42,7 +42,7 @@ namespace cds_static
         return pos+1;
     }
 
-    size_t wt_node_leaf::select(uint *symbol, size_t pos, uint l) const
+    size_t wt_node_leaf::select(uint *symbol, size_t pos, uint l, wt_coder *c) const
     {
       //if(symbol!=this->symbol) return (size_t)-1;
         if(pos==0 || pos>count) return (size_t)-1;

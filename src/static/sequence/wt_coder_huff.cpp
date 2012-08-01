@@ -78,6 +78,10 @@ namespace cds_static
         return bitget(buffer,l);
     }
 
+    bool wt_coder_huff::is_set(uint *symbol, uint l) const {
+        return bitget(symbol,l);
+    }
+
     bool wt_coder_huff::done(uint symbol, uint l) const
     {
         uint buffer[maxBuffer];

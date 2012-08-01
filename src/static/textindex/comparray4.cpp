@@ -2,21 +2,20 @@
    Copyright (C) 2005, K. Sadakane, all rights reserved.
 
    This file contains an implementation of CSA.
-   For more information, see 
+   For more information, see
 
    K. Sadakane. Compressed text databases with efficient query
-     algorithms based on the compressed suffix array.
-     In Proceedings 11th Annual International Symposium on Algorithms
-     and Computation (ISAAC)}, LNCS v. 1969, pages 410--421, 2000.
+	 algorithms based on the compressed suffix array.
+	 In Proceedings 11th Annual International Symposium on Algorithms
+	 and Computation (ISAAC)}, LNCS v. 1969, pages 410--421, 2000.
 
-   K. Sadakane. Succinct representations of lcp information and 
-     improvements in the compressed suffix arrays.
-     In Proceedings 13th Annual ACM-SIAM Symposium on Discrete
-     Algorithms (SODA), 2002.
+   K. Sadakane. Succinct representations of lcp information and
+	 improvements in the compressed suffix arrays.
+	 In Proceedings 13th Annual ACM-SIAM Symposium on Discrete
+	 Algorithms (SODA), 2002.
 
    K. Sadakane. New text indexing functionalities of the compressed
-     suffix arrays. Journal of Algorithms, 48(2):294--313, 2003.
-
+	 suffix arrays. Journal of Algorithms, 48(2):294--313, 2003.
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -49,23 +48,22 @@
 #define DD 16
 #define TBLSIZE (1<<DD)
 
-namespace cds_static{
+namespace cds_static
+{
 	int R3[DD][TBLSIZE];
 	int R4[TBLSIZE];
 	int R5[DD][TBLSIZE];
 	int R5n[TBLSIZE],R5b[TBLSIZE],R5x[TBLSIZE];
 	int R6b[TBLSIZE],R6x[TBLSIZE];
 
+	#ifndef min
+	#define min(x,y) ((x)<(y)?(x):(y))
+	#endif
 
-#ifndef min
-#define min(x,y) ((x)<(y)?(x):(y))
-#endif
-
-#define dprintf
+	#define dprintf
 
 	inline
-	int getbitD(unsigned short *B, int i)
-	{
+	int getbitD(unsigned short *B, int i) {
 		int j,l,x;
 		i--;
 		j = i >> 4;
@@ -74,8 +72,7 @@ namespace cds_static{
 		return (x >> (DD-l)) & 0xffff;
 	}
 
-	int getbit(unsigned short *B, int i)
-	{
+	int getbit(unsigned short *B, int i) {
 		int j,l;
 		i--;
 		j = i >> 4;
@@ -83,8 +80,7 @@ namespace cds_static{
 		return (B[j] >> (DD-1-l)) & 1;
 	}
 
-	int setbit(unsigned short *B, int i,int x)
-	{
+	int setbit(unsigned short *B, int i,int x) {
 		int j,l;
 		i--;
 		j = i / DD;
@@ -98,15 +94,15 @@ namespace cds_static{
 		return x;
 	}
 
-	int initranktables(void)
-	{
+	int initranktables(void) {
 		unsigned short B;
 		int i,j,m,r;
 		int b;
-#if DD!=16
+		#if DD!=16
 		error
-#endif
-		for (i = 0; i < TBLSIZE; i++) { /* DD==16 以外では動かない */
+			#endif
+								 /* DD==16 O */
+		for (i = 0; i < TBLSIZE; i++) {
 			B = i;
 			r = 0;
 			for (m = 0; m < DD; m++) {
@@ -117,11 +113,11 @@ namespace cds_static{
 			for (m = 1; m <= DD; m++) {
 				r = 0;
 				for (j = 1; j <= DD; j++) {
-		b = getbit(&B, j);
-		if (b == 1) {
-			r += b;
-			if (r == m) R5[m-1][i] = j-1;
-		}
+					b = getbit(&B, j);
+					if (b == 1) {
+						r += b;
+						if (r == m) R5[m-1][i] = j-1;
+					}
 				}
 			}
 		}
@@ -131,13 +127,12 @@ namespace cds_static{
 			}
 		}
 		R4[0] = DD;
-		
+
 		return 0;
 	}
 
-	int blog(int x)
-	{
-	int l;
+	int blog(int x) {
+		int l;
 		l = 0;
 		while (x>0) {
 			x>>=1;
@@ -146,9 +141,9 @@ namespace cds_static{
 		return l;
 	}
 
-	int encodegamma(unsigned short *B,int p,int x) /* x は1以上 */
-	{
-	int j,w;
+								 /* x 1 */
+	int encodegamma(unsigned short *B,int p,int x) {
+		int j,w;
 		if (x<=0) {
 			fprintf(stderr,"encodegamma %d\n",x);  exit(1);
 		}
@@ -158,16 +153,15 @@ namespace cds_static{
 		return 2*w-1;
 	}
 
-#ifndef DEBUG
+	#ifndef DEBUG
 	inline
-#endif
-	int getzerorun(unsigned short *B,int p)
-	{
+		#endif
+	int getzerorun(unsigned short *B,int p) {
 		int w,w2;
-#if 0
+		#if 0
 		w = 0;
 		while (getbit(B,1+p+w)==0) w++;
-#else
+		#else
 		w = 0;
 		while (1) {
 			w2 = R4[getbitD(B,1+p)];
@@ -175,31 +169,30 @@ namespace cds_static{
 			if (w2 < DD) break;
 			p += DD;
 		}
-#endif
+		#endif
 		return w;
 	}
 
-	int decodegamma(unsigned short *B,int p,int *ans)
-	{
-	int w,x;
-	int w2;
-#if 0
+	int decodegamma(unsigned short *B,int p,int *ans) {
+		int w,x;
+		int w2;
+		#if 0
 		x = getbitD(B,1+p);
 		b = R6b[x];
 		if (b>0) {
 			*ans = R6x[x];
 			return b;
 		}
-#endif
+		#endif
 		w = getzerorun(B,p);
-#if 0
+		#if 0
 		x = 1;
 		for (i=0;i<w;i++) {
 			x <<= 1;
 			x += getbit(B,1+p+w+1+i);
 		}
-#else
-		/* こっちだとpsiをgamma符号にするとダメ */
+		#else
+		/* psigamma_ */
 		p += w+1;
 		x = 1;
 		w2 = w;
@@ -207,17 +200,16 @@ namespace cds_static{
 			x <<= DD;
 			x += getbitD(B,1+p);
 			p += DD;
-			w2 -= DD; /* w を変えてたので return value がおかしかった */
+			w2 -= DD;			 /* w  return value  */
 		}
 		x <<= w2;
 		x += (getbitD(B,1+p)>>(DD-w2));
-#endif
+		#endif
 		*ans = x;
 		return 2*w+1;
 	}
 
-	void mkdecodetable(void)
-	{
+	void mkdecodetable(void) {
 		unsigned short B[256];
 		int i,j,b,b2,d,x;
 
@@ -239,21 +231,21 @@ namespace cds_static{
 	}
 
 	inline
-	int psi_list(CSA *SA,int i)
-	{
+	int psi_list(CSA *SA,int i) {
 		int j,l,r,m;
-#ifdef DEBUG
+		#ifdef DEBUG
 		if (i > SA->n || i < 1) {
 			printf("error psi_get i=%d n=%d\n",i,SA->n);
 			exit(1);
 		}
-#endif
+		#endif
 		l = 1; r = SA->m;
 		while (l < r) {
 			m = (l + r) / 2;
 			if (SA->K[m+1] <= i) {
 				l = m + 1;
-			} else {
+			}
+			else {
 				r = m;
 			}
 		}
@@ -261,8 +253,7 @@ namespace cds_static{
 		return j;
 	}
 
-	void psisort2(int *p,int *I,unsigned char *s,int n)
-	{
+	void psisort2(int *p,int *I,unsigned char *s,int n) {
 		int i,sum;
 		int C[SIGMA];
 		int x,c;
@@ -285,15 +276,13 @@ namespace cds_static{
 		}
 	}
 
-	void writeint(int x,FILE *f)
-	{
+	void writeint(int x,FILE *f) {
 		int tmp;
 		tmp = x;
 		fwrite(&tmp,sizeof(int),1,f);
 	}
 
-	void csa_new(int n, int *p, unsigned char *s, char *fname1, char *fname2, int rankb_w, int rankb_w2)
-	{
+	void csa_new(int n, int *p, unsigned char *s, char *fname1, char *fname2, int rankb_w, int rankb_w2) {
 		int i,v,b,x,b2,d,w,m;
 		int *I,*J;
 		int K[SIGMA+2],C[SIGMA+1],C2[SIGMA+1];
@@ -332,24 +321,25 @@ namespace cds_static{
 
 		psize = isize = 0;
 
-		writeint(n,f2);   /* テキスト長 */
-		writeint(rankb_w2,f2); /* psiを何個おきに格納するか */
-		writeint(rankb_w,f2); /* SAを何個おきに格納するか */
-		writeint((rankb_w*16),f2); /* ISAを何個おきに格納するか */
-		writeint(SIGMA,f2);   /* アルファベットサイズ */
-		writeint(m,f2);   /* 実際に現れた文字の数 */
+		writeint(n,f2);			 /* eLXg */
+		writeint(rankb_w2,f2);	 /* psii[ */
+		writeint(rankb_w,f2);	 /* SAi[ */
+								 /* ISAi[ */
+		writeint((rankb_w*16),f2);
+		writeint(SIGMA,f2);		 /* At@xbgTCY */
+		writeint(m,f2);			 /*  */
 		isize += 6*sizeof(int);
 
 		for (i = 0; i < SIGMA; i++) {
-			writeint(C[i],f2); /* 文字->辞書順 */
+			writeint(C[i],f2);	 /* -> */
 		}
 		isize += SIGMA*sizeof(int);
 		for (i = 1; i <= m+1; i++) {
-			writeint(K[i],f2); /* 現れた文字の累積頻度 */
+			writeint(K[i],f2);	 /* px */
 		}
 		isize += (m+1)*sizeof(int);
 		for (i = 1; i <= m; i++) {
-			writeint(C2[i],f2); /* 文字の順序->文字コード */
+			writeint(C2[i],f2);	 /* ->R[h */
 		}
 		isize += m*sizeof(int);
 
@@ -361,15 +351,16 @@ namespace cds_static{
 
 		psisort2(p,I,s-1,n);
 
-		writeint(-1,f2); /* R[0] */
-		writeint(0,f2); /* P[0] */
+		writeint(-1,f2);		 /* R[0] */
+		writeint(0,f2);			 /* P[0] */
 		isize += 2*sizeof(int);
 
 		x = -1;  b = b2 = 0;
 		for (i=1; i<=n; i++) {
 			if (I[i] < x) {
 				d = (n+65536) - x;
-			} else {
+			}
+			else {
 				d = I[i] - x;
 			}
 			w = ENCODENUM(Btmp,b2,d);
@@ -383,12 +374,15 @@ namespace cds_static{
 			if (I[i] < x) {
 				x = -1;
 				i--;
-			} else {
+			}
+			else {
 				x = I[i];
 				if (i % rankb_w2 == 0) {
-		writeint(I[i],f2); /* R[i / L] */
-		writeint(b,f2);    /* P[i / L] */
-		isize += 2*sizeof(int);
+								 /* R[i / L] */
+					writeint(I[i],f2);
+								 /* P[i / L] */
+					writeint(b,f2);
+					isize += 2*sizeof(int);
 				}
 			}
 		}
@@ -396,8 +390,8 @@ namespace cds_static{
 			fwrite(Btmp,(b2+15) / 16,sizeof(short),f1);
 			psize += ((b2+15)/16)*sizeof(short);
 		};
-		
-		writeint(n+1,f2); /* SA[0] */
+
+		writeint(n+1,f2);		 /* SA[0] */
 		isize += sizeof(int);
 		for (i=rankb_w; i<=n; i+=rankb_w) {
 			writeint(p[i],f2);
@@ -425,22 +419,20 @@ namespace cds_static{
 
 	}
 
-	int readint(FILE *f)
-	{
+	int readint(FILE *f) {
 		int s;
 		int tmp;
 		s=fread(&tmp,sizeof(int),1,f);
 		return tmp;
 	}
 
-	int csa_read(CSA *SA,char *fname1,char *fname2)
-	{
+	int csa_read(CSA *SA,char *fname1,char *fname2) {
 		int i,n,m;
 		FILE *f;
 		int psize,isize;
 		unsigned char *ptr;
 
-#ifndef USE_MMAP
+		#ifndef USE_MMAP
 		f = fopen(fname1,"rb");
 		if (f == NULL) {
 			perror("csa2_read1: ");
@@ -449,14 +441,14 @@ namespace cds_static{
 		fseek(f,0,SEEK_END);
 		psize = ftell(f);
 		fseek(f,0,0);
-		SA->B = malloc(psize+1); 
+		SA->B = malloc(psize+1);
 		if (SA->B == NULL) {
 			perror("csa2_read2: ");
 			exit(1);
 		}
 		fread(SA->B,psize+1,1,f);
 		fclose(f);
-#else
+		#else
 		SA->mapp = mymmap(fname1);
 		if (SA->mapp->addr==NULL) {
 			perror("mmap1\n");
@@ -465,7 +457,7 @@ namespace cds_static{
 		SA->B = (unsigned short *)SA->mapp->addr;
 		SA->p_size = SA->mapp->len;
 		psize = SA->mapp->len;
-#endif
+		#endif
 
 		f = fopen(fname2,"rb");
 		if (f == NULL) {
@@ -475,42 +467,47 @@ namespace cds_static{
 		fseek(f,0,SEEK_END);
 		isize = ftell(f);
 		fseek(f,0,0);
-		SA->n = n = readint(f);   /* テキスト長 */
-		SA->l = readint(f); /* psiを何個おきに格納するか */
-		SA->two = readint(f); /* SAを何個おきに格納するか */
-		SA->two2 = readint(f); /* ISAを何個おきに格納するか */
+		SA->n = n = readint(f);	 /* eLXg */
+		SA->l = readint(f);		 /* psii[ */
+		SA->two = readint(f);	 /* SAi[ */
+		SA->two2 = readint(f);	 /* ISAi[ */
 
-
-		if ((m=readint(f)) != SIGMA) {   /* アルファベットサイズ */
+								 /* At@xbgTCY */
+		if ((m=readint(f)) != SIGMA) {
 			printf("error sigma=%d\n",m);
 		}
-		SA->m = m = readint(f);   /* 実際に現れた文字の数 */
+		SA->m = m = readint(f);	 /*  */
 		isize = 6*sizeof(int);
 
 		for (i = 0; i < SIGMA; i++) {
-			SA->C[i] = readint(f); /* 文字->辞書順 */
+								 /* -> */
+			SA->C[i] = readint(f);
 		}
 		isize += SIGMA*sizeof(int);
 		for (i = 1; i <= m+1; i++) {
-			SA->K[i] = readint(f); /* 現れた文字の累積頻度 */
+								 /* px */
+			SA->K[i] = readint(f);
 		}
 		isize += (m+1)*sizeof(int);
 		for (i = 1; i <= m; i++) {
-			SA->C2[i] = readint(f); /* 文字の順序->文字コード */
+								 /* ->R[h */
+			SA->C2[i] = readint(f);
 		}
 		isize += m*sizeof(int);
 
-#ifndef USE_MMAP
+		#ifndef USE_MMAP
 		SA->R = malloc((n / SA->l + 1)*2*sizeof(int));
 		if (SA->R == NULL) {
 			perror("csa2_read4: ");
 			exit(1);
 		}
 		for (i = 0; i <= n / SA->l; i++) {
-			SA->R[i*2] = readint(f); /* psiの値 */
-			SA->R[i*2+1] = readint(f); /* psiへのポインタ */
+								 /* psil */
+			SA->R[i*2] = readint(f);
+								 /* psi|C^ */
+			SA->R[i*2+1] = readint(f);
 		}
-		
+
 		SA->SA = malloc((n / SA->two + 1)*sizeof(int));
 		if (SA->SA == NULL) {
 			perror("csa2_read6: ");
@@ -528,7 +525,7 @@ namespace cds_static{
 			SA->ISA[i] = readint(f);
 		}
 		fclose(f);
-#else
+		#else
 		fclose(f);
 
 		SA->mapi = mymmap(fname2);
@@ -537,7 +534,7 @@ namespace cds_static{
 			exit(1);
 		}
 		SA->i_size = SA->mapi->len;
-		
+
 		ptr = (unsigned char *)SA->mapi->addr + isize;
 		SA->R = (int *)ptr;
 		isize += (n / SA->l+1)*2*sizeof(int);
@@ -551,20 +548,20 @@ namespace cds_static{
 		ptr = (unsigned char *)SA->mapi->addr + isize;
 		SA->ISA = (int *)ptr;
 		SA->isa_size =(n / SA->two2+1);
-#endif
+		#endif
 		return 0;
 	}
 
-	void csa_init(CSA *SA){
+	void csa_init(CSA *SA) {
 		for(int i=0; i< SIGMA+2; i++)
 			SA->K[i]=0;
-		for(int i=0; i< SIGMA+1; i++){
+		for(int i=0; i< SIGMA+1; i++) {
 			SA->C[i]=0;
 			SA->C2[i]=0;
 		}
 	}
 
-	void csa_save(CSA *SA, ofstream & fp){
+	void csa_save(CSA *SA, ofstream & fp) {
 		saveValue(fp, SA->m);
 		saveValue(fp, SA->two);
 		saveValue(fp, SA->two2);
@@ -573,7 +570,7 @@ namespace cds_static{
 		saveValue(fp, SA->K, (SIGMA+2));
 		saveValue(fp, SA->C, (SIGMA+1));
 		saveValue(fp, SA->C2, (SIGMA+1));
-#ifdef USE_MMAP
+		#ifdef USE_MMAP
 		saveValue(fp, SA->p_size);
 		saveValue(fp, SA->B, SA->p_size);
 		saveValue(fp, SA->i_size);
@@ -583,10 +580,10 @@ namespace cds_static{
 		saveValue(fp, SA->SA, SA->sa_size);
 		saveValue(fp, SA->isa_size);
 		saveValue(fp, SA->ISA, SA->isa_size);
-#endif
+		#endif
 	}
 
-	CSA *csa_load(ifstream & fp){
+	CSA *csa_load(ifstream & fp) {
 		CSA *SA;
 		SA = (CSA *) malloc(sizeof(CSA));
 		csa_init(SA);
@@ -603,51 +600,50 @@ namespace cds_static{
 			SA->C[i] = loadValue<int>(fp);
 		for(int i=0; i<(SIGMA+1); i++)
 			SA->C2[i] = loadValue<int>(fp);
-#ifdef USE_MMAP
+		#ifdef USE_MMAP
 		SA->p_size = loadValue<int>(fp);
 		SA->B = loadValue<unsigned short>(fp, SA->p_size);
 		SA->i_size = loadValue<int>(fp);
 		SA->r_size = loadValue<int>(fp);
 		SA->R = loadValue<int>(fp, SA->r_size);
 		SA->sa_size = loadValue<int>(fp);
-		SA->SA = loadValue<int>(fp, SA->sa_size);							
+		SA->SA = loadValue<int>(fp, SA->sa_size);
 		SA->isa_size = loadValue<int>(fp);
 		SA->ISA = loadValue<int>(fp, SA->isa_size);
 		SA->mapp = NULL;
 		SA->mapi = NULL;
-#endif
+		#endif
 		return SA;
 	}
 
-	void csa_free(CSA *csa){
-#ifdef USE_MMAP
-		if(csa->mapp!=NULL && csa->mapi!=NULL){
+	void csa_free(CSA *csa) {
+		#ifdef USE_MMAP
+		if(csa->mapp!=NULL && csa->mapi!=NULL) {
 			free(csa->mapp);
 			free(csa->mapi);
 		}
-		else{
+		else {
 			delete [] csa->B;
 			delete [] csa->ISA;
 			delete [] csa->R;
 			delete [] csa->SA;
 		}
-#endif
+		#endif
 		free(csa);
 	}
 
 	inline
-	int csa_psi(CSA *SA, int i)
-	{
+	int csa_psi(CSA *SA, int i) {
 		int j,k,b,d,x;
 		int k2,p,n;
 		int l;
 		unsigned short *B;
-#ifdef DEBUG
+		#ifdef DEBUG
 		if (i > SA->n || i < 1) {
 			printf("error csa2_psi i=%d n=%d\n",i,SA->n);
 			exit(1);
 		}
-#endif
+		#endif
 
 		l = SA->l;
 		x = SA->R[(i / l)*2];
@@ -657,7 +653,7 @@ namespace cds_static{
 		n = SA->n;
 		B = SA->B;
 
-#if 0
+		#if 0
 		for (k=0; k<j; k++) {
 			b += DECODENUM(B,b,&d);
 			x += d;
@@ -668,8 +664,8 @@ namespace cds_static{
 			}
 			//printf("k %d j %d b %d \n",k,j,b);
 		}
-#else
-		
+		#else
+
 		k = 0;
 		while (k < j) {
 			p = getbitD(B,1+b);
@@ -679,10 +675,11 @@ namespace cds_static{
 				x += d;
 				k++;
 				if (x > n) {
-		x = -1;
-		k--;
+					x = -1;
+					k--;
 				}
-			} else {
+			}
+			else {
 				if (k+k2 > j) break;
 				k += k2;
 				b += R5b[p];
@@ -698,25 +695,23 @@ namespace cds_static{
 				k--;
 			}
 		}
-#endif
-#ifdef DEBUG
+		#endif
+		#ifdef DEBUG
 		if (x < 0 || x > SA->n) {
 			printf("error csa2_psi(%d) %d\n",i,x);
 		}
-#endif
+		#endif
 		return x;
 	}
 
 	inline
-	int csa_T(CSA *SA,int i)
-	{
+	int csa_T(CSA *SA,int i) {
 		int c;
 		c = psi_list(SA,i);
 		return SA->C2[c];
 	}
 
-	void csa_decode(unsigned char *p,CSA *SA,int suf,int len)
-	{
+	void csa_decode(unsigned char *p,CSA *SA,int suf,int len) {
 		int pos;
 		int i;
 		pos = csa_inverse(SA,suf);
@@ -728,8 +723,7 @@ namespace cds_static{
 		}
 	}
 
-	void csa_decode2(unsigned char *p,CSA *SA,int pos,int len)
-	{
+	void csa_decode2(unsigned char *p,CSA *SA,int pos,int len) {
 		int i;
 		i = 0;
 		while (i < len) {
@@ -739,8 +733,7 @@ namespace cds_static{
 		}
 	}
 
-	void csa_decode1line(unsigned char *p,CSA *SA,int suf,int maxlen)
-	{
+	void csa_decode1line(unsigned char *p,CSA *SA,int suf,int maxlen) {
 		int i,k,m,pos;
 		unsigned char *tmp;
 
@@ -770,8 +763,7 @@ namespace cds_static{
 		free(tmp);
 	}
 
-	void csa_decodeall(unsigned char *p,CSA *SA)
-	{
+	void csa_decodeall(unsigned char *p,CSA *SA) {
 		int *I;
 		int i,n,pos;
 		int x,b,d;
@@ -787,7 +779,8 @@ namespace cds_static{
 			x += d;
 			if (x > n) {
 				x = -1;  i--;
-			} else {
+			}
+			else {
 				I[i] = x;
 			}
 		}
@@ -801,8 +794,7 @@ namespace cds_static{
 		}
 	}
 
-	int csa_lookup(CSA *SA, int i)
-	{
+	int csa_lookup(CSA *SA, int i) {
 		int v,two;
 		v = 0;  two = SA->two;
 		while (i % two !=0) {
@@ -814,8 +806,7 @@ namespace cds_static{
 	}
 
 	int np;
-	int csa_lookup2(CSA *SA, int i)
-	{
+	int csa_lookup2(CSA *SA, int i) {
 		int v,two;
 		v = 0;  two = SA->two;
 		while (i % two !=0) {
@@ -827,11 +818,10 @@ namespace cds_static{
 		return SA->SA[i]-v;
 	}
 
-	int csa_inverse(CSA *SA, int suf)
-	{
+	int csa_inverse(CSA *SA, int suf) {
 		int p,pos;
 		int two2;
-		
+
 		two2 = SA->two2;
 
 		p = ((suf-1)/two2)*two2+1;
@@ -844,8 +834,7 @@ namespace cds_static{
 		return pos;
 	}
 
-	int intcompare(const void *i, const void *j)
-	{
+	int intcompare(const void *i, const void *j) {
 		if (*(int *)i > * (int *)j)
 			return 1;
 		if (*(int *)i < *(int *)j)
@@ -853,8 +842,7 @@ namespace cds_static{
 		return 0;
 	}
 
-	int *csa_batchlookup(CSA *SA,int l, int r)
-	{
+	int *csa_batchlookup(CSA *SA,int l, int r) {
 		int *I;
 		int j;
 		I = (int *)malloc((r-l+1+1)*sizeof(*I));
@@ -866,13 +854,12 @@ namespace cds_static{
 		return I;
 	}
 
-	unsigned long *csa_batchlookup2(CSA *SA,int l, int r)
-	{
-		unsigned long *I; /* 答えを入れる配列 */
-		int *V; /* vを入れる配列 */
-		int *J; /* Iの逆を入れる配列 */
-		int v;  /* 反復の深さ */
-		int m;  /* psiを計算した回数(test用) */
+	unsigned long *csa_batchlookup2(CSA *SA,int l, int r) {
+		unsigned long *I;		 /* z */
+		int *V;					 /* vz */
+		int *J;					 /* Itz */
+		int v;					 /* [ */
+		int m;					 /* psivZ(testp) */
 		int q;
 		int i,j;
 		int two;
@@ -882,7 +869,7 @@ namespace cds_static{
 		two = SA->two;
 		sa = SA->SA;
 
-		I = (unsigned long 	*)malloc((r-l+1)*sizeof(*I));
+		I = (unsigned long  *)malloc((r-l+1)*sizeof(*I));
 		V = (int *)malloc((r-l+1+1)*sizeof(*V));
 		J = (int *)malloc((r-l+1+1)*sizeof(*J));
 
@@ -911,12 +898,12 @@ namespace cds_static{
 			if (I[j-l] != 0) {
 				q = j;
 				while (J[q-l] != -1) {
-		s = I[q-l];
-		i = J[q-l];
-		v = V[i-l];
-		I[i-l] = s - v;
-		J[q-l] = -1;
-		q = i;
+					s = I[q-l];
+					i = J[q-l];
+					v = V[i-l];
+					I[i-l] = s - v;
+					J[q-l] = -1;
+					q = i;
 				}
 			}
 		}
@@ -928,12 +915,11 @@ namespace cds_static{
 		return I;
 	}
 
-	int *csa_batchlookup3(CSA *SA,int l, int r,int len)
-	{
-		int *I; /* 答えを入れる配列 */
-		int *P; /* 途中の i を入れる配列 */
-		int v;  /* 反復の深さ */
-		int m;  /* すでに求まったSAの数 */
+	int *csa_batchlookup3(CSA *SA,int l, int r,int len) {
+		int *I;					 /* z */
+		int *P;					 /* r i z */
+		int v;					 /* [ */
+		int m;					 /* SA */
 		int q;
 		int i,j;
 		int two;
@@ -949,7 +935,7 @@ namespace cds_static{
 
 		I =(int *) malloc((r-l+1+1)*sizeof(*I));
 		P =(int *) malloc((r-l+1+1)*sizeof(*I));
-#if 1
+		#if 1
 		x = SA->R[(l / w)*2];
 		b = SA->R[(l / w)*2+1];
 		j = l % w;
@@ -962,7 +948,8 @@ namespace cds_static{
 			if (i % two == 0) {
 				I[1+m] = sa[i / two];
 				m++;
-			} else {
+			}
+			else {
 				P[q++] = x;
 			}
 			b += DECODENUM(B,b,&d);
@@ -974,21 +961,22 @@ namespace cds_static{
 			}
 		}
 		v = 1;
-#else
+		#else
 		for (q = 0, i = l; i <= r; i++) {
 			P[q++] = i;
 		}
 		v = 0;
 		m = 0;
-#endif
+		#endif
 		while (q > 0 && v <= len) {
 			for (k = 0, j = 0; j < q; j++) {
 				i = P[j];
 				if (i % two == 0) {
-		I[1+m] = sa[i / two] - v;
-		m++;
-				} else {
-		P[k++] = csa_psi(SA,i);
+					I[1+m] = sa[i / two] - v;
+					m++;
+				}
+				else {
+					P[k++] = csa_psi(SA,i);
 				}
 			}
 			q = k;
@@ -1005,8 +993,7 @@ namespace cds_static{
 	}
 
 	/* backward search */
-	int csa_bsearch(unsigned char *key,int keylen,CSA *SA,int *li,int *ri)
-	{
+	int csa_bsearch(unsigned char *key,int keylen,CSA *SA,int *li,int *ri) {
 		int c,h,l,r,m,ll,rr,pl,pr;
 		int x,b,w,d,n,*R;
 		unsigned short *B;
@@ -1022,22 +1009,22 @@ namespace cds_static{
 			c = key[h];
 			r = SA->C[c];  if (c>0) l = SA->C[c-1]+1; else l = 1;
 			if (l > r) goto end;
-#if 0
-			while (1) { // find maximum r such that Psi[r] <= pr
+			#if 0
+			while (1) {			 // find maximum r such that Psi[r] <= pr
 				j = csa_psi(SA,r);
 				if (j <= pr) break;
 				r--;
 				//if (l > r) goto end;
 			}
-#else
-#if 0
+			#else
+			#if 0
 			ll = l;  rr = r;
 			while (ll <= rr) {
 				m = (ll + rr) / 2;
 				if (csa_psi(SA,m) <= pr) ll = m+1; else rr = m-1;
 			}
 			r = ll-1;
-#else
+			#else
 			R = SA->R;  B = SA->B;  w = SA->l;  n = SA->n;
 			ll = l / w + 1;
 			rr = r / w;
@@ -1048,8 +1035,8 @@ namespace cds_static{
 			m = (ll-1)*w;
 			x = R[(m / w)*2];
 			b = R[(m / w)*2+1];
-			
-#if 1
+
+			#if 1
 			while (m < l) {
 				b += DECODENUM(B,b,&d);
 				x += d;
@@ -1057,7 +1044,7 @@ namespace cds_static{
 				if (x > n) {x = -1;  m--;}
 				m++;
 			}
-#endif
+			#endif
 			while (x <= pr && m <= r) {
 				b += DECODENUM(B,b,&d);
 				x += d;
@@ -1065,24 +1052,24 @@ namespace cds_static{
 				m++;
 			}
 			r = m-1;
-#endif
-#endif
-#if 0
-			while (1) { // find minimum l such that Psi[l] >= pl
+			#endif
+			#endif
+			#if 0
+			while (1) {			 // find minimum l such that Psi[l] >= pl
 				j = csa_psi(SA,l);
 				if (j >= pl) break;
 				l++;
 				//if (l > r) goto end;
 			}
-#else
-#if 0
+			#else
+			#if 0
 			ll = l;  rr = r;
 			while (ll <= rr) {
 				m = (ll + rr) / 2;
 				if (csa_psi(SA,m) >= pl) rr = m-1; else ll = m+1;
 			}
 			l = rr+1;
-#else
+			#else
 			//ll = l / w + 1;
 			ll = l / w;
 			rr = r / w;
@@ -1106,15 +1093,14 @@ namespace cds_static{
 				m++;
 			}
 			l = m;
-#endif
-#endif
+			#endif
+			#endif
 			if (l > r) goto end;
 			len++;
 		}
-	 end:
+		end:
 		*li = l;  *ri = r;
 		return len;
 	}
 
 };
-

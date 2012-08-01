@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,11 @@
 
 #include <LCP.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-	class LCP_naive: public LCP{
+	class LCP_naive: public LCP
+	{
 		private:
 			LCP_naive();
 			uint *lcp_array;
@@ -31,26 +33,25 @@ namespace cds_static{
 			size_t  length;
 
 		public:
-		
+
 			LCP_naive(TextIndex *csa, char *text, size_t n);
 
 			/**Return LCP[i]*/
 			virtual size_t get_LCP(size_t i, TextIndex *csa) const;
-			
-			 /**Return LCP[i], being faster if sequential acceses to the LCP had been done*/
+
+			/**Return LCP[i], being faster if sequential acceses to the LCP had been done*/
 			virtual size_t get_seq_LCP(size_t i, TextIndex *csa, size_t **next_pos, size_t *n_next, bool dir) const;
-			
+
 			/** Returns the size of the structure in bytes */
 			virtual  size_t getSize() const;
-			
+
 			/** Stores the structure given a file pointer, return 0 in case of success */
 			virtual void save(ofstream & fp) const;
 
 			/** Reads a LCP determining the type */
 			static LCP_naive * load(ifstream & fp);
-		
+
 			virtual ~LCP_naive();
 	};
 };
-
 #endif

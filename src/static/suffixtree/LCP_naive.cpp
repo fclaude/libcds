@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,25 +16,25 @@
  *
  */
 
-
 #include <LCP_naive.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-	LCP_naive::LCP_naive(){
+	LCP_naive::LCP_naive() {
 		lcp_array = NULL;
 		length = b = 0;
 	}
 
 	/*Compute LCP by brute force using nlog(n) bits */
 
-	LCP_naive::LCP_naive(TextIndex *csa, char *text, size_t n){
+	LCP_naive::LCP_naive(TextIndex *csa, char *text, size_t n) {
 		length =n;
 		size_t prev, act, val;
 		b = bits(length-1);
 		long long nb = 1;
 		nb = (nb*b*n+W-1)/W;
-		if(nb > MAXINT){
+		if(nb > MAXINT) {
 			cout << "Memory limit excess (in LCP)" << endl;
 			exit(1);
 		}
@@ -44,7 +44,7 @@ namespace cds_static{
 		set_field_64(lcp_array, b, 0, 0);
 		val = csa->getSA(0);
 		prev = n - val;
-		for(size_t i=1; i < length; i++){
+		for(size_t i=1; i < length; i++) {
 			val = csa->getSA(i);
 			act = n - val;
 			set_field_64(lcp_array, b, i, lcp_length(text, n-prev, val, min(prev,act)));
@@ -52,22 +52,24 @@ namespace cds_static{
 		}
 	}
 
-
-	size_t LCP_naive::get_LCP(size_t i, TextIndex *csa) const{
+	size_t LCP_naive::get_LCP(size_t i, TextIndex *csa) const
+	{
 		return  get_field_64(lcp_array, b, i);
 	}
 
-	size_t LCP_naive::get_seq_LCP(size_t i, TextIndex *csa, size_t **next_pos, size_t *n_next, bool dir) const{
+	size_t LCP_naive::get_seq_LCP(size_t i, TextIndex *csa, size_t **next_pos, size_t *n_next, bool dir) const
+	{
 		return get_LCP(i,csa);
 	}
 
-	size_t LCP_naive::getSize() const{
+	size_t LCP_naive::getSize() const
+	{
 		size_t result = ((b*length+W-1)/W)*sizeof(size_t);
 		return result + sizeof(LCP_naive);
 	}
 
-
-	void LCP_naive::save(ofstream & fp) const{
+	void LCP_naive::save(ofstream & fp) const
+	{
 		size_t wr = NAIVE;
 		saveValue(fp,wr);
 		saveValue(fp,length);
@@ -75,7 +77,7 @@ namespace cds_static{
 		saveValue(fp, lcp_array, ((b*length+W-1)/W));
 	}
 
-	LCP_naive* LCP_naive::load(ifstream & fp){
+	LCP_naive* LCP_naive::load(ifstream & fp) {
 		LCP_naive *lcp = new LCP_naive();
 		size_t type = loadValue<size_t>(fp);
 		if(type!=NAIVE) {
@@ -87,10 +89,9 @@ namespace cds_static{
 		return lcp;
 	}
 
-	LCP_naive::~LCP_naive(){
-		if(lcp_array!=NULL){
+	LCP_naive::~LCP_naive() {
+		if(lcp_array!=NULL) {
 			delete [] lcp_array;
 		}
 	}
 };
-

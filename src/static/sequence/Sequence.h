@@ -31,69 +31,70 @@ using namespace std;
 namespace cds_static
 {
 
-    #define BS_HDR 1
-    #define WVTREE_HDR 2
-    #define WVTREE_NOPTRS_HDR 3
-    #define GMR_HDR 4
-    #define GMR_CHUNK_HDR 5
-    #define ALPHPART_HDR 6
-    #define WVMATRIX_HDR 7
+	#define BS_HDR 1
+	#define WVTREE_HDR 2
+	#define WVTREE_NOPTRS_HDR 3
+	#define GMR_HDR 4
+	#define GMR_CHUNK_HDR 5
+	#define ALPHPART_HDR 6
+	#define WVMATRIX_HDR 7
+	#define WVTREE_NOPTRSS_HDR 8
 
-    /** Sequence base class
-     *
-     *  @author Francisco Claude
-     */
-    class Sequence
-    {
+	/** Sequence base class
+	 *
+	 *  @author Francisco Claude
+	 */
+	class Sequence
+	{
 
-        public:
-            /** Builds and sets the length */
-            Sequence(size_t length);
-            virtual ~Sequence() {}
+		public:
+			/** Builds and sets the length */
+			Sequence(size_t length);
+			virtual ~Sequence() {}
 
-            /** Count the number of occurrences of c up to position i included
-             */
-            virtual size_t rank(uint c, size_t i) const;
+			/** Count the number of occurrences of c up to position i included
+			 */
+			virtual size_t rank(uint c, size_t i) const;
 
-            /** Retrieve the i-th position where c appears.
-             * It returns (size_t)-1 if i=0 and length if the number of
-             * c's is less than i
-             */
-            virtual size_t select(uint c, size_t i) const;
+			/** Retrieve the i-th position where c appears.
+			 * It returns (size_t)-1 if i=0 and length if the number of
+			 * c's is less than i
+			 */
+			virtual size_t select(uint c, size_t i) const;
 
-            /** Retrieves the next occurrence of a c starting at position i (included).
-             * It return length if there are no occurrences of c after position i.
-             */
-            virtual size_t selectNext(uint c, size_t i) const;
+			/** Retrieves the next occurrence of a c starting at position i (included).
+			 * It return length if there are no occurrences of c after position i.
+			 */
+			virtual size_t selectNext(uint c, size_t i) const;
 
-            /** Retrieve the symbol at position i.
-             */
-            virtual uint access(size_t i) const;
+			/** Retrieve the symbol at position i.
+			 */
+			virtual uint access(size_t i) const;
 
-            /** Retrieve the symbol at position i and its rank.
-             */
-            virtual uint access(size_t i, size_t & r) const;
+			/** Retrieve the symbol at position i and its rank.
+			 */
+			virtual uint access(size_t i, size_t & r) const;
 
-            /** Size of the structure in bytes.
-             */
-            virtual size_t getSize() const = 0;
+			/** Size of the structure in bytes.
+			 */
+			virtual size_t getSize() const = 0;
 
-            /** Length of the sequence.
-             */
-            virtual size_t getLength() const { return length; }
+			/** Length of the sequence.
+			 */
+			virtual size_t getLength() const { return length; }
 
-            /** Saves the structure to the stream
-             */
-            virtual void save(ofstream & fp) const = 0;
+			/** Saves the structure to the stream
+			 */
+			virtual void save(ofstream & fp) const = 0;
 
-            /** Reads a bitmap determining the type */
-            static Sequence * load(ifstream & fp);
+			/** Reads a bitmap determining the type */
+			static Sequence * load(ifstream & fp);
 
-        protected:
-            size_t length;
-            uint sigma;
+		protected:
+			size_t length;
+			uint sigma;
 
-    };
+	};
 
 };
 
@@ -104,6 +105,7 @@ namespace cds_static
 #include <SequenceGMR.h>
 #include <SequenceGMRChunk.h>
 #include <SequenceAlphPart.h>
+#include <WaveletTreeNoptrsS.h>
 
 #include <SequenceBuilder.h>
-#endif                           /* _SEQUENCE_H */
+#endif							 /* _SEQUENCE_H */

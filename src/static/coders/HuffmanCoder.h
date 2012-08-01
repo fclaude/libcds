@@ -31,47 +31,47 @@ using namespace cds_utils;
 namespace cds_static
 {
 
-    #define HUFF_HDR 1
+	#define HUFF_HDR 1
 
-    /** Wrapper for the canonical huffman implementation of Gonzalo Navarro.
-     *
-     *  @author Francisco Claude
-     */
-    class HuffmanCoder : public Coder
-    {
+	/** Wrapper for the canonical huffman implementation of Gonzalo Navarro.
+	 *
+	 *  @author Francisco Claude
+	 */
+	class HuffmanCoder : public Coder
+	{
 
-        public:
-            /** Creates the codes for the sequence seq of length n */
-            HuffmanCoder(uint * seq, size_t n);
-            HuffmanCoder(uchar * seq, size_t n);
-            HuffmanCoder(Array & seq);
+		public:
+			/** Creates the codes for the sequence seq of length n */
+			HuffmanCoder(uint * seq, size_t n);
+			HuffmanCoder(uchar * seq, size_t n);
+			HuffmanCoder(Array & seq);
 
-            virtual ~HuffmanCoder();
+			virtual ~HuffmanCoder();
 
-            /** Encodes symb into stream at bit-position pos,
-             * returns the ending position (bits) */
-            virtual size_t encode(uint symb, uint * stream, size_t pos) const;
+			/** Encodes symb into stream at bit-position pos,
+			 * returns the ending position (bits) */
+			virtual size_t encode(uint symb, uint * stream, size_t pos) const;
 
-            /** decodes into symb from stream at bit-position
-             * pos, returns the new position */
-            virtual size_t decode(uint * symb, uint * stream, size_t pos) const;
+			/** decodes into symb from stream at bit-position
+			 * pos, returns the new position */
+			virtual size_t decode(uint * symb, uint * stream, size_t pos) const;
 
-            /** Returns the maximum length of a code */
-            virtual size_t maxLength() const;
+			/** Returns the maximum length of a code */
+			virtual size_t maxLength() const;
 
-            /** Returns the size of the table */
-            virtual size_t getSize() const;
+			/** Returns the size of the table */
+			virtual size_t getSize() const;
 
-            /** Saves the coder to a file */
-            virtual void save(ofstream & fp) const;
+			/** Saves the coder to a file */
+			virtual void save(ofstream & fp) const;
 
-            /** Loads a coder from a file */
-            static HuffmanCoder * load(ifstream & fp);
+			/** Loads a coder from a file */
+			static HuffmanCoder * load(ifstream & fp);
 
-        protected:
-            HuffmanCoder();
-            THuff huff_table;
-    };
+		protected:
+			HuffmanCoder();
+			THuff huff_table;
+	};
 
 };
 #endif

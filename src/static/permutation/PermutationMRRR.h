@@ -28,30 +28,31 @@
 
 using namespace cds_utils;
 
-namespace cds_static {
+namespace cds_static
+{
 
-/** Wrapper for Diego Arroyuelo's implementation of Munro et al.'s permutations.
- *  @author Francisco Claude
- */
-class PermutationMRRR : public Permutation {
-  public:
-    PermutationMRRR(uint * elems, uint nelems, uint t, BitSequenceBuilder * bmb);
-    virtual ~PermutationMRRR();
-    /** Computes the i-th element of the permutation */
-    virtual uint pi(uint i) const;
-    /** Computes the inverse of i */
-    virtual uint revpi(uint i) const;
-    /** Saves the permutation to fp, returns 0 in case of success */
-    virtual void save(ofstream & fp) const;
-    /** Returns the size of the permutation */
-    virtual size_t getSize() const;
-    /** Loads a static_permutation from fp */
-    static PermutationMRRR * load(ifstream & fp);
-  protected:
-    perm permutation;
-    PermutationMRRR();
+	/** Wrapper for Diego Arroyuelo's implementation of Munro et al.'s permutations.
+	 *  @author Francisco Claude
+	 */
+	class PermutationMRRR : public Permutation
+	{
+		public:
+			PermutationMRRR(uint * elems, uint nelems, uint t, BitSequenceBuilder * bmb);
+			virtual ~PermutationMRRR();
+			/** Computes the i-th element of the permutation */
+			virtual uint pi(uint i) const;
+			/** Computes the inverse of i */
+			virtual uint revpi(uint i) const;
+			/** Saves the permutation to fp, returns 0 in case of success */
+			virtual void save(ofstream & fp) const;
+			/** Returns the size of the permutation */
+			virtual size_t getSize() const;
+			/** Loads a static_permutation from fp */
+			static PermutationMRRR * load(ifstream & fp);
+		protected:
+			perm permutation;
+			PermutationMRRR();
+	};
+
 };
-
-};
-
 #endif

@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,8 @@
  *
  */
 
-
 #ifndef _LCP_H
-#define	_LCP_H
+#define _LCP_H
 
 #include <iostream>
 #include <libcdsTrees.h>
@@ -27,8 +26,9 @@
 using namespace std;
 using namespace cds_utils;
 
-namespace cds_static{
-	
+namespace cds_static
+{
+
 	static const size_t NAIVE = 2;
 	static const size_t SAD_GON_OS = 3;
 	static const size_t FMN_RRR_OS = 4;
@@ -36,14 +36,15 @@ namespace cds_static{
 	static const size_t PHI = 6;
 	static const size_t DAC = 7;
 	static const size_t DAC_VAR = 8;
-	
+
 	/** Base class for LCP, contains many abstract functions, so this can't
-	 * be instantiated.	
-	 * @author Rodrigo Cánovas
+	 * be instantiated.
+	 * @author Rodrigo Cnovas
 	 */
-	class LCP{
+	class LCP
+	{
 		public:
-		  size_t lcp_type;
+			size_t lcp_type;
 
 			virtual ~LCP() {};
 
@@ -62,7 +63,7 @@ namespace cds_static{
 			 * @param n The length of the text
 			 * @param q Sample interval*/
 			virtual  uint * create_lcp(TextIndex *csa, char *text, uint n, int q) const;
-			
+
 			/** Stores the structure given a file pointer*/
 			virtual void save(ofstream & fp) const=0;
 
@@ -71,7 +72,6 @@ namespace cds_static{
 	};
 };
 
-
 #include <LCP_naive.h>
 #include <LCP_Sad.h>
 #include <LCP_FMN.h>
@@ -79,6 +79,4 @@ namespace cds_static{
 #include <LCP_PhiSpare.h>
 #include <LCP_DAC.h>
 #include <LCP_DAC_VAR.h>
-
 #endif
-

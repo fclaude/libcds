@@ -57,6 +57,11 @@ namespace cds_static
         return false;
     }
 
+    bool wt_coder_binary::is_set(uint *symbol, uint l) const {
+        if(bitget(symbol, h - l - 1)) return true;
+        return false;
+    }
+
   uint * wt_coder_binary::get_symbol(uint symbol) const {
     uint * ret = new uint[1];
     *ret = symbol;

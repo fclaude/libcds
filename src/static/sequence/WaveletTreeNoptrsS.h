@@ -46,7 +46,7 @@ namespace cds_static
              * @param am alphabet mapper (we need all symbols to be used).
              * */
             WaveletTreeNoptrsS(uint * symbols, size_t n, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols = false);
-
+            WaveletTreeNoptrsS(const Array &symb, BitSequenceBuilder * bmb, Mapper * am);
             //
             /** Destroys the Wavelet Tree */
             virtual ~WaveletTreeNoptrsS();

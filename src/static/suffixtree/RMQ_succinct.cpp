@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,10 +16,10 @@
  *
  */
 
-
 #include <RMQ_succinct.h>
 
-namespace cds_static{
+namespace cds_static
+{
 	const unsigned int RMQ_succinct::Catalan[17][17] = {
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16},
@@ -84,7 +84,7 @@ namespace cds_static{
 		7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
 	};
 
-	RMQ_succinct::RMQ_succinct(){
+	RMQ_succinct::RMQ_succinct() {
 		a = NULL;
 		n = 0;
 		M = NULL;
@@ -102,12 +102,13 @@ namespace cds_static{
 	}
 
 	unsigned int RMQ_succinct::log2fast(unsigned int v) {
-		unsigned int c = 0;          // c will be lg(v)
-		register unsigned int t, tt; // temporaries
+		unsigned int c = 0;		 // c will be lg(v)
+								 // temporaries
+		register unsigned int t, tt;
 
 		if ((tt = v >> 16))
 			c = (t = v >> 24) ? 24 + LogTable256[t] : 16 + LogTable256[tt & 0xFF];
-		else 
+		else
 			c = (t = v >> 8) ? 8 + LogTable256[t] : LogTable256[v];
 		return c;
 	}
@@ -119,81 +120,113 @@ namespace cds_static{
 	}
 
 	unsigned int RMQ_succinct::query(unsigned int i, unsigned int j) {
-		unsigned int mb_i = microblock(i);     // i's microblock
-		unsigned int mb_j = microblock(j);     // j's microblock
-		unsigned int min, min_i, min_j; 		// min: to be returned
-		unsigned int s_mi = mb_i * s;           // start of i's microblock
-		unsigned int i_pos = i - s_mi;          // pos. of i in its microblock
+								 // i's microblock
+		unsigned int mb_i = microblock(i);
+								 // j's microblock
+		unsigned int mb_j = microblock(j);
+								 // min: to be returned
+		unsigned int min, min_i, min_j;
+								 // start of i's microblock
+		unsigned int s_mi = mb_i * s;
+								 // pos. of i in its microblock
+		unsigned int i_pos = i - s_mi;
 
-		if (mb_i == mb_j) { // only one microblock-query
+		if (mb_i == mb_j) {		 // only one microblock-query
 			min_i = clearbits(Prec[type[mb_i]][j-s_mi], i_pos);
 			min = min_i == 0 ? j : s_mi + lsb(min_i);
 		}
 		else {
-			unsigned int b_i = block(i);      // i's block
-			unsigned int b_j = block(j);      // j's block
-			unsigned int s_mj = mb_j * s;     // start of j's microblock
-			unsigned int j_pos = j - s_mj;    // position of j in its microblock
+								 // i's block
+			unsigned int b_i = block(i);
+								 // j's block
+			unsigned int b_j = block(j);
+								 // start of j's microblock
+			unsigned int s_mj = mb_j * s;
+								 // position of j in its microblock
+			unsigned int j_pos = j - s_mj;
 			min_i = clearbits(Prec[type[mb_i]][s-1], i_pos);
-			min = min_i == 0 ? s_mi + s - 1 : s_mi + lsb(min_i); // left in-microblock-query
+								 // left in-microblock-query
+			min = min_i == 0 ? s_mi + s - 1 : s_mi + lsb(min_i);
 			min_j = Prec[type[mb_j]][j_pos] == 0 ?
-				j : s_mj + lsb(Prec[type[mb_j]][j_pos]);         // right in-microblock-query
+								 // right in-microblock-query
+				j : s_mj + lsb(Prec[type[mb_j]][j_pos]);
 			if (a[min_j] < a[min]) min = min_j;
 
-			if (mb_j > mb_i + 1) { // otherwise we're done!
-				unsigned int s_bi = b_i * sprime;      // start of block i
-				unsigned int s_bj = b_j * sprime;      // start of block j
-				if (s_bi+s > i) { // do another microblock-query!
-					mb_i++; // go one microblock to the right
+								 // otherwise we're done!
+			if (mb_j > mb_i + 1) {
+								 // start of block i
+				unsigned int s_bi = b_i * sprime;
+								 // start of block j
+				unsigned int s_bj = b_j * sprime;
+								 // do another microblock-query!
+				if (s_bi+s > i) {
+					mb_i++;		 // go one microblock to the right
 					min_i = Prec[type[mb_i]][s-1] == 0 ?
-						s_bi + sprime - 1 : s_mi + s + lsb(Prec[type[mb_i]][s-1]); // right in-block-query
+								 // right in-block-query
+						s_bi + sprime - 1 : s_mi + s + lsb(Prec[type[mb_i]][s-1]);
 					if (a[min_i] < a[min]) min = min_i;
 				}
-				if (j >= s_bj+s) { // and yet another microblock-query!
-					mb_j--; // go one microblock to the left
+								 // and yet another microblock-query!
+				if (j >= s_bj+s) {
+					mb_j--;		 // go one microblock to the left
 					min_j = Prec[type[mb_j]][s-1] == 0 ?
-						s_mj - 1 : s_bj + lsb(Prec[type[mb_j]][s-1]); // right in-block-query
+								 // right in-block-query
+						s_mj - 1 : s_bj + lsb(Prec[type[mb_j]][s-1]);
 					if (a[min_j] < a[min]) min = min_j;
 				}
 
 				unsigned int block_difference = b_j - b_i;
-				if (block_difference > 1) { // otherwise we're done!
-					unsigned int k, twotothek, block_tmp;  // for index calculations in M and M'
-					b_i++; // block where out-of-block-query starts
-					if (s_bj - s_bi - sprime <= sprimeprime) { // just one out-of-block-query
+								 // otherwise we're done!
+				if (block_difference > 1) {
+								 // for index calculations in M and M'
+					unsigned int k, twotothek, block_tmp;
+					b_i++;		 // block where out-of-block-query starts
+								 // just one out-of-block-query
+					if (s_bj - s_bi - sprime <= sprimeprime) {
 						k = log2fast(block_difference - 2);
-						twotothek = 1 << k; // 2^k
+								 // 2^k
+						twotothek = 1 << k;
 						i = m(k, b_i); j = m(k, b_j-twotothek);
 						min_i = a[i] <= a[j] ? i : j;
 					}
-					else { // here we have to answer a superblock-query:
-						unsigned int sb_i = superblock(i); // i's superblock
-						unsigned int sb_j = superblock(j); // j's superblock
+					else {		 // here we have to answer a superblock-query:
+								 // i's superblock
+						unsigned int sb_i = superblock(i);
+								 // j's superblock
+						unsigned int sb_j = superblock(j);
 
-						block_tmp = block((sb_i+1)*sprimeprime); // end of left out-of-block-query
+								 // end of left out-of-block-query
+						block_tmp = block((sb_i+1)*sprimeprime);
 						k = log2fast(block_tmp - b_i);
-						twotothek = 1 << k; // 2^k
+								 // 2^k
+						twotothek = 1 << k;
 						i = m(k, b_i); j = m(k, block_tmp+1-twotothek);
 						min_i = a[i] <= a[j] ? i : j;
 
-						block_tmp = block(sb_j*sprimeprime); // start of right out-of-block-query
+								 // start of right out-of-block-query
+						block_tmp = block(sb_j*sprimeprime);
 						k = log2fast(b_j - block_tmp);
-						twotothek = 1 << k; // 2^k
-						block_tmp--; // going one block to the left doesn't harm and saves some tests
+								 // 2^k
+						twotothek = 1 << k;
+								 // going one block to the left doesn't harm and saves some tests
+						block_tmp--;
 						i = m(k, block_tmp); j = m(k, b_j-twotothek);
 						min_j = a[i] <= a[j] ? i : j;
 
 						if (a[min_j] < a[min_i]) min_i = min_j;
 
-						if (sb_j > sb_i + 1) { // finally, the superblock-query:
+								 // finally, the superblock-query:
+						if (sb_j > sb_i + 1) {
 							k = log2fast(sb_j - sb_i - 2);
 							twotothek = 1 << k;
 							i = Mprime[k][sb_i+1]; j = Mprime[k][sb_j-twotothek];
 							min_j = a[i] <= a[j] ? i : j;
-							if (a[min_j] < a[min_i]) min_i = min_j; // does NOT always return leftmost min!!!
+								 // does NOT always return leftmost min!!!
+							if (a[min_j] < a[min_i]) min_i = min_j;
 						}
 					}
-					if (a[min_i] < a[min]) min = min_i; // does NOT always return leftmost min!!!
+								 // does NOT always return leftmost min!!!
+					if (a[min_i] < a[min]) min = min_i;
 				}
 			}
 		}
@@ -207,18 +240,18 @@ namespace cds_static{
 	RMQ_succinct::RMQ_succinct(int* a, unsigned int n) {
 		this->a = a;
 		this->n = n;
-		s = 1 << 3;	             // microblock-size
-		sprime = 1 << 4;         // block-size
+		s = 1 << 3;				 // microblock-size
+		sprime = 1 << 4;		 // block-size
 		sprimeprime = 1 << 8;	 // superblock-size
-		nb = block(n-1)+1;       // number of blocks
+		nb = block(n-1)+1;		 // number of blocks
 		nsb = superblock(n-1)+1; // number of superblocks
 		nmb = microblock(n-1)+1; // number of microblocks
 
 		// The following is necessary because we've fixed s, s' and s'' according to the computer's
 		// word size and NOT according to the input size. This may cause the (super-)block-size
 		// to be too big, or, in other words, the array too small. If this code is compiled on
-		// a 32-bit computer, this happens iff n < 113. For such small instances it isn't 
-		// advisable anyway to use this data structure, because simpler methods are faster and 
+		// a 32-bit computer, this happens iff n < 113. For such small instances it isn't
+		// advisable anyway to use this data structure, because simpler methods are faster and
 		// less space consuming.
 		if (nb<sprimeprime/(2*sprime)) { cerr << "Array too small...exit\n"; exit(-1); }
 		// Type-calculation for the microblocks and pre-computation of in-microblock-queries:
@@ -228,39 +261,41 @@ namespace cds_static{
 			Prec[i] = new DTsucc[s];
 			for(unsigned int j=0; j<s;j++)
 				Prec[i][j]=0;
-			Prec[i][0] = 1; // init with impossible value
+			Prec[i][0] = 1;		 // init with impossible value
 		}
 
-		int* rp = new int[s+1];   // rp: rightmost path in Cart. tree
-		unsigned int z = 0;            // index in array a
-		unsigned int start;            // start of current block
-		unsigned int end;              // end of current block
-		unsigned int q;                // position in Catalan triangle
-		unsigned int p;                // --------- " ----------------
-		rp[0] = minus_infinity; // stopper (minus infinity)
+		int* rp = new int[s+1];	 // rp: rightmost path in Cart. tree
+		unsigned int z = 0;		 // index in array a
+		unsigned int start;		 // start of current block
+		unsigned int end;		 // end of current block
+		unsigned int q;			 // position in Catalan triangle
+		unsigned int p;			 // --------- " ----------------
+		rp[0] = minus_infinity;	 // stopper (minus infinity)
 
-		// prec[i]: the jth bit is 1 iff j is 1. pos. to the left of i where a[j] < a[i] 
+		// prec[i]: the jth bit is 1 iff j is 1. pos. to the left of i where a[j] < a[i]
 		unsigned int* gstack = new unsigned int[s];
 		unsigned int gstacksize;
-		unsigned int g; // first position to the left of i where a[g[i]] < a[i]
+		unsigned int g;			 // first position to the left of i where a[g[i]] < a[i]
 
-		for (unsigned int i = 0; i < nmb; i++) { // step through microblocks
-			start = z;            // init start
-			end = start + s;      // end of block (not inclusive!)
-			if (end > n) end = n; // last block could be smaller than s!
+								 // step through microblocks
+		for (unsigned int i = 0; i < nmb; i++) {
+			start = z;			 // init start
+			end = start + s;	 // end of block (not inclusive!)
+			if (end > n) end = n;// last block could be smaller than s!
 			// compute block type as in Fischer/Heun CPM'06:
-			q = s;        // init q
-			p = s-1;      // init p
-			type[i] = 0;  // init type (will be increased!)
-			rp[1] = a[z]; // init rightmost path
+			q = s;				 // init q
+			p = s-1;			 // init p
+			type[i] = 0;		 // init type (will be increased!)
+			rp[1] = a[z];		 // init rightmost path
 
-			while (++z < end) {   // step through current block:
+			while (++z < end) {	 // step through current block:
 				p--;
 				while (rp[q-p-1] > a[z]) {
-					type[i] += Catalan[p][q]; // update type
+								 // update type
+					type[i] += Catalan[p][q];
 					q--;
 				}
-				rp[q-p] = a[z]; // add last element to rightmost path
+				rp[q-p] = a[z];	 // add last element to rightmost path
 			}
 
 			// precompute in-block-queries for this microblock (if necessary)
@@ -293,53 +328,63 @@ namespace cds_static{
 		Mprime[0] = new unsigned int[nsb];
 
 		// fill 0'th rows of M and Mprime:
-		z = 0; // minimum in current block
-		q = 0; // pos. of min in current superblock
-		g = 0; // number of current superblock
-		for (unsigned int i = 0; i < nb; i++) { // step through blocks
-			start = z;              // init start
-			p = start;              // init minimum
-			end = start + sprime;   // end of block (not inclusive!)
-			if (end > n) end = n;   // last block could be smaller than sprime!
-			if (a[z] < a[q]) q = z; // update minimum in superblock
+		z = 0;					 // minimum in current block
+		q = 0;					 // pos. of min in current superblock
+		g = 0;					 // number of current superblock
+								 // step through blocks
+		for (unsigned int i = 0; i < nb; i++) {
+			start = z;			 // init start
+			p = start;			 // init minimum
+			end = start + sprime;// end of block (not inclusive!)
+			if (end > n) end = n;// last block could be smaller than sprime!
+								 // update minimum in superblock
+			if (a[z] < a[q]) q = z;
 
-			while (++z < end) { // step through current block:
-				if (a[z] < a[p]) p = z; // update minimum in block
-				if (a[z] < a[q]) q = z; // update minimum in superblock
+			while (++z < end) {	 // step through current block:
+								 // update minimum in block
+				if (a[z] < a[p]) p = z;
+								 // update minimum in superblock
+				if (a[z] < a[q]) q = z;
 			}
-			M[0][i] = p-start;                     // store index of block-minimum (offset!)
-			if (z % sprimeprime == 0 || z == n) {  // reached end of superblock?
-				Mprime[0][g++] = q;               // store index of superblock-minimum
+			M[0][i] = p-start;	 // store index of block-minimum (offset!)
+								 // reached end of superblock?
+			if (z % sprimeprime == 0 || z == n) {
+								 // store index of superblock-minimum
+				Mprime[0][g++] = q;
 				q = z;
 			}
 		}
 
 		// fill M
-		unsigned int dist = 1; // always 2^(j-1)
+		unsigned int dist = 1;	 // always 2^(j-1)
 		for (unsigned int j = 1; j < M_depth; j++) {
 			M[j] = new DTsucc[nb];
-			for (unsigned int i = 0; i < nb - dist; i++) { // be careful: loop may go too far
+								 // be careful: loop may go too far
+			for (unsigned int i = 0; i < nb - dist; i++) {
 				M[j][i] = a[m(j-1, i)] <= a[m(j-1,i+dist)] ?
-					M[j-1][i] : M[j-1][i+dist] + (dist*sprime); // add 'skipped' elements in a
+								 // add 'skipped' elements in a
+					M[j-1][i] : M[j-1][i+dist] + (dist*sprime);
 			}
-			for (unsigned int i = nb - dist; i < nb; i++) M[j][i] = M[j-1][i]; // fill overhang
+								 // fill overhang
+			for (unsigned int i = nb - dist; i < nb; i++) M[j][i] = M[j-1][i];
 			dist *= 2;
 		}
-		
+
 		// fill M':
-		dist = 1; // always 2^(j-1)
+		dist = 1;				 // always 2^(j-1)
 		for (unsigned int j = 1; j < Mprime_depth; j++) {
 			Mprime[j] = new unsigned int[nsb];
 			for (unsigned int i = 0; i < nsb - dist; i++) {
 				Mprime[j][i] = a[Mprime[j-1][i]] <= a[Mprime[j-1][i+dist]] ?
 					Mprime[j-1][i] : Mprime[j-1][i+dist];
 			}
-			for (unsigned int i = nsb - dist; i < nsb; i++) Mprime[j][i] = Mprime[j-1][i]; // overhang
+								 // overhang
+			for (unsigned int i = nsb - dist; i < nsb; i++) Mprime[j][i] = Mprime[j-1][i];
 			dist *= 2;
 		}
 	}
 
-	uint RMQ_succinct::getSize(){
+	uint RMQ_succinct::getSize() {
 		uint mem = 0;
 		mem += sizeof(RMQ_succinct);
 		mem += sizeof(int)*n;
@@ -352,7 +397,7 @@ namespace cds_static{
 		return mem;
 	}
 
-	void RMQ_succinct::save(ofstream & fp){
+	void RMQ_succinct::save(ofstream & fp) {
 		saveValue(fp,n);
 		saveValue(fp, a, n);
 		saveValue(fp, type, nmb);
@@ -364,7 +409,7 @@ namespace cds_static{
 			saveValue(fp, Prec[i], s);
 	}
 
-	RMQ_succinct * RMQ_succinct::load(ifstream & fp){
+	RMQ_succinct * RMQ_succinct::load(ifstream & fp) {
 		RMQ_succinct *rmq = new RMQ_succinct();
 		rmq->s = 1<<3;
 		rmq->sprime = 1<<4;
@@ -394,17 +439,16 @@ namespace cds_static{
 	 **/
 	RMQ_succinct::~RMQ_succinct() {
 		delete[] type;
-		for (unsigned int i = 0; i < Catalan[s][s]; i++) 
+		for (unsigned int i = 0; i < Catalan[s][s]; i++)
 			delete[] Prec[i];
 		delete[] Prec;
-		for (unsigned int i = 0; i < M_depth; i++) 
+		for (unsigned int i = 0; i < M_depth; i++)
 			delete[] M[i];
 		delete[] M;
-		for (unsigned int i = 0; i < Mprime_depth; i++) 
+		for (unsigned int i = 0; i < Mprime_depth; i++)
 			delete[] Mprime[i];
 		delete[] Mprime;
 		delete[] a;
 	}
 
 };
-

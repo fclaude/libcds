@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,6 @@
  *
  */
 
-
 /*-----------------------------------------------------------------------
  Factorizacion version
  ------------------------------------------------------------------------*/
@@ -30,18 +29,20 @@
 #include <libcdsTrees.h>
 #include <BitSequence.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-	class factorization{
+	class factorization
+	{
 		private:
 			factorization();
 		public:
-			uint listLength;    //longitud de la lista
-			byte nLevels;       //numero de niveles de arrays
-			uint * levelsIndex; //inicio de cada array
-			byte * levels;      //array con los bytes
-			BitSequence * bS; //bitmap para indicar fin de codigo
-			uint * rankLevels;  //rank de 1s hasta el principio de cada array
+			uint listLength;	 //longitud de la lista
+			byte nLevels;		 //numero de niveles de arrays
+			uint * levelsIndex;	 //inicio de cada array
+			byte * levels;		 //array con los bytes
+			BitSequence * bS;	 //bitmap para indicar fin de codigo
+			uint * rankLevels;	 //rank de 1s hasta el principio de cada array
 
 			/*Susana implementation of Directly Addressable Variable-Length Codes with blocks of size 4
 			 * @param list Array with the values

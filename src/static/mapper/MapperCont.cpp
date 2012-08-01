@@ -24,65 +24,65 @@
 namespace cds_static
 {
 
-    MapperCont::MapperCont(const Array & seq, const BitSequenceBuilder & bmb) {
-        BitString bs(seq.getMax()+1);
-        for(size_t i=0;i<seq.getLength();i++)
-            bs.setBit(seq[i]);
-        m = bmb.build(bs);
-    }
+	MapperCont::MapperCont(const Array & seq, const BitSequenceBuilder & bmb) {
+		BitString bs(seq.getMax()+1);
+		for(size_t i=0;i<seq.getLength();i++)
+			bs.setBit(seq[i]);
+		m = bmb.build(bs);
+	}
 
-    MapperCont::MapperCont(const uint * A, const size_t len, const BitSequenceBuilder & bmb) {
-        uint max_v = 0;
-        for(uint i=0;i<len;i++)
-            max_v = max(max_v,A[i]);
-        max_v++;
+	MapperCont::MapperCont(const uint * A, const size_t len, const BitSequenceBuilder & bmb) {
+		uint max_v = 0;
+		for(uint i=0;i<len;i++)
+			max_v = max(max_v,A[i]);
+		max_v++;
 
-        BitString bs(max_v);
-        for(size_t i=0;i<len;i++)
-            bs.setBit(A[i]);
-        m = bmb.build(bs);
-    }
+		BitString bs(max_v);
+		for(size_t i=0;i<len;i++)
+			bs.setBit(A[i]);
+		m = bmb.build(bs);
+	}
 
-    MapperCont::MapperCont() {
-    }
+	MapperCont::MapperCont() {
+	}
 
-    MapperCont::~MapperCont() {
-        delete m;
-    }
+	MapperCont::~MapperCont() {
+		delete m;
+	}
 
-    uint MapperCont::map(uint s) const
-    {
-        return m->rank1(s);
-    }
+	uint MapperCont::map(uint s) const
+	{
+		return m->rank1(s);
+	}
 
-    uint MapperCont::unmap(uint s) const
-    {
-        return m->select1(s);
-    }
+	uint MapperCont::unmap(uint s) const
+	{
+		return m->select1(s);
+	}
 
-    size_t MapperCont::getSize() const
-    {
-        return sizeof(MapperCont)+m->getSize();
-    }
+	size_t MapperCont::getSize() const
+	{
+		return sizeof(MapperCont)+m->getSize();
+	}
 
-    void MapperCont::save(ofstream & out) const
-    {
-        assert(out.good());
-        uint wr = MAPPER_CONT_HDR;
-        saveValue(out,wr);
-        m->save(out);
-    }
+	void MapperCont::save(ofstream & out) const
+	{
+		assert(out.good());
+		uint wr = MAPPER_CONT_HDR;
+		saveValue(out,wr);
+		m->save(out);
+	}
 
-    MapperCont * MapperCont::load(ifstream & input) {
-        assert(input.good());
-        uint rd = loadValue<uint>(input);
-        if(rd!=MAPPER_CONT_HDR) return NULL;
-        MapperCont * ret = new MapperCont();
-        ret->m = BitSequence::load(input);
-        if(ret->m==NULL) {
-            delete ret;
-            return NULL;
-        }
-        return ret;
-    }
+	MapperCont * MapperCont::load(ifstream & input) {
+		assert(input.good());
+		uint rd = loadValue<uint>(input);
+		if(rd!=MAPPER_CONT_HDR) return NULL;
+		MapperCont * ret = new MapperCont();
+		ret->m = BitSequence::load(input);
+		if(ret->m==NULL) {
+			delete ret;
+			return NULL;
+		}
+		return ret;
+	}
 };

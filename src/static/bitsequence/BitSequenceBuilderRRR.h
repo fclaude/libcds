@@ -30,19 +30,19 @@ using namespace cds_utils;
 
 namespace cds_static
 {
-    /** BitSequence builder for RRR BitSequences.
-     *
-     * @author Francisco Claude
-     */
-    class BitSequenceBuilderRRR : public BitSequenceBuilder
-    {
-        public:
-            BitSequenceBuilderRRR(uint sample_rate);
-            virtual ~BitSequenceBuilderRRR() {}
-            virtual BitSequence * build(uint * bitseq, size_t len) const;
-            virtual BitSequence * build(const BitString & bs) const;
-        protected:
-            uint sample_rate;
-    };
+	/** BitSequence builder for RRR BitSequences.
+	 *
+	 * @author Francisco Claude
+	 */
+	class BitSequenceBuilderRRR : public BitSequenceBuilder
+	{
+		public:
+			BitSequenceBuilderRRR(uint sample_rate);
+			virtual ~BitSequenceBuilderRRR() {}
+			virtual BitSequence * build(uint * bitseq, size_t len) const;
+			virtual BitSequence * build(const BitString & bs) const;
+		protected:
+			uint sample_rate;
+	};
 };
 #endif

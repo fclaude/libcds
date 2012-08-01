@@ -24,18 +24,18 @@
 namespace cds_static
 {
 
-    BitSequenceBuilderRG::BitSequenceBuilderRG(uint factor) {
-        this->factor = factor;
-    }
+	BitSequenceBuilderRG::BitSequenceBuilderRG(uint factor) {
+		this->factor = factor;
+	}
 
-    BitSequence * BitSequenceBuilderRG::build(uint * bitseq, size_t len) const
-    {
-        return new BitSequenceRG(bitseq,len,factor);
-    }
+	BitSequence * BitSequenceBuilderRG::build(uint * bitseq, size_t len) const
+	{
+		return new BitSequenceRG(bitseq,len,factor);
+	}
 
-    BitSequence * BitSequenceBuilderRG::build(const BitString & bs) const
-    {
-        return new BitSequenceRG(bs,factor);
-    }
+	BitSequence * BitSequenceBuilderRG::build(const BitString & bs) const
+	{
+		return new BitSequenceRG(bs,factor);
+	}
 
 };

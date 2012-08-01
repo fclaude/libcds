@@ -35,26 +35,26 @@ using namespace cds_utils;
 
 namespace cds_static
 {
-    class BitSequenceSDArray: public BitSequence
-    {
+	class BitSequenceSDArray: public BitSequence
+	{
 
-        public:
-            /** Builds the SDArray */
-            BitSequenceSDArray(const BitString & bs);
-            /** Builds the SDArray */
-            BitSequenceSDArray(uint * buff, size_t len);
-            virtual ~BitSequenceSDArray();
-            virtual size_t select1(size_t i) const;
-            virtual size_t rank1(size_t i) const;
-            virtual size_t selectNext1(size_t i) const;
-            virtual size_t getSize() const;
-            virtual void save(ofstream & fp) const;
-            static BitSequenceSDArray * load(ifstream & fp);
+		public:
+			/** Builds the SDArray */
+			BitSequenceSDArray(const BitString & bs);
+			/** Builds the SDArray */
+			BitSequenceSDArray(uint * buff, size_t len);
+			virtual ~BitSequenceSDArray();
+			virtual size_t select1(size_t i) const;
+			virtual size_t rank1(size_t i) const;
+			virtual size_t selectNext1(size_t i) const;
+			virtual size_t getSize() const;
+			virtual void save(ofstream & fp) const;
+			static BitSequenceSDArray * load(ifstream & fp);
 
-        protected:
-            selects3 sd;
-            BitSequenceSDArray();
+		protected:
+			selects3 sd;
+			BitSequenceSDArray();
 
-    };
+	};
 };
 #endif

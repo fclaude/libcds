@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,23 @@
  *
  */
 
-
 #ifndef LCP_PHISPARE_H
 #define LCP_PHISPARE_H
 
 #include <LCP.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-	class LCP_PhiSpare: public LCP{
+	class LCP_PhiSpare: public LCP
+	{
 		private:
-			int q;   
-			size_t n;   //length of LCP
-			int *plcp; //psi lcp
+			int q;
+			size_t n;			 //length of LCP
+			int *plcp;			 //psi lcp
 
 			LCP_PhiSpare();
-		
+
 		public:
 			/*Karkkainen, Manzini, and Puglisi encoding of the LCP,
 			 * @param csa The compressed suffix array of the text

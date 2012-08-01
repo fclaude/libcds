@@ -25,48 +25,48 @@
 namespace cds_utils
 {
 
-    BitString::BitString(ifstream & input) {
-        assert(input.good());
-        input.read((char*)&length,sizeof(size_t));
-        input.read((char*)&uintLength,sizeof(size_t));
-        data = new uint[uintLength];
-        input.read((char*)data,uintLength*sizeof(uint));
-    }
+	BitString::BitString(ifstream & input) {
+		assert(input.good());
+		input.read((char*)&length,sizeof(size_t));
+		input.read((char*)&uintLength,sizeof(size_t));
+		data = new uint[uintLength];
+		input.read((char*)data,uintLength*sizeof(uint));
+	}
 
-    void BitString::initData(const size_t len) {
-        length = len;
-        uintLength = length/W+1;
-        data = new uint[uintLength];
-        for(uint i=0;i<uintLength;i++)
-            data[i] = 0;
-    }
+	void BitString::initData(const size_t len) {
+		length = len;
+		uintLength = length/W+1;
+		data = new uint[uintLength];
+		for(uint i=0;i<uintLength;i++)
+			data[i] = 0;
+	}
 
-    BitString::BitString(const size_t len) {
-        initData(len);
-    }
+	BitString::BitString(const size_t len) {
+		initData(len);
+	}
 
-    BitString::BitString(const vector<uint> fields, const size_t len) {
-        initData(len);
-        for(size_t i=0; i<uintLength; i++)
-            data[i] = fields[i];
-    }
+	BitString::BitString(const vector<uint> fields, const size_t len) {
+		initData(len);
+		for(size_t i=0; i<uintLength; i++)
+			data[i] = fields[i];
+	}
 
-    BitString::BitString(const uint * array, const size_t len) {
-        initData(len);
-        for(size_t i=0; i<uintLength; i++)
-            data[i] = array[i];
-    }
+	BitString::BitString(const uint * array, const size_t len) {
+		initData(len);
+		for(size_t i=0; i<uintLength; i++)
+			data[i] = array[i];
+	}
 
-    BitString::~BitString() {
-        delete [] data;
-    }
+	BitString::~BitString() {
+		delete [] data;
+	}
 
-    void BitString::save(ofstream & out) const
-    {
-        assert(out.good());
-        out.write((char*)&length,sizeof(size_t));
-        out.write((char*)&uintLength,sizeof(size_t));
-        out.write((char*)data,uintLength*sizeof(uint));
-    }
+	void BitString::save(ofstream & out) const
+	{
+		assert(out.good());
+		out.write((char*)&length,sizeof(size_t));
+		out.write((char*)&uintLength,sizeof(size_t));
+		out.write((char*)data,uintLength*sizeof(uint));
+	}
 
 };

@@ -43,8 +43,8 @@ namespace cds_static
     {
         public:
             virtual ~wt_node() {}
-            virtual size_t rank(uint *symbol, size_t pos, uint l) const = 0;
-            virtual size_t select(uint *symbol, size_t pos, uint l) const = 0;
+            virtual size_t rank(uint *symbol, size_t pos, uint l, wt_coder *c) const = 0;
+            virtual size_t select(uint *symbol, size_t pos, uint l, wt_coder *c) const = 0;
             virtual pair<uint,size_t> quantile_freq(size_t left,size_t right,uint q) const = 0;
             virtual uint access(size_t pos) const = 0;
             virtual uint access(size_t pos, size_t & rankp) const = 0;

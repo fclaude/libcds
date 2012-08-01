@@ -6,7 +6,8 @@ using namespace std;
 
 #define MAX(i,j) (((i) > (j)) ? (i) : (j))
 
-namespace cds_utils{	
+namespace cds_utils
+{
 	typedef unsigned char byte;
 
 	static const unsigned int  MAXINT=0x7fffffff;
@@ -33,7 +34,7 @@ namespace cds_utils{
 
 	inline void set_field_64(uint *A, size_t len, size_t index, size_t x) {
 		if(len==0) return;
-		long long i=1, j=1;	  
+		long long i=1, j=1;
 		i= i*index*len/W, j= j*index*len-i*W;
 		uint mask = ((j+len) < W ? ~0u << (j+len) : 0)
 			| ((W-j) < W ? ~0u >> (W-j) : 0);
@@ -50,9 +51,9 @@ namespace cds_utils{
 	 * @param t2 Position in the text where start the second suffix
 	 * @param lim Maximum value that can be returned
 	 * */
-	inline size_t lcp_length(char *text, size_t t1, size_t t2, size_t lim){
+	inline size_t lcp_length(char *text, size_t t1, size_t t2, size_t lim) {
 		size_t cont=0;
-		for(size_t i=0; i<lim;i++){
+		for(size_t i=0; i<lim;i++) {
 			if(text[t1+i]==text[t2+i])
 				cont++;
 			else
@@ -61,18 +62,17 @@ namespace cds_utils{
 		return cont;
 	}
 
-
 	/* returns e[p..p+len-1], assuming len <= W*/
-	inline size_t bitread (uint *e, uint p, uint len){ 
+	inline size_t bitread (uint *e, uint p, uint len) {
 		uint answ=0;
 		e += p/W; p %= W;
 		answ = *e >> p;
-		if (len == W){ 
-			if (p) 
+		if (len == W) {
+			if (p)
 				answ |= (*(e+1)) << (W-p);
 		}
-		else{ 
-			if (p+len > W) 
+		else {
+			if (p+len > W)
 				answ |= (*(e+1)) << (W-p);
 			answ &= (1<<len)-1;
 		}
@@ -80,18 +80,18 @@ namespace cds_utils{
 	}
 
 	/* writes e[p..p+len-1] = s, len <= W*/
-	inline void bitwrite (register uint *e, register uint p, register uint len, register uint s){ 
-		e += p/W; 
+	inline void bitwrite (register uint *e, register uint p, register uint len, register uint s) {
+		e += p/W;
 		p %= W;
-		if (len == W){ 
+		if (len == W) {
 			*e |= (*e & ((1<<p)-1)) | (s << p);
-			if (!p) 
+			if (!p)
 				return;
 			e++;
 			*e = (*e & ~((1<<p)-1)) | (s >> (W-p));
 		}
-		else { 
-			if (p+len <= W){ 
+		else {
+			if (p+len <= W) {
 				*e = (*e & ~(((1<<len)-1)<<p)) | (s << p);
 				return;
 			}
@@ -101,9 +101,8 @@ namespace cds_utils{
 		}
 	}
 
-
 	inline size_t loadText(char *filename, char **textt, size_t *length) {
-		char *text; 
+		char *text;
 		ifstream in(filename);
 		if(!in.good())
 			return 1;
@@ -116,11 +115,8 @@ namespace cds_utils{
 		text[len] = '\0';
 		*textt = text;
 		*length = len+1;
-		 return 0;
+		return 0;
 	}
 
 };
-
-
 #endif
-

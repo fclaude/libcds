@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,17 @@
  *
  */
 
-
 #ifndef LCP_DAC_VAR_H
 #define LCP_DAC_VAR_H
 
 #include <factorization_var.h>
 #include <LCP.h>
 
-namespace cds_static{
-	
-	class LCP_DAC_VAR: public LCP{
+namespace cds_static
+{
+
+	class LCP_DAC_VAR: public LCP
+	{
 		private:
 			LCP_DAC_VAR();
 
@@ -43,12 +44,12 @@ namespace cds_static{
 			 * */
 			void calc_kvalues(uint max_lcp, uint *frec_acu, ushort **kvalues, uint *nkvalues) const;
 
-			 /* LCP encoding using Susana's factorization_var,
-				* @param csa The compressed suffix array of the text
-				* @param text The text
-				* @param n  The length of the text 
-				* */
-			LCP_DAC_VAR(TextIndex *csa, char *text, size_t n); 
+			/* LCP encoding using Susana's factorization_var,
+			 * @param csa The compressed suffix array of the text
+			 * @param text The text
+			 * @param n  The length of the text
+			 * */
+			LCP_DAC_VAR(TextIndex *csa, char *text, size_t n);
 			virtual size_t get_LCP(size_t i, TextIndex *csa) const;
 			virtual size_t get_seq_LCP(size_t i, TextIndex *csa, size_t **next_pos, size_t *n_next, bool dir) const;
 			virtual size_t getSize() const;
@@ -59,5 +60,3 @@ namespace cds_static{
 
 };
 #endif
-
-

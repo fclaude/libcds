@@ -27,19 +27,19 @@
 #ifndef SEQUENCEBUILDERWAVELETMATRIX_H
 #define SEQUENCEBUILDERWAVELETMATRIX_H
 
-namespace cds_static {
-    class SequenceBuilderWaveletMatrix : public SequenceBuilder {
-        public:
-            SequenceBuilderWaveletMatrix(BitSequenceBuilder * bsb, Mapper * am);
-            virtual ~SequenceBuilderWaveletMatrix();
-            virtual Sequence * build(uint * seq, size_t len);
-            virtual Sequence * build(const Array & seq);
+namespace cds_static
+{
+	class SequenceBuilderWaveletMatrix : public SequenceBuilder
+	{
+		public:
+			SequenceBuilderWaveletMatrix(BitSequenceBuilder * bsb, Mapper * am);
+			virtual ~SequenceBuilderWaveletMatrix();
+			virtual Sequence * build(uint * seq, size_t len);
+			virtual Sequence * build(const Array & seq);
 
-        protected:
-            BitSequenceBuilder * bsb;
-            Mapper * am;
-    };
+		protected:
+			BitSequenceBuilder * bsb;
+			Mapper * am;
+	};
 };
-
 #endif
-

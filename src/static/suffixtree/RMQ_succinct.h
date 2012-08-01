@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,6 @@
  *
  */
 
-
 #ifndef _RMQ_succinct_h
 #define _RMQ_succinct_h
 
@@ -33,8 +32,10 @@ using namespace cds_utils;
 typedef unsigned char DTsucc;
 typedef unsigned short DTsucc2;
 
-namespace cds_static{
-	class RMQ_succinct{
+namespace cds_static
+{
+	class RMQ_succinct
+	{
 		private:
 			RMQ_succinct();
 		public:
@@ -44,14 +45,14 @@ namespace cds_static{
 			/* liefert RMQ[i,j]*/
 			virtual unsigned int query(unsigned int, unsigned int);
 
-			/*Johannes RMQ encode 
-			 * @param a The array 
+			/*Johannes RMQ encode
+			 * @param a The array
 			 * @param n Number of elements in the array
 			 * */
 			RMQ_succinct(int* a, unsigned int n);
 
 			uint getSize();
-			void  save(ofstream & fp);  
+			void  save(ofstream & fp);
 			RMQ_succinct * load(ifstream & fp);
 
 			~RMQ_succinct();
@@ -108,4 +109,3 @@ namespace cds_static{
 	};
 };
 #endif
-

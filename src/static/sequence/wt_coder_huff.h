@@ -44,6 +44,7 @@ namespace cds_static
             wt_coder_huff(uchar *symbs, size_t n, Mapper * am);
             virtual ~wt_coder_huff();
             virtual bool is_set(uint symbol, uint l) const;
+            virtual bool is_set(uint *symbol, uint l) const;
             virtual bool done(uint symbol, uint l) const;
             virtual size_t getSize() const;
 	    virtual uint * get_symbol(uint symbol) const;

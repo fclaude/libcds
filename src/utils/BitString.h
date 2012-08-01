@@ -30,85 +30,85 @@ using namespace std;
 
 namespace cds_utils
 {
-    /** BitString class
-     * @author Francisco Claude
-     */
-    class BitString
-    {
-        public:
+	/** BitString class
+	 * @author Francisco Claude
+	 */
+	class BitString
+	{
+		public:
 
-            /** Reads a BitString from a file stream
-             * @param input input file stream
-             */
-            BitString(ifstream & input);
+			/** Reads a BitString from a file stream
+			 * @param input input file stream
+			 */
+			BitString(ifstream & input);
 
-            /** Creates a BitString with len bits of space */
-            BitString(const size_t len);
+			/** Creates a BitString with len bits of space */
+			BitString(const size_t len);
 
-            /** Creates a bitmap from a vector (up to len bits) */
-            BitString(const vector<uint> fields, const size_t len);
+			/** Creates a bitmap from a vector (up to len bits) */
+			BitString(const vector<uint> fields, const size_t len);
 
-            /** Creates a bitmap from an array (len bits) */
-            BitString(const uint * array, const size_t len);
+			/** Creates a bitmap from an array (len bits) */
+			BitString(const uint * array, const size_t len);
 
-            /** Destroys a bitmap */
-            ~BitString();
+			/** Destroys a bitmap */
+			~BitString();
 
-            /** Sets the pos-th bit
-             * @param pos position
-             * @param bit value [0-1]
-             */
-            inline void setBit(const size_t pos, const bool bit=true) {
-                if(bit) bitset(data,pos);
-                else bitclean(data,pos);
-            }
+			/** Sets the pos-th bit
+			 * @param pos position
+			 * @param bit value [0-1]
+			 */
+			inline void setBit(const size_t pos, const bool bit=true) {
+				if(bit) bitset(data,pos);
+				else bitclean(data,pos);
+			}
 
-            /** Gets the pos-th bit
-             * @param pos position
-             */
-            inline bool getBit(const size_t pos) const
-            {
-                return bitget(data,pos);
-            }
+			/** Gets the pos-th bit
+			 * @param pos position
+			 */
+			inline bool getBit(const size_t pos) const
+			{
+				return bitget(data,pos);
+			}
 
-            /** operator [] for getBit
-             */
-            inline bool operator[](const size_t pos) const
-            {
-                return bitget(data,pos);
-            }
+			/** operator [] for getBit
+			 */
+			inline bool operator[](const size_t pos) const
+			{
+				return bitget(data,pos);
+			}
 
-            /** Saves the bitmap to a file
-             * @param out file stream
-             */
-            void save(ofstream & out) const;
+			/** Saves the bitmap to a file
+			 * @param out file stream
+			 */
+			void save(ofstream & out) const;
 
-            /** Returns the size in bytes of the BitString */
-            inline size_t getSize() const
-            {
-                return uintLength*sizeof(uint)+sizeof(this);
-            }
+			/** Returns the size in bytes of the BitString */
+			inline size_t getSize() const
+			{
+				return uintLength*sizeof(uint)+sizeof(this);
+			}
 
-            /** Returns the length in bits of the BitString */
-            inline size_t getLength() const
-            {
-                return length;
-            }
+			/** Returns the length in bits of the BitString */
+			inline size_t getLength() const
+			{
+				return length;
+			}
 
-            /** Returns a pointer to the buffer storing the values 
-             */
-            inline uint * getData() const
-            {
-                return data;
-            }
+			/** Returns a pointer to the buffer storing the values
+			 */
+			inline uint * getData() const
+			{
+				return data;
+			}
 
-        protected:
-            size_t length;
-            size_t uintLength;
-            uint * data;
+		protected:
+			size_t length;
+			size_t uintLength;
+			uint * data;
 
-            /** Initializes the class fields */
-            void initData(const size_t len);
-    };
+			/** Initializes the class fields */
+			void initData(const size_t len);
+	};
 };
 #endif

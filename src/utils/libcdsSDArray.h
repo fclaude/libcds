@@ -2,17 +2,17 @@
  * Copyright (C) 2010, Rodrigo Canovas, all rights reserved.
  *
  * Some preliminary stuff
- *     
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,26 +22,27 @@
 #define _BASICS_SDARRAY_H
 #include <libcdsBasics.h>
 
-namespace cds_utils{
+namespace cds_utils
+{
 	typedef unsigned long long qword;
 	static const unsigned int logD = 5;
 	static const unsigned int PBS = (sizeof(uint)*8);
-  static const unsigned int D = (1<<logD);
-  static const unsigned int logM = 5;
+	static const unsigned int D = (1<<logD);
+	static const unsigned int logM = 5;
 	static const unsigned int M = (1<<logM);
 	static const unsigned int logP = 8;
 	static const unsigned int P = (1<<logP);
-	static const unsigned int logLL = 16;             // size of word
+								 // size of word
+	static const unsigned int logLL = 16;
 	static const unsigned int LL = (1<<logLL);
 	static const unsigned int logLLL = 5;
 	static const unsigned int LLL = (1<<logLLL);
 	static const unsigned int logL = (logLL-1-5);
 	static const unsigned int L = (1<<logL);
-	static const unsigned int logRR = 8; 
-	static const unsigned int RR  = (1<<logRR); 
-	static const unsigned int logRRR = 6; 
+	static const unsigned int logRR = 8;
+	static const unsigned int RR  = (1<<logRR);
+	static const unsigned int logRRR = 6;
 	static const unsigned int RRR = (1<<logRRR);
-
 
 	inline int __blog(const int x1) {
 		int x=x1;
@@ -66,7 +67,7 @@ namespace cds_utils{
 		}
 		return x;
 	}
-	
+
 	inline int __setbit2(unsigned char *B, const int i, const int x) {
 		int j,l;
 		j = i / 8;
@@ -97,12 +98,12 @@ namespace cds_utils{
 
 	inline int __getbit2(const unsigned char *B, const int i) {
 		int j,l;
-		 j = i >> 3;
-		 l = i & (8-1);
-		 return (B[j] >> (8-1-l)) & 1;
+		j = i >> 3;
+		l = i & (8-1);
+		return (B[j] >> (8-1-l)) & 1;
 	}
 
-#if 1
+	#if 1
 	inline uint __getbits(const uint *B, const int i1, const int d) {
 		qword x,z;
 		int i = i1;
@@ -126,8 +127,8 @@ namespace cds_utils{
 		}
 		return x;
 	}
-#endif
-#if 0
+	#endif
+	#if 0
 	inline uint __getbits(uint *B, int i, int d) {
 		uint j,x;
 		x = 0;
@@ -137,8 +138,7 @@ namespace cds_utils{
 		}
 		return x;
 	}
-#endif
-
+	#endif
 
 	static const unsigned int _popCount[] = {
 		0,1,1,2,1,2,2,3,1,2,2,3,2,3,3,4,
@@ -172,18 +172,16 @@ namespace cds_utils{
 
 	inline unsigned int __popCount8(const uint x) {
 		uint r;
-#if 1
+		#if 1
 		r = x;
 		r = ((r & 0xaa)>>1) + (r & 0x55);
 		r = ((r & 0xcc)>>2) + (r & 0x33);
 		r = ((r>>4) + r) & 0x0f;
-#else
+		#else
 		r = _popCount[x & 0xff];
-#endif
+		#endif
 		return r;
 	}
 
 };
-
 #endif
-

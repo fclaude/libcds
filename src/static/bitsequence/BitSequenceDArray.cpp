@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,15 +16,14 @@
  *
  */
 
-
 #include <BitSequenceDArray.h>
 
-
-namespace cds_static{
+namespace cds_static
+{
 
 	static unsigned int __selecttbl_D[8*256];
 	static int built_D = 0;
-	
+
 	void make___selecttbl_D(void) {
 		if(built_D) return;
 		built_D = 1;
@@ -41,13 +40,12 @@ namespace cds_static{
 					r++;
 				}
 			}
-		}																									
+		}
 	}
 
-
-	BitSequenceDArray::BitSequenceDArray(){
+	BitSequenceDArray::BitSequenceDArray() {
 		length = m = nl = 0;
-		a =  NULL;   
+		a =  NULL;
 		lp = NULL;
 		sl = NULL;
 		ss = NULL;
@@ -56,36 +54,35 @@ namespace cds_static{
 		rs = NULL;
 	}
 
-
-	BitSequenceDArray::BitSequenceDArray(const BitString & bs){
+	BitSequenceDArray::BitSequenceDArray(const BitString & bs) {
 		uint * tmp_seq = new uint[uint_len(bs.getLength(),1)+1];
 		ones = 0;
 		for(uint i=0;i<uint_len(bs.getLength(),1)+1;i++)
 			tmp_seq[i] = 0;
 		for(uint i=0;i<bs.getLength();i++)
-			if(bs[i]) {
-				__setbit(tmp_seq,i,1);
-				ones++;
-			}
+		if(bs[i]) {
+			__setbit(tmp_seq,i,1);
+			ones++;
+		}
 		if(ones)
 			build(tmp_seq, bs.getLength());
 	}
 
-	BitSequenceDArray::BitSequenceDArray(uint *buf, size_t n){
+	BitSequenceDArray::BitSequenceDArray(uint *buf, size_t n) {
 		uint * tmp_seq = new uint[uint_len(n,1)+1];
 		ones = 0;
 		for(uint i=0;i<uint_len(n,1)+1;i++)
 			tmp_seq[i] = 0;
 		for(uint i=0;i<n;i++)
-			if(bitget(buf,i)) {
-				__setbit(tmp_seq,i,1);
-				ones++;
-			}
+		if(bitget(buf,i)) {
+			__setbit(tmp_seq,i,1);
+			ones++;
+		}
 		if(ones)
 			build(tmp_seq,n);
 	}
 
-	void BitSequenceDArray::build(uint *buf, size_t n){
+	void BitSequenceDArray::build(uint *buf, size_t n) {
 		int i, j, m2;
 		int p2, pp;
 		int il, is, ml, ms;
@@ -94,15 +91,15 @@ namespace cds_static{
 
 		make___selecttbl_D();
 
-		if(L/LLL == 0){
+		if(L/LLL == 0) {
 			cout << "ERROR: L=" << L << "  LLL=" << LLL << endl;
 			exit(1);
 		}
 
 		m2 = 0;
-		for(i=0; i < (int)n; i++) 
+		for(i=0; i < (int)n; i++)
 			m2 += __getbit(buf,i);
-		
+
 		length = n;
 		m = m2;
 		a = buf;
@@ -110,44 +107,44 @@ namespace cds_static{
 		m2 = 0;
 		s_ss = s_sl = 0;
 		/*store in s the place where are 1's in the array*/
-		for(i=0; i<(int)n; i++){
-			if (__getbit(buf,i)){
+		for(i=0; i<(int)n; i++) {
+			if (__getbit(buf,i)) {
 				m2++;
 				s[m2-1] = i;
 			}
 		}
-		
-		nl = (m2-1)/L + 1;
-		lp = new uint[nl+1]; 
-		p = new uint[nl+1]; 
 
-		for(i=0; i<(int)(nl+1); i++){
+		nl = (m2-1)/L + 1;
+		lp = new uint[nl+1];
+		p = new uint[nl+1];
+
+		for(i=0; i<(int)(nl+1); i++) {
 			lp[i]=0;
 			p[i]=0;
 		}
 
-		for(r = 0; r < 2; r++){
+		for(r = 0; r < 2; r++) {
 			ml = ms = 0;
-			for (il = 0; il < (int)nl; il++){
+			for (il = 0; il < (int)nl; il++) {
 				pp = s[il*L];
 				lp[il] = pp;
 				i = min((il+1)*(int)L-1,(int)m-1);
 				p2 = s[i];
-				if (p2 - pp >= (int)LL){
-					if (r == 1){
-						for (is = 0; is < (int)L; is++){
-							if (il*(int)L+is >= m2) 
+				if (p2 - pp >= (int)LL) {
+					if (r == 1) {
+						for (is = 0; is < (int)L; is++) {
+							if (il*(int)L+is >= m2)
 								break;
 							sl[ml*L+is] = s[il*L+is];
 						}
 					}
 					p[il] = -(ml+1);
 					ml++;
-				} 
-				else{
-					if (r == 1){
-						for (is = 0; is < (int)(L/LLL); is++){
-							if (il*(int)L+is*(int)LLL >= (int)m) 
+				}
+				else {
+					if (r == 1) {
+						for (is = 0; is < (int)(L/LLL); is++) {
+							if (il*(int)L+is*(int)LLL >= (int)m)
 								break;
 							ss[ms*(L/LLL)+is] = s[il*L+is*LLL] - pp;
 						}
@@ -156,7 +153,7 @@ namespace cds_static{
 					ms++;
 				}
 			}
-			if (r == 0){
+			if (r == 0) {
 				s_sl = ml*L+1;
 				s_ss = ms*(L/LLL)+1;
 				sl = new uint[s_sl];
@@ -171,25 +168,25 @@ namespace cds_static{
 		/*this is for compute rank*/
 		rl = new uint[n/RR+2];
 		rs = new uchar[n/RRR+2];
-		for(i=0; i<(int)(n/RR+2); i++){
+		for(i=0; i<(int)(n/RR+2); i++) {
 			rl[i]=0;
-		}	
+		}
 		r = 0;
-		for (i=0; i < (int)n; i+=RR){
+		for (i=0; i < (int)n; i+=RR) {
 			rl[i/RR] = r;
 			m2 = 0;
 			for (j=0; j<(int)RR; j++) {
 				if (j % RRR == 0)
 					rs[(i+j)/RRR] = m2;
-				if (i+j < (int)n && __getbit(buf,i+j)==1) 
+				if (i+j < (int)n && __getbit(buf,i+j)==1)
 					m2++;
 			}
 			r += m2;
 		}
 	}
 
-	BitSequenceDArray::~BitSequenceDArray(){
-		delete [] a;    
+	BitSequenceDArray::~BitSequenceDArray() {
+		delete [] a;
 		delete [] lp;
 		delete [] sl;
 		delete [] ss;
@@ -198,92 +195,103 @@ namespace cds_static{
 		delete [] rs;
 	}
 
-	size_t BitSequenceDArray::select1(size_t i) const{
+	size_t BitSequenceDArray::select1(size_t i) const
+	{
 		int p2,r;
 		int il;
 		int rr;
 		uint x;
 		uint *q;
-		if (i == 0) 
+		if (i == 0)
 			return (uint)-1;
 		i--;
 		il = p[i>>logL];
-		if (il < 0){
+		if (il < 0) {
 			il = -il-1;
 			p2 = sl[(il<<logL)+(i & (L-1))];
-		} 
-		else{
+		}
+		else {
 			p2 = lp[i>>logL];
 			p2 += ss[(il<<(logL-logLLL))+(i & (L-1))/LLL];
 			r = i - (i & (LLL-1));
 			q = &(a[p2>>logD]);
 
-			//		if (f == 1) { 
+			//		if (f == 1) {
 			rr = p2 & (D-1);
 			r -= __popCount(*q >> (D-1-rr));
 			p2 = p2 - rr;
-			while (1){
+			while (1) {
 				rr = __popCount(*q);
-				if (r + rr >= (int)i) 
+				if (r + rr >= (int)i)
 					break;
 				r += rr;
 				p2 += D;
 				q++;
 			}
 			x = *q;
-			while (1){
+			while (1) {
 				rr = _popCount[x >> (D-8)];
-				if (r + rr >= (int)i) 
+				if (r + rr >= (int)i)
 					break;
 				r += rr;
 				p2 += 8;
 				x <<= 8;
 			}
 			p2 += __selecttbl_D[((i-r-1)<<8)+(x>>(D-8))];
-		//	} 
+			//	}
 		}
 		return p2;
 	}
 
-	size_t BitSequenceDArray::rank0(size_t i) const{
-		if(i+1==0) 
+	size_t BitSequenceDArray::rank0(size_t i) const
+	{
+		if(i+1==0)
 			return 0;
 		return 1+i-rank1(i);
 	}
 
-	size_t BitSequenceDArray::rank1(size_t i) const{
+	size_t BitSequenceDArray::rank1(size_t i) const
+	{
 		if(i+1 == 0)
 			return 0;
 		int r,j;
 		uint *p2;
-		//sum pre-calculated values 
-		// i>>logRR = i/(2^logRR)      
+		//sum pre-calculated values
+		// i>>logRR = i/(2^logRR)
 		r = rl[i>>logRR] + rs[i>>logRRR];
-		p2 = a + ((i>>logRRR) << (logRRR-logD));  //a + ( (i/2^6)*2^(1?))
+								 //a + ( (i/2^6)*2^(1?))
+		p2 = a + ((i>>logRRR) << (logRRR-logD));
 		j = i & (RRR-1);
 		if (j < (int)D) {
 			r += __popCount(*p2 >> (D-1-j));
 		}
-		else{
-			r += __popCount(*p2) + __popCount(p2[1] >> (D-1-(j-D)));	
+		else {
+			r += __popCount(*p2) + __popCount(p2[1] >> (D-1-(j-D)));
 		}
 		return r;
 	}
 
-	size_t BitSequenceDArray::getSize() const{
+	size_t BitSequenceDArray::getSize() const
+	{
 		size_t mem = 0;
 		mem += sizeof(BitSequenceDArray);
-		mem += length/8; //a
-		mem += (nl+1)*sizeof(uint); // lp
-		mem += (nl+1)*sizeof(uint); // p
-		mem +=  s_ss*sizeof(uint);//ss
+		mem += length/8;		 //a
+								 // lp
+		mem += (nl+1)*sizeof(uint);
+								 // p
+		mem += (nl+1)*sizeof(uint);
+								 //ss
+		mem +=  s_ss*sizeof(uint);
 		mem += s_sl*sizeof(uint);//sl
-		mem += (length/RR+2)*sizeof(uint);//rl
-		mem += (length/RRR+2)*sizeof(uchar); //rs
+								 //rl
+		mem += (length/RR+2)*sizeof(uint);
+								 //rs
+		mem += (length/RRR+2)*sizeof(uchar);
 		return mem;
 	}
 
-	void BitSequenceDArray::save(ofstream & fp) const{
+	void BitSequenceDArray::save(ofstream & fp) const
+	{
 		uint wr = DARRAY_HDR;
 		saveValue(fp, wr);
 		saveValue(fp, length);
@@ -297,13 +305,13 @@ namespace cds_static{
 		saveValue(fp, a, (uint)nb);
 		saveValue(fp, lp, nl+1);
 		saveValue(fp, sl, s_sl);
-		saveValue(fp, ss, s_ss);      
-		saveValue(fp, p, nl+1);      
-		saveValue(fp, rl, (length/RR+2));      	
-		saveValue(fp, rs, (length/RRR+2));      
+		saveValue(fp, ss, s_ss);
+		saveValue(fp, p, nl+1);
+		saveValue(fp, rl, (length/RR+2));
+		saveValue(fp, rs, (length/RRR+2));
 	}
 
-	BitSequenceDArray *  BitSequenceDArray::load(ifstream & fp){
+	BitSequenceDArray *  BitSequenceDArray::load(ifstream & fp) {
 		uint id = loadValue<uint>(fp);
 		if(id!=DARRAY_HDR) return NULL;
 		BitSequenceDArray * ret = new BitSequenceDArray();

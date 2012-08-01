@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,20 @@
  *
  */
 
-
 #include <NPR.h>
 
-namespace cds_static{
-	NPR * NPR::load(ifstream & fp){
+namespace cds_static
+{
+	NPR * NPR::load(ifstream & fp) {
 		size_t r = loadValue<size_t>(fp);
 		size_t pos = fp.tellg();
 		fp.seekg(pos-sizeof(size_t));
 		cout << "Loading NPR "<< r << endl;
 		switch(r) {
 			case FMN_NPR: return NPR_FMN::load(fp);
-			case CN_NPR: return NPR_CN::load(fp);									
-		}				
+			case CN_NPR: return NPR_CN::load(fp);
+		}
 		return NULL;
 	}
 
 };
-
-

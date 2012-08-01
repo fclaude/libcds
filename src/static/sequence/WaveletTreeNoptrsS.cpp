@@ -24,6 +24,79 @@
 namespace cds_static
 {
 
+    WaveletTreeNoptrsS::WaveletTreeNoptrsS(const Array &symb, BitSequenceBuilder * bmb, Mapper * am) : Sequence(n) {
+        bmb->use();
+        this->n=symb.getLength();
+        this->am=am;
+        bool deleteSymbols = true;
+        am->use();
+        // This is terrible
+        uint *symbols = new uint[n];
+        for(uint i=0;i<n;i++)
+            symbols[i] = symb.getField(i);
+        for(uint i=0;i<n;i++)
+            symbols[i] = am->map(symbols[i]);
+        max_v=max_value(symbols,n);
+        height=bits(max_v);
+        uint *occurrences=new uint[max_v+1];
+        for(uint i=0;i<=max_v;i++) occurrences[i]=0;
+        for(uint i=0;i<n;i++)
+            occurrences[symbols[i]]++;
+        uint to_add=0;
+        for(uint i=0;i<max_v;i++)
+            if(occurrences[i]==0) to_add++;
+        uint * new_symb = new uint[n+to_add];
+        for(uint i=0;i<n;i++)
+            new_symb[i] = symbols[i];
+
+        if (deleteSymbols) {
+            delete [] symbols;
+            symbols = 0;
+        }
+
+        to_add = 0;
+        for(uint i=0;i<max_v;i++)
+        if(occurrences[i]==0) {
+            occurrences[i]++;
+            new_symb[n+to_add]=i;
+            to_add++;
+        }
+        uint new_n = n+to_add;
+        for(uint i=1;i<=max_v;i++)
+            occurrences[i] += occurrences[i-1];
+        uint *oc = new uint[(new_n+1)/W+1];
+        for(uint i=0;i<(new_n+1)/W+1;i++)
+            oc[i] = 0;
+        for(uint i=0;i<=max_v;i++)
+            bitset(oc,occurrences[i]-1);
+        bitset(oc,new_n);
+        occ = bmb->build(oc,new_n+1);
+        delete [] occurrences;
+        this->n = new_n;
+        uint ** _bm=new uint*[height];
+        for(uint i=0;i<height;i++) {
+            _bm[i] = new uint[new_n/W+1];
+            for(uint j=0;j<new_n/W+1;j++)
+                _bm[i][j]=0;
+        }
+
+        build_level(_bm,new_symb,new_n,occurrences);
+        bitstring = new BitSequence*[height];
+        for(uint i=0;i<height;i++) {
+            bitstring[i] = bmb->build(_bm[i],new_n);
+            delete [] _bm[i];
+        }
+        delete [] _bm;
+
+        if (!deleteSymbols)
+            for(uint i=0;i<n;i++)
+                symbols[i] = am->unmap(symbols[i]);
+
+        // delete [] new_symb; // already deleted in build_level()!
+        delete [] oc;
+        bmb->unuse();
+    }
+
     WaveletTreeNoptrsS::WaveletTreeNoptrsS(uint * symbols, size_t n, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols) : Sequence(n) {
         bmb->use();
         this->n=n;
@@ -197,7 +270,7 @@ namespace cds_static
             level++;
         }
         uint ret2 = 0;
-        for (int i = 0; i < height; i++) {
+        for (uint i = 0; i < height; i++) {
             ret2 = (ret2 << 1) | (ret & 1);
             ret /= 2;
         }

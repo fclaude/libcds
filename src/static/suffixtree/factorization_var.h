@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,6 @@
  *
  */
 
-
 /*-----------------------------------------------------------------------
  Factorizacion with Variable block size
  ------------------------------------------------------------------------*/
@@ -30,9 +29,11 @@
 #include <libcdsTrees.h>
 #include <BitSequence.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-	class factorization_var{
+	class factorization_var
+	{
 		private:
 			factorization_var();
 		public:
@@ -42,14 +43,13 @@ namespace cds_static{
 			ushort * base_bits;
 			uint * tablebase;
 			uint tamtablebase;
-			uint listLength;    //list length
-			byte nLevels;       //number of levels 
-			uint * levelsIndex; //start point of each array
-			uint * levels;      //array with the bytes
-			BitSequence * bS; //bitmap para indicar fin de codigo
-			uint * rankLevels;  //rank de 1s hasta el principio de cada array
+			uint listLength;	 //list length
+			byte nLevels;		 //number of levels
+			uint * levelsIndex;	 //start point of each array
+			uint * levels;		 //array with the bytes
+			BitSequence * bS;	 //bitmap para indicar fin de codigo
+			uint * rankLevels;	 //rank de 1s hasta el principio de cada array
 
-			
 			/*Susana implementation of Directly Addressable Variable-Length Codes with variable length blocks
 			 * @param list Array with the values
 			 * @param l_Length Size of the array
@@ -65,5 +65,4 @@ namespace cds_static{
 			virtual ~factorization_var();
 	};
 };
-
 #endif

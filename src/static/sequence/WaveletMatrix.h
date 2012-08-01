@@ -35,64 +35,61 @@ using namespace std;
 namespace cds_static
 {
 
-    class WaveletMatrix : public Sequence
-    {
-        public:
+	class WaveletMatrix : public Sequence
+	{
+		public:
 
-            /** Builds a Wavelet Tree for the string
-             * pointed by symbols assuming its length
-             * equals n and uses bmb to build the bitsequence
-             * @param bmb builder for the bitmaps in each level.
-             * @param am alphabet mapper (we need all symbols to be used).
-             * */
-            WaveletMatrix(uint * symbols, size_t n, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols = false);
-            WaveletMatrix(const Array &symbols2, BitSequenceBuilder * bmb, Mapper * am);
+			/** Builds a Wavelet Tree for the string
+			 * pointed by symbols assuming its length
+			 * equals n and uses bmb to build the bitsequence
+			 * @param bmb builder for the bitmaps in each level.
+			 * @param am alphabet mapper (we need all symbols to be used).
+			 * */
+			WaveletMatrix(uint * symbols, size_t n, BitSequenceBuilder * bmb, Mapper * am, bool deleteSymbols = false);
+			WaveletMatrix(const Array &symbols2, BitSequenceBuilder * bmb, Mapper * am);
 
-            //
-            /** Destroys the Wavelet Tree */
-            virtual ~WaveletMatrix();
+			//
+			/** Destroys the Wavelet Tree */
+			virtual ~WaveletMatrix();
 
-            virtual size_t rank(uint symbol, size_t pos) const;
-            virtual size_t select(uint symbol, size_t j) const;
-            virtual uint access(size_t pos) const;
-            virtual size_t getSize() const;
+			virtual size_t rank(uint symbol, size_t pos) const;
+			virtual size_t select(uint symbol, size_t j) const;
+			virtual uint access(size_t pos) const;
+			virtual size_t getSize() const;
 
-            size_t count(uint symbol) const;
+			virtual void save(ofstream & fp) const;
+			static WaveletMatrix * load(ifstream & fp);
 
-            virtual void save(ofstream & fp) const;
-            static WaveletMatrix * load(ifstream & fp);
+		protected:
+			WaveletMatrix();
 
-        protected:
-            WaveletMatrix();
+			Mapper * am;
 
-            size_t rselect(uint symbol, size_t j, uint level, size_t pos) const;
-            Mapper * am;
-            /** Only one bit-string for the Wavelet Tree. */
-            BitSequence **bitstring, *occ;
+			BitSequence **bitstring;
 
-            /** Length of the string. */
-            size_t n;
+			/** Length of the string. */
+			size_t n;
 
-            /** Height of the Wavelet Tree. */
-            uint height, max_v;
-            uint *C;
+			/** Height of the Wavelet Tree. */
+			uint height, max_v;
+			uint *C, *OCC;
 
-            /** Obtains the maximum value from the string
-             * symbols of length n */
-            uint max_value(uint *symbols, size_t n);
+			/** Obtains the maximum value from the string
+			 * symbols of length n */
+			uint max_value(uint *symbols, size_t n);
 
-            /** How many bits are needed to represent val */
-            uint bits(uint val);
+			/** How many bits are needed to represent val */
+			uint bits(uint val);
 
-            /** Returns true if val has its ind-th bit set
-             * to one. */
-            bool is_set(uint val, uint ind) const;
+			/** Returns true if val has its ind-th bit set
+			 * to one. */
+			bool is_set(uint val, uint ind) const;
 
-            /** Sets the ind-th bit in val */
-            uint set(uint val, uint ind) const;
+			/** Sets the ind-th bit in val */
+			uint set(uint val, uint ind) const;
 
-            /** Recursive function for building the Wavelet Tree. */
-            void build_level(uint **bm, uint *symbols, uint length, uint *occs);
-    };
+			/** Recursive function for building the Wavelet Tree. */
+			void build_level(uint **bm, uint *symbols, uint length, uint *occs);
+	};
 };
 #endif

@@ -30,72 +30,72 @@
 namespace cds_static
 {
 
-    /////////////
-    //Rank(B,i)//
-    /////////////
-    //_factor = 0  => s=W*lgn
-    //_factor = P  => s=W*P
-    //Is interesting to notice
-    //factor=2 => overhead 50%
-    //factor=3 => overhead 33%
-    //factor=4 => overhead 25%
-    //factor=20=> overhead 5%
+	/////////////
+	//Rank(B,i)//
+	/////////////
+	//_factor = 0  => s=W*lgn
+	//_factor = P  => s=W*P
+	//Is interesting to notice
+	//factor=2 => overhead 50%
+	//factor=3 => overhead 33%
+	//factor=4 => overhead 25%
+	//factor=20=> overhead 5%
 
-    /** Implementation of Rodrigo Gonzalez et al. practical rank/select solution [1].
-     *  The interface was adapted.
-     *
-     *  [1] Rodrigo Gonzalez, Szymon Grabowski, Veli Makinen, and Gonzalo Navarro.
-     *      Practical Implementation of Rank and Select Queries. WEA05.
-     *
-     *  @author Rodrigo Gonzalez
-     */
-    class BitSequenceRG : public BitSequence
-    {
-        private:
-            //bool owner;
-            size_t n,integers;
-            size_t factor,b,s;
-            uint *Rs;            //superblock array
+	/** Implementation of Rodrigo Gonzalez et al. practical rank/select solution [1].
+	 *  The interface was adapted.
+	 *
+	 *  [1] Rodrigo Gonzalez, Szymon Grabowski, Veli Makinen, and Gonzalo Navarro.
+	 *      Practical Implementation of Rank and Select Queries. WEA05.
+	 *
+	 *  @author Rodrigo Gonzalez
+	 */
+	class BitSequenceRG : public BitSequence
+	{
+		private:
+			//bool owner;
+			size_t n,integers;
+			size_t factor,b,s;
+			uint *Rs;			 //superblock array
 
-                                 //uso interno para contruir el indice rank
-            size_t BuildRankSub(size_t ini,size_t fin);
-            void BuildRank();    //crea indice para rank
-            BitSequenceRG();
-            size_t SpaceRequirementInBits() const;
-            size_t SpaceRequirement() const;
+								 //uso interno para contruir el indice rank
+			size_t BuildRankSub(size_t ini,size_t fin);
+			void BuildRank();	 //crea indice para rank
+			BitSequenceRG();
+			size_t SpaceRequirementInBits() const;
+			size_t SpaceRequirement() const;
 
-        public:
-						uint *data;
-            /** Build the BitSequenceRG with a sampling factor <code>factor</code>
-             * The <code>factor</code> value has to be either 2,3,4 or 20, being the first one the fastest/bigger.
-             */
-            BitSequenceRG(uint *bitarray, size_t n, uint factor);
-            
-            /** Build the BitSequenceRG with a sampling factor <code>factor</code>
-             * The <code>factor</code> value has to be either 2,3,4 or 20, being the first one the fastest/bigger.
-             */
-            BitSequenceRG(const BitString & bs, uint factor);
-            
-            ~BitSequenceRG();    //destructor
-            
-            virtual bool access(const size_t i) const;
-                                 //Nivel 1 bin, nivel 2 sec-pop y nivel 3 sec-bit
-            virtual size_t rank1(const size_t i) const;
+		public:
+			uint *data;
+			/** Build the BitSequenceRG with a sampling factor <code>factor</code>
+			 * The <code>factor</code> value has to be either 2,3,4 or 20, being the first one the fastest/bigger.
+			 */
+			BitSequenceRG(uint *bitarray, size_t n, uint factor);
 
-                                 // gives the largest index i<=start such that IsBitSet(i)=true
-            virtual size_t selectPrev1(const size_t start) const;
-                                 // gives the smallest index i>=start such that IsBitSet(i)=true
-            virtual size_t selectNext1(const size_t start) const;
-                                 // gives the position of the x:th 1.
-            virtual size_t select0(size_t x) const;
-                                 // gives the position of the x:th 1.
-            virtual size_t select1(size_t x) const;
-            virtual size_t getSize() const;
+			/** Build the BitSequenceRG with a sampling factor <code>factor</code>
+			 * The <code>factor</code> value has to be either 2,3,4 or 20, being the first one the fastest/bigger.
+			 */
+			BitSequenceRG(const BitString & bs, uint factor);
 
-            /*load-save functions*/
-            virtual void save(ofstream & f) const;
-            static BitSequenceRG * load(ifstream & f);
-    };
+			~BitSequenceRG();	 //destructor
+
+			virtual bool access(const size_t i) const;
+								 //Nivel 1 bin, nivel 2 sec-pop y nivel 3 sec-bit
+			virtual size_t rank1(const size_t i) const;
+
+								 // gives the largest index i<=start such that IsBitSet(i)=true
+			virtual size_t selectPrev1(const size_t start) const;
+								 // gives the smallest index i>=start such that IsBitSet(i)=true
+			virtual size_t selectNext1(const size_t start) const;
+								 // gives the position of the x:th 1.
+			virtual size_t select0(size_t x) const;
+								 // gives the position of the x:th 1.
+			virtual size_t select1(size_t x) const;
+			virtual size_t getSize() const;
+
+			/*load-save functions*/
+			virtual void save(ofstream & f) const;
+			static BitSequenceRG * load(ifstream & f);
+	};
 
 }
 #endif

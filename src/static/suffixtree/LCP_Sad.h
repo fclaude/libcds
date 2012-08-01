@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,23 @@
  *
  */
 
-
 #ifndef LCP_SAD_H
 #define LCP_SAD_H
 
 #include <BitSequence.h>
 #include <LCP.h>
 
-namespace cds_static{
-	class LCP_Sad: public LCP{
+namespace cds_static
+{
+	class LCP_Sad: public LCP
+	{
 		private:
 			LCP_Sad();
 			size_t U_type;
 
 		public:
 			BitSequence *U;
-			size_t U_length;  //length of bitmap U
+			size_t U_length;	 //length of bitmap U
 
 			/*Create Sadakane encoding of the LCP, that use 2n+o(n) bits,
 			 * @param csa The compressed suffix array of the text
@@ -39,10 +40,10 @@ namespace cds_static{
 			 * @param n  The length of the text
 			 * */
 			LCP_Sad(TextIndex *csa, char *text, size_t n, size_t op_rs = BRW32_HDR);
-			
+
 			/*Create the LCP representation starting from a precomputed LCP array*/
-			LCP_Sad(LCP *lcp, TextIndex *csa, size_t n, size_t op_rs = BRW32_HDR); 
-			
+			LCP_Sad(LCP *lcp, TextIndex *csa, size_t n, size_t op_rs = BRW32_HDR);
+
 			/**Return LCP[i]*/
 			virtual size_t get_LCP(size_t i, TextIndex *csa) const;
 
@@ -61,7 +62,4 @@ namespace cds_static{
 			virtual ~LCP_Sad();
 	};
 };
-
 #endif
-
-

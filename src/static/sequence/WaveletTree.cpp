@@ -95,15 +95,16 @@ namespace cds_static
 
     size_t WaveletTree::rank(uint symbol, size_t pos) const
     {
-      uint * s = c->get_symbol(am->map(symbol));
-        return root->rank(s, pos, 0);
-	delete [] s;
+        uint * s = c->get_symbol(am->map(symbol));
+        size_t ret = root->rank(s, pos, 0, c);
+        delete [] s;
+        return ret;
     }
 
     size_t WaveletTree::count(uint s) const
     {
       uint * s2 = c->get_symbol(am->map(s));
-      size_t ret = root->rank(s2, length-1, 0);
+      size_t ret = root->rank(s2, length-1, 0, c);
       delete [] s2;
       return ret;
     }
@@ -111,7 +112,7 @@ namespace cds_static
     size_t WaveletTree::select(uint symbol, size_t pos) const
     {
       uint * s = c->get_symbol(am->map(symbol));
-        uint ret = root->select(s, pos, 0);
+        uint ret = root->select(s, pos, 0, c);
         if(ret==((uint)-1)) { delete [] s; return (uint)-1;}
 	delete [] s;
         return ret-1;
@@ -126,7 +127,7 @@ namespace cds_static
     {
         return quantile_freq(left,right,q).first;
     }
-    
+
     pair<uint,size_t> WaveletTree::quantile_freq(size_t left,size_t right,uint q) const
     {
         /* q=1 -> q=0 */
@@ -138,7 +139,7 @@ namespace cds_static
 
     uint WaveletTree::access(size_t pos, size_t &rank) const
     {
-        return root->access(pos, rank);
+        return am->unmap(root->access(pos, rank));
     }
 
     size_t WaveletTree::getSize() const

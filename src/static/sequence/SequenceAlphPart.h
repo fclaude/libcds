@@ -31,53 +31,53 @@ using namespace std;
 namespace cds_static
 {
 
-    /** Sequence Alphabet Partitioning
-     *
-     *  @author Francisco Claude
-     */
-    class SequenceAlphPart : public Sequence {
+	/** Sequence Alphabet Partitioning
+	 *
+	 *  @author Francisco Claude
+	 */
+	class SequenceAlphPart : public Sequence
+	{
 
-        public:
+		public:
 
-            SequenceAlphPart(uint * seq, size_t n, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder);
-            SequenceAlphPart(const Array & values, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder);
+			SequenceAlphPart(uint * seq, size_t n, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder);
+			SequenceAlphPart(const Array & values, uint cut, SequenceBuilder * lenIndexBuilder, SequenceBuilder * seqsBuilder);
 
-            SequenceAlphPart();
+			SequenceAlphPart();
 
-            virtual ~SequenceAlphPart();
+			virtual ~SequenceAlphPart();
 
-            virtual size_t rank(uint c, size_t i) const;
+			virtual size_t rank(uint c, size_t i) const;
 
-            virtual size_t select(uint c, size_t i) const;
+			virtual size_t select(uint c, size_t i) const;
 
-            virtual uint access(size_t i) const;
+			virtual uint access(size_t i) const;
 
-            virtual size_t getSize() const;
+			virtual size_t getSize() const;
 
-            virtual size_t getLength() const { return length; }
+			virtual size_t getLength() const { return length; }
 
-            virtual void save(ofstream & fp) const;
+			virtual void save(ofstream & fp) const;
 
-            static SequenceAlphPart * load(ifstream & fp);
+			static SequenceAlphPart * load(ifstream & fp);
 
-        protected:
-            // reverse permutation for sorted symbols
-            uint * revPermFreq;
-            // symbols sorted by frequency
-            uint * alphSortedByFreq;
-            // the sequence indexing the lengths of the symbol in each position
-            Sequence * groupsIndex;
-            // sequences indexing the elements groupes by length
-            Sequence ** indexesByLength;
-            // cut corresponds to the number of symbols that are not represented in indexesByLength (the most frequent ones)
-            uint cut;
-            uint origsigma;
-            // maxLen corresponds to the maximum length of a symbol in bits, 
-            // this-cut+1 corresponds to the maximum index in indexesByLength.
-            uint maxLen;
+		protected:
+			// reverse permutation for sorted symbols
+			uint * revPermFreq;
+			// symbols sorted by frequency
+			uint * alphSortedByFreq;
+			// the sequence indexing the lengths of the symbol in each position
+			Sequence * groupsIndex;
+			// sequences indexing the elements groupes by length
+			Sequence ** indexesByLength;
+			// cut corresponds to the number of symbols that are not represented in indexesByLength (the most frequent ones)
+			uint cut;
+			uint origsigma;
+			// maxLen corresponds to the maximum length of a symbol in bits,
+			// this-cut+1 corresponds to the maximum index in indexesByLength.
+			uint maxLen;
 
-    };
+	};
 
 };
-
-#endif                           /* _SEQUENCEALPHPART_H */
+#endif							 /* _SEQUENCEALPHPART_H */

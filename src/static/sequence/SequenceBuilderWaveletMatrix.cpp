@@ -20,27 +20,26 @@
 
 #include <SequenceBuilderWaveletMatrix.h>
 
-namespace cds_static {
+namespace cds_static
+{
 
-    SequenceBuilderWaveletMatrix::SequenceBuilderWaveletMatrix(BitSequenceBuilder * bsb, Mapper * am) {
-        this->bsb = bsb;
-        this->am = am;
-        bsb->use();
-        am->use();
-    }
+	SequenceBuilderWaveletMatrix::SequenceBuilderWaveletMatrix(BitSequenceBuilder * bsb, Mapper * am) {
+		this->bsb = bsb;
+		this->am = am;
+		bsb->use();
+		am->use();
+	}
 
-    SequenceBuilderWaveletMatrix::~SequenceBuilderWaveletMatrix() {
-        bsb->unuse();
-        am->unuse();
-    }
+	SequenceBuilderWaveletMatrix::~SequenceBuilderWaveletMatrix() {
+		bsb->unuse();
+		am->unuse();
+	}
 
-    Sequence * SequenceBuilderWaveletMatrix::build(uint * sequence, size_t len) {
-        return new WaveletMatrix(sequence, len, bsb, am);
-    }
+	Sequence * SequenceBuilderWaveletMatrix::build(uint * sequence, size_t len) {
+		return new WaveletMatrix(sequence, len, bsb, am);
+	}
 
-    Sequence * SequenceBuilderWaveletMatrix::build(const Array & seq) {
-        return new WaveletMatrix(seq, bsb, am);
-    }
+	Sequence * SequenceBuilderWaveletMatrix::build(const Array & seq) {
+		return new WaveletMatrix(seq, bsb, am);
+	}
 };
-
-

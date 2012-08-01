@@ -36,29 +36,29 @@ using namespace cds_utils;
 namespace cds_static
 {
 
-    /** Mapper that makes the values in the set contiguous
-     *
-     *  @author Francisco Claude
-     */
-    class MapperCont : public Mapper
-    {
-        public:
-            MapperCont(const Array & seq, const BitSequenceBuilder & bsb);
-            MapperCont(const uint * A, const size_t len, const BitSequenceBuilder & bsb);
+	/** Mapper that makes the values in the set contiguous
+	 *
+	 *  @author Francisco Claude
+	 */
+	class MapperCont : public Mapper
+	{
+		public:
+			MapperCont(const Array & seq, const BitSequenceBuilder & bsb);
+			MapperCont(const uint * A, const size_t len, const BitSequenceBuilder & bsb);
 
-            virtual ~MapperCont();
+			virtual ~MapperCont();
 
-            virtual uint map(uint s) const;
-            virtual uint unmap(uint s) const;
-            virtual size_t getSize() const;
+			virtual uint map(uint s) const;
+			virtual uint unmap(uint s) const;
+			virtual size_t getSize() const;
 
-            virtual void save(ofstream & out) const;
-            static MapperCont * load(ifstream & input);
+			virtual void save(ofstream & out) const;
+			static MapperCont * load(ifstream & input);
 
-        protected:
-            MapperCont();
-            BitSequence * m;
-    };
+		protected:
+			MapperCont();
+			BitSequence * m;
+	};
 
 };
-#endif                           /* _MAPPERCONT_H */
+#endif							 /* _MAPPERCONT_H */

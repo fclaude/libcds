@@ -23,86 +23,86 @@
 
 namespace cds_static
 {
-    using namespace cds_utils;
+	using namespace cds_utils;
 
-    HuffmanCoder::HuffmanCoder(uint * symb, size_t n) {
-        uint max_v = 0;
-        for(size_t i=0;i<n;i++)
-            max_v = max(max_v,symb[i]);
-        uint * occ = new uint[max_v+1];
-        for(size_t i=0;i<max_v+1;i++)
-            occ[i] = 0;
-        for(size_t i=0;i<n;i++)
-            occ[symb[i]]++;
-        huff_table = createHuff(occ, max_v);
-        delete [] occ;
-    }
+	HuffmanCoder::HuffmanCoder(uint * symb, size_t n) {
+		uint max_v = 0;
+		for(size_t i=0;i<n;i++)
+			max_v = max(max_v,symb[i]);
+		uint * occ = new uint[max_v+1];
+		for(size_t i=0;i<max_v+1;i++)
+			occ[i] = 0;
+		for(size_t i=0;i<n;i++)
+			occ[symb[i]]++;
+		huff_table = createHuff(occ, max_v);
+		delete [] occ;
+	}
 
-    HuffmanCoder::HuffmanCoder(uchar * symb, size_t n) {
-        uchar max_v = 0;
-        for(size_t i=0;i<n;i++)
-            max_v = max(max_v,symb[i]);
-        uint * occ = new uint[max_v+1];
-        for(size_t i=0;i<(uint)max_v+1;i++)
-            occ[i] = 0;
-        for(size_t i=0;i<n;i++)
-            occ[symb[i]]++;
-        huff_table = createHuff(occ, max_v);
-        delete [] occ;
-    }
+	HuffmanCoder::HuffmanCoder(uchar * symb, size_t n) {
+		uchar max_v = 0;
+		for(size_t i=0;i<n;i++)
+			max_v = max(max_v,symb[i]);
+		uint * occ = new uint[max_v+1];
+		for(size_t i=0;i<(uint)max_v+1;i++)
+			occ[i] = 0;
+		for(size_t i=0;i<n;i++)
+			occ[symb[i]]++;
+		huff_table = createHuff(occ, max_v);
+		delete [] occ;
+	}
 
-    HuffmanCoder::HuffmanCoder(Array & seq) {
-        uint max_v = seq.getMax();
-        uint * occ = new uint[max_v+1];
-        for(size_t i=0;i<(uint)max_v+1;i++)
-            occ[i] = 0;
-        for(size_t i=0;i<seq.getLength();i++)
-            occ[seq[i]]++;
-        huff_table = createHuff(occ, max_v);
-        delete [] occ;
-    }
+	HuffmanCoder::HuffmanCoder(Array & seq) {
+		uint max_v = seq.getMax();
+		uint * occ = new uint[max_v+1];
+		for(size_t i=0;i<(uint)max_v+1;i++)
+			occ[i] = 0;
+		for(size_t i=0;i<seq.getLength();i++)
+			occ[seq[i]]++;
+		huff_table = createHuff(occ, max_v);
+		delete [] occ;
+	}
 
-    HuffmanCoder::HuffmanCoder() {
-    }
+	HuffmanCoder::HuffmanCoder() {
+	}
 
-    HuffmanCoder::~HuffmanCoder() {
-        freeHuff(huff_table);
-    }
+	HuffmanCoder::~HuffmanCoder() {
+		freeHuff(huff_table);
+	}
 
-    size_t HuffmanCoder::maxLength() const
-    {
-        return huff_table.depth;
-    }
+	size_t HuffmanCoder::maxLength() const
+	{
+		return huff_table.depth;
+	}
 
-    size_t HuffmanCoder::getSize() const
-    {
-        return sizeof(HuffmanCoder)+sizeHuff(huff_table);
-    }
+	size_t HuffmanCoder::getSize() const
+	{
+		return sizeof(HuffmanCoder)+sizeHuff(huff_table);
+	}
 
-    size_t HuffmanCoder::encode(uint symb, uint * stream, size_t pos) const
-    {
-        return encodeHuff(huff_table, symb, stream, pos);
-    }
+	size_t HuffmanCoder::encode(uint symb, uint * stream, size_t pos) const
+	{
+		return encodeHuff(huff_table, symb, stream, pos);
+	}
 
-    size_t HuffmanCoder::decode(uint * symb, uint * stream, size_t pos) const
-    {
-        return decodeHuff(huff_table, symb, stream, pos);
-    }
+	size_t HuffmanCoder::decode(uint * symb, uint * stream, size_t pos) const
+	{
+		return decodeHuff(huff_table, symb, stream, pos);
+	}
 
-    void HuffmanCoder::save(ofstream & fp) const
-    {
-        saveValue<uint>(fp,HUFF_HDR);
-        saveHuff(huff_table,fp);
-    }
+	void HuffmanCoder::save(ofstream & fp) const
+	{
+		saveValue<uint>(fp,HUFF_HDR);
+		saveHuff(huff_table,fp);
+	}
 
-    HuffmanCoder * HuffmanCoder::load(ifstream & fp) {
-        uint type = loadValue<uint>(fp);
-        if(type != HUFF_HDR) {   //throw exception
-            return NULL;
-        }
-        HuffmanCoder * ret = new HuffmanCoder();
-        ret->huff_table = loadHuff(fp,1);
-        return ret;
-    }
+	HuffmanCoder * HuffmanCoder::load(ifstream & fp) {
+		uint type = loadValue<uint>(fp);
+		if(type != HUFF_HDR) {	 //throw exception
+			return NULL;
+		}
+		HuffmanCoder * ret = new HuffmanCoder();
+		ret->huff_table = loadHuff(fp,1);
+		return ret;
+	}
 
 };

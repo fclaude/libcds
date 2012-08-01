@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,18 +16,18 @@
  *
  */
 
-
 #include <PSV.h>
 
-namespace cds_static{
-	PSV::PSV(){
+namespace cds_static
+{
+	PSV::PSV() {
 		r=b=n=b_A=0;
 		P=NULL;
 		R=NULL;
 		A=NULL;
 	}
 
-	void PSV::create_first_level(LCP *lcp, TextIndex *csa){
+	void PSV::create_first_level(LCP *lcp, TextIndex *csa) {
 		uint *P_aux;
 		uint *R_aux;
 		/*we move all the result 1 space to de rigth*/
@@ -37,20 +37,20 @@ namespace cds_static{
 		P_aux = new uint[size];
 		R_aux = new uint[size];
 
-		for(uint i=0; i<size; i++){
-				P_aux[i]=0;
-				R_aux[i]=0;
+		for(uint i=0; i<size; i++) {
+			P_aux[i]=0;
+			R_aux[i]=0;
 		}
 		/*for each i find his PSV position*/
-		for(uint i=n; i>0; i--){
+		for(uint i=n; i>0; i--) {
 			lcp_value = lcp->get_LCP(i-1,csa);
 			psv_aux = 0;
-			for(j=i-1; j>0; j--){
+			for(j=i-1; j>0; j--) {
 				psv_aux =  lcp->get_LCP(j-1,csa);
-				if(lcp_value > psv_aux){
+				if(lcp_value > psv_aux) {
 					/*if is not near*/
-					if( i/b !=  j/b ){
-						if( j/b != last_psv/b){
+					if( i/b !=  j/b ) {
+						if( j/b != last_psv/b) {
 							/*mark the pioneer in P*/
 							bitset(P_aux,i);
 							/*mark the pioneer and the PSV of the pioneer in R*/
@@ -61,27 +61,27 @@ namespace cds_static{
 					}
 					break;
 				}
-			}/*close for j*/
-			if(j==0){
-				 if( i/b != j/b ){
-					 if( j/b !=  last_psv/b){
-						 /*mark the pioneer in P*/
-						 bitset(P_aux,i);
-						 /*mark the pioneer and the NSV of the pioneer in R*/
-						 bitset(R_aux,i);
-						 bitset(R_aux,j);
-					 }
-					 last_psv=j;
-				 }
+			}					 /*close for j*/
+			if(j==0) {
+				if( i/b != j/b ) {
+					if( j/b !=  last_psv/b) {
+						/*mark the pioneer in P*/
+						bitset(P_aux,i);
+						/*mark the pioneer and the NSV of the pioneer in R*/
+						bitset(R_aux,i);
+						bitset(R_aux,j);
+					}
+					last_psv=j;
+				}
 			}
-		} /*close for i*/
+		}						 /*close for i*/
 		P[0] = new BitSequenceRRR(P_aux, n+1);
 		R[0] = new BitSequenceRRR(R_aux, n+1);
 		delete[] P_aux;
 		delete[] R_aux;
 	}
-	 
-	void PSV::create_level_r(LCP *lcp, size_t level, TextIndex *csa){
+
+	void PSV::create_level_r(LCP *lcp, size_t level, TextIndex *csa) {
 		uint *P_aux, *R_aux;
 		uint size = (n+W-1)/W;
 		uint last_psv=n, ini=0;
@@ -89,7 +89,7 @@ namespace cds_static{
 		int j;
 		P_aux = new uint[size];
 		R_aux = new uint[size];
-		for(uint i=0; i < size; i++){
+		for(uint i=0; i < size; i++) {
 			P_aux[i]=0;
 			R_aux[i]=0;
 		}
@@ -97,20 +97,20 @@ namespace cds_static{
 		uint *lcp_r = new uint[num_elements];
 		if(R[level-1]->access(0))
 			ini = 1;
-		
-		for(uint i=ini; i<num_elements; i++){
+
+		for(uint i=ini; i<num_elements; i++) {
 			lcp_r[i] = lcp->get_LCP(R[level-1]->select1(i+1)-1, csa);
 		}
 
 		/*for each i find his PSV position*/
-		for(uint i= num_elements-1; i>0; i--){
+		for(uint i= num_elements-1; i>0; i--) {
 			lcp_value = lcp_r[i];
-			for(j=i-1; j>0; j--){
+			for(j=i-1; j>0; j--) {
 				psv_aux =  lcp_r[j];
-				if(lcp_value > psv_aux){
+				if(lcp_value > psv_aux) {
 					/*if is not near*/
-					if( i/b !=  j/b ){
-						if( j/b != last_psv/b){
+					if( i/b !=  j/b ) {
+						if( j/b != last_psv/b) {
 							/*mark the pioneer in P*/
 							far_aux = R[level-1]->select1(i+1);
 							bitset(P_aux,far_aux);
@@ -122,29 +122,29 @@ namespace cds_static{
 					}
 					break;
 				}
-			}/*close for j*/
-			
-			if(j==0){
-				if(ini==1){
+			}					 /*close for j*/
+
+			if(j==0) {
+				if(ini==1) {
 					/*if is not near*/
-					if( i/b !=  j/b ){       
-						if( j/b != last_psv/b){              
+					if( i/b !=  j/b ) {
+						if( j/b != last_psv/b) {
 							/*mark the pioneer in P*/
 							far_aux = R[level-1]->select1(i+1);
-							bitset(P_aux,far_aux);                                     
+							bitset(P_aux,far_aux);
 							/*mark the pioneer and the PSV of the pioneer in R*/
-							bitset(R_aux, far_aux);                                                
-							bitset(R_aux, 0);                                        	
-						}                                           																      
-						last_psv=j;					
+							bitset(R_aux, far_aux);
+							bitset(R_aux, 0);
+						}
+						last_psv=j;
 					}
 				}
-				else{
+				else {
 					psv_aux =  lcp_r[j];
-					if(lcp_value > psv_aux){
+					if(lcp_value > psv_aux) {
 						/*if is not near*/
-						if( i/b !=  j/b ){
-							if( j/b != last_psv/b){
+						if( i/b !=  j/b ) {
+							if( j/b != last_psv/b) {
 								/*mark the pioneer in P*/
 								far_aux = R[level-1]->select1(i+1);
 								bitset(P_aux,far_aux);
@@ -157,7 +157,7 @@ namespace cds_static{
 					}
 				}
 			}
-		} /*close for i*/
+		}						 /*close for i*/
 
 		delete [] lcp_r;
 		P[level] = new BitSequenceRRR(P_aux, n);
@@ -166,11 +166,11 @@ namespace cds_static{
 		delete[] R_aux;
 	}
 
-	void PSV::create_last_level(LCP *lcp, TextIndex *csa){
+	void PSV::create_last_level(LCP *lcp, TextIndex *csa) {
 		size_t *lcp_r;
 		uint lcp_value, psv_aux;
 		int j, ini=0;
-			
+
 		/*store the results for the last level*/
 		uint num_elements =  R[r-1]->rank1(n);
 		b_A = bits(num_elements);
@@ -182,23 +182,23 @@ namespace cds_static{
 		if(R[r-1]->access(0))
 			ini = 1;
 
-		for(uint i=ini; i<num_elements; i++){
+		for(uint i=ini; i<num_elements; i++) {
 			lcp_r[i] = lcp->get_LCP(R[r-1]->select1(i+1)-1, csa);
 		}
 
-		for(int i=num_elements-1; i>0; i--){
+		for(int i=num_elements-1; i>0; i--) {
 			lcp_value = lcp_r[i];
-			for(j=i-1; j>0; j--){
+			for(j=i-1; j>0; j--) {
 				psv_aux = lcp_r[j];
-				if(lcp_value > psv_aux){
+				if(lcp_value > psv_aux) {
 					set_field_64(A, b_A, i, j);
 					break;
 				}
-			}/*close for j*/
-			if(j==0){
+			}					 /*close for j*/
+			if(j==0) {
 				if(ini)
 					set_field_64(A, b_A, i, 0);
-				else{
+				else {
 					psv_aux = lcp_r[j];
 					if(lcp_value > psv_aux)
 						set_field_64(A, b_A, i, j);
@@ -206,29 +206,30 @@ namespace cds_static{
 						set_field_64(A, b_A, i, 0);
 				}
 			}
-		} /*close for i*/
+		}						 /*close for i*/
 		set_field_64(A, b_A, 0, 0);
 		delete [] lcp_r;
 	}
 
-	PSV::PSV(LCP *lcp, size_t levels, size_t block, TextIndex *csa){
+	PSV::PSV(LCP *lcp, size_t levels, size_t block, TextIndex *csa) {
 		/*levels>=1*/
 		n = csa->index_length();
 		r = levels;
 		b = block;
-		P = new BitSequence*[r]; 
+		P = new BitSequence*[r];
 		R = new BitSequence*[r];
 		create_first_level(lcp, csa);
 		/*create the rest of the levels */
-		for(size_t i=1; i < r; i++){
+		for(size_t i=1; i < r; i++) {
 			create_level_r(lcp, i, csa);
 		}
 		/*create the last level*/
 		create_last_level(lcp, csa);
 	}
 
-	size_t PSV::find_PSV_r(size_t v, size_t level, TextIndex *csa, LCP *lcp) const{
-		if(level == r){
+	size_t PSV::find_PSV_r(size_t v, size_t level, TextIndex *csa, LCP *lcp) const
+	{
+		if(level == r) {
 			return get_field_64(A, b_A, v);
 		}
 		/*look in the same block*/
@@ -242,7 +243,7 @@ namespace cds_static{
 		if(ini_block==0)
 			ini_block = 1;
 
-		for(size_t i=v; i >= ini_block; i--){
+		for(size_t i=v; i >= ini_block; i--) {
 			aux_psv = lcp->get_LCP( R[level-1]->select1(i+1)-1,csa);
 			if(aux_psv < value_v)
 				return i;
@@ -250,7 +251,7 @@ namespace cds_static{
 
 		if(ini_block==1)
 			return 0;
-	 
+
 		/*find the pioneer*/
 		if(P[level]->access(pos_v))
 			pioneer = pos_v;
@@ -265,9 +266,9 @@ namespace cds_static{
 			psv_pioneer = 1;
 
 		ini_search = b*((psv_pioneer+b)/b)-1;
-		
+
 		/*seek the answer in the same block of the nsv(las_pioneer)*/
-		for(size_t i= ini_search; i >= psv_pioneer; i--){
+		for(size_t i= ini_search; i >= psv_pioneer; i--) {
 			aux_psv = lcp->get_LCP(R[level-1]->select1(i+1)-1,csa);
 			if(aux_psv < value_v)
 				return i;
@@ -275,10 +276,11 @@ namespace cds_static{
 		return 0;
 	}
 
-	size_t PSV::find_PSV(size_t v, TextIndex *csa, LCP *lcp) const{
+	size_t PSV::find_PSV(size_t v, TextIndex *csa, LCP *lcp) const
+	{
 		/*look in the same block*/
 		size_t n_next = 0;
-		size_t *next; 
+		size_t *next;
 		size_t value_v = lcp->get_seq_LCP(v, csa, &next, &n_next, 0);
 		size_t aux_psv;
 		size_t pioneer, psv_pioneer;
@@ -287,7 +289,7 @@ namespace cds_static{
 		if(ini_block==0)
 			ini_block = 1;
 
-		for(size_t i=v; i >= ini_block; i--){
+		for(size_t i=v; i >= ini_block; i--) {
 			aux_psv = lcp->get_seq_LCP(i-1,csa, &next, &n_next, 0);
 			if(aux_psv < value_v)
 				return i;
@@ -312,21 +314,22 @@ namespace cds_static{
 		/*seek the answer in the same block of the psv(las_pioneer)*/
 		ini_search = b*((psv_pioneer+b)/b) -1;
 		n_next = 0;
-		for(size_t i=ini_search; i>=psv_pioneer; i--){
-			 aux_psv = lcp->get_seq_LCP(i-1,csa, &next, &n_next, 0);
-			 if(aux_psv < value_v)
-				 return i;
+		for(size_t i=ini_search; i>=psv_pioneer; i--) {
+			aux_psv = lcp->get_seq_LCP(i-1,csa, &next, &n_next, 0);
+			if(aux_psv < value_v)
+				return i;
 		}
 		return 0;
 	}
 
-	void PSV::save(ofstream & fp) const{
+	void PSV::save(ofstream & fp) const
+	{
 		saveValue(fp, r);
 		saveValue(fp, b);
 		saveValue(fp, n);
 		saveValue(fp, b_A);
 
-		for(size_t i=0;  i<r;i++){
+		for(size_t i=0;  i<r;i++) {
 			P[i]->save(fp);
 			R[i]->save(fp);
 		}
@@ -334,7 +337,7 @@ namespace cds_static{
 		saveValue(fp, A, (num_elements*b_A + W -1)/W);
 	}
 
-	PSV* PSV::load(ifstream & fp){
+	PSV* PSV::load(ifstream & fp) {
 		PSV *psv = new PSV();
 		psv->r = loadValue<size_t>(fp);
 		psv->b = loadValue<size_t>(fp);
@@ -342,7 +345,7 @@ namespace cds_static{
 		psv->b_A = loadValue<size_t>(fp);
 		psv->P = new BitSequence*[psv->r];
 		psv->R = new BitSequence*[psv->r];
-		for(size_t i=0; i<psv->r; i++){
+		for(size_t i=0; i<psv->r; i++) {
 			psv->P[i] = BitSequence::load(fp);
 			psv->R[i] = BitSequence::load(fp);
 		}
@@ -352,19 +355,20 @@ namespace cds_static{
 		return psv;
 	}
 
-	size_t PSV::getSize() const{
+	size_t PSV::getSize() const
+	{
 		size_t size = 0;
 		size +=  sizeof(PSV);
-		for(size_t i=0; i<r; i++){
+		for(size_t i=0; i<r; i++) {
 			size += R[i]->getSize() + P[i]->getSize();
 		}
 		size +=  ((b_A*R[r-1]->rank1(n-1) + W -1)/W)*sizeof(uint);
 		return size;
 	}
 
-	PSV::~PSV(){
+	PSV::~PSV() {
 		delete [] A;
-		for(uint i=0; i<r ; i++){
+		for(uint i=0; i<r ; i++) {
 			delete (BitSequenceRRR *)P[i];
 			delete (BitSequenceRRR *)R[i];
 		}
@@ -373,4 +377,3 @@ namespace cds_static{
 	}
 
 };
-

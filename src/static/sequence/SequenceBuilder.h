@@ -25,20 +25,22 @@
 #ifndef SEQUENCEBUILDER_H
 #define SEQUENCEBUILDER_H
 
-namespace cds_static {
+namespace cds_static
+{
 
-    class SequenceBuilder {
-        public:
-            SequenceBuilder() { userCount=0; }
-            virtual ~SequenceBuilder() {}
-            virtual Sequence * build(uint * seq, size_t len)=0;
-            virtual Sequence * build(const Array & seq)=0;
-            virtual void use() { userCount++; }
-            virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
+	class SequenceBuilder
+	{
+		public:
+			SequenceBuilder() { userCount=0; }
+			virtual ~SequenceBuilder() {}
+			virtual Sequence * build(uint * seq, size_t len)=0;
+			virtual Sequence * build(const Array & seq)=0;
+			virtual void use() { userCount++; }
+			virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
 
-        protected:
-            int userCount;
-    };
+		protected:
+			int userCount;
+	};
 };
 
 #include <SequenceBuilderWaveletTreeNoptrs.h>
@@ -48,6 +50,4 @@ namespace cds_static {
 #include <SequenceBuilderWaveletTree.h>
 #include <SequenceBuilderWaveletMatrix.h>
 #include <SequenceBuilderStr.h>
-
 #endif
-

@@ -2,21 +2,20 @@
    Copyright (C) 2005, K. Sadakane, all rights reserved.
 
    This file contains an implementation of CSA.
-   For more information, see 
+   For more information, see
 
    K. Sadakane. Compressed text databases with efficient query
-     algorithms based on the compressed suffix array.
-     In Proceedings 11th Annual International Symposium on Algorithms
-     and Computation (ISAAC)}, LNCS v. 1969, pages 410--421, 2000.
+	 algorithms based on the compressed suffix array.
+	 In Proceedings 11th Annual International Symposium on Algorithms
+	 and Computation (ISAAC)}, LNCS v. 1969, pages 410--421, 2000.
 
-   K. Sadakane. Succinct representations of lcp information and 
-     improvements in the compressed suffix arrays.
-     In Proceedings 13th Annual ACM-SIAM Symposium on Discrete
-     Algorithms (SODA), 2002.
+   K. Sadakane. Succinct representations of lcp information and
+	 improvements in the compressed suffix arrays.
+	 In Proceedings 13th Annual ACM-SIAM Symposium on Discrete
+	 Algorithms (SODA), 2002.
 
    K. Sadakane. New text indexing functionalities of the compressed
-     suffix arrays. Journal of Algorithms, 48(2):294--313, 2003.
-
+	 suffix arrays. Journal of Algorithms, 48(2):294--313, 2003.
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -47,20 +46,22 @@ using namespace cds_utils;
 
 #define SIGMA 256
 
-namespace cds_static{
+namespace cds_static
+{
 
 	using namespace std;
 
-	typedef struct csa {
+	typedef struct csa
+	{
 		int n,m;
 		int l,two,two2;
 		int K[SIGMA+2],C[SIGMA+1],C2[SIGMA+1];
 		int *SA,*ISA,*R;
-		unsigned short *B; /* bit—ñ */
-#ifdef USE_MMAP
+		unsigned short *B;		 /* bit */
+		#ifdef USE_MMAP
 		MMAP *mapp,*mapi;
 		int p_size, i_size, r_size, sa_size, isa_size;
-#endif
+		#endif
 	} CSA;
 
 	int csa_psi(CSA *SA,int i);
@@ -84,5 +85,4 @@ namespace cds_static{
 	void csa_free(CSA *csa);
 	void csa_init(CSA *csa);
 };
-
 #endif

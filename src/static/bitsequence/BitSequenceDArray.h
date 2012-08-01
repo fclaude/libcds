@@ -34,41 +34,41 @@ using namespace cds_utils;
 
 namespace cds_static
 {
-    class BitSequenceDArray: public BitSequence
-    {
+	class BitSequenceDArray: public BitSequence
+	{
 
-        public:
-            /** Builds the DArray (Sadakane's dense version for rank/select*/
-            BitSequenceDArray(const BitString & bs);
-            /** Builds the DArray */
-            BitSequenceDArray(uint * buff, size_t len);
-            virtual ~BitSequenceDArray();
-            virtual size_t select1(size_t i) const;
-            virtual size_t rank0(size_t i) const;
-						virtual size_t rank1(size_t i) const;
-            virtual size_t getSize() const;
-            virtual void save(ofstream & fp) const;
-            static BitSequenceDArray * load(ifstream & fp);
+		public:
+			/** Builds the DArray (Sadakane's dense version for rank/select*/
+			BitSequenceDArray(const BitString & bs);
+			/** Builds the DArray */
+			BitSequenceDArray(uint * buff, size_t len);
+			virtual ~BitSequenceDArray();
+			virtual size_t select1(size_t i) const;
+			virtual size_t rank0(size_t i) const;
+			virtual size_t rank1(size_t i) const;
+			virtual size_t getSize() const;
+			virtual void save(ofstream & fp) const;
+			static BitSequenceDArray * load(ifstream & fp);
 
-        protected:
-						uint m;           //number of 1's
-						uint nl, s_ss, s_sl;
-						uint *a;         //bitarray
-						uint *lp;
-						uint *sl;
-						uint *ss;
-						uint *p;
-						uint *rl;
-						uchar *rs;
+		protected:
+			uint m;				 //number of 1's
+			uint nl, s_ss, s_sl;
+			uint *a;			 //bitarray
+			uint *lp;
+			uint *sl;
+			uint *ss;
+			uint *p;
+			uint *rl;
+			uchar *rs;
 
-						 /** Internal building function, same parameters as the base constructor. */
-						void build(uint *buff, size_t len);
-            
-						/** Protected constructor for loaders, you have to initialize data before
-						 *using an object built with this constructor.
-						 */
-						BitSequenceDArray();
+			/** Internal building function, same parameters as the base constructor. */
+			void build(uint *buff, size_t len);
 
-    };
+			/** Protected constructor for loaders, you have to initialize data before
+			 *using an object built with this constructor.
+			 */
+			BitSequenceDArray();
+
+	};
 };
 #endif

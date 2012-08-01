@@ -24,18 +24,18 @@
 namespace cds_static
 {
 
-    BitSequenceBuilderRRR::BitSequenceBuilderRRR(uint sample_rate) {
-        this->sample_rate = sample_rate;
-    }
+	BitSequenceBuilderRRR::BitSequenceBuilderRRR(uint sample_rate) {
+		this->sample_rate = sample_rate;
+	}
 
-    BitSequence * BitSequenceBuilderRRR::build(uint * bitseq, size_t len) const
-    {
-        return new BitSequenceRRR(bitseq,len,sample_rate);
-    }
+	BitSequence * BitSequenceBuilderRRR::build(uint * bitseq, size_t len) const
+	{
+		return new BitSequenceRRR(bitseq,len,sample_rate);
+	}
 
-    BitSequence * BitSequenceBuilderRRR::build(const BitString & bs) const
-    {
-        return new BitSequenceRRR(bs,sample_rate);
-    }
+	BitSequence * BitSequenceBuilderRRR::build(const BitString & bs) const
+	{
+		return new BitSequenceRRR(bs,sample_rate);
+	}
 
 };

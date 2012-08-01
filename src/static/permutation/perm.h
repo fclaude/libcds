@@ -29,67 +29,67 @@
 
 using namespace cds_utils;
 
-namespace cds_static {
-
-typedef struct sperm
+namespace cds_static
 {
-  uint *elems;                   // elements of the permutation
-  uint nelems;                   // # of elements
-  BitSequence * bmap;                   // bitmap allowing rank() queries in O(1) time
-  uint *bwdptrs;                 // array of backward pointers
-  uint nbits;                    // log(nelems)
-  uint nbwdptrs;                 // # of backward pointers
-  uint t;
-} *perm;
 
-typedef struct
-{
-  uint key;
-  uint pointer;
-} auxbwd;
+	typedef struct sperm
+	{
+		uint *elems;			 // elements of the permutation
+		uint nelems;			 // # of elements
+		BitSequence * bmap;		 // bitmap allowing rank() queries in O(1) time
+		uint *bwdptrs;			 // array of backward pointers
+		uint nbits;				 // log(nelems)
+		uint nbwdptrs;			 // # of backward pointers
+		uint t;
+	} *perm;
 
-/** Creates a permutation
- *  
- *  @author Diego Arroyuelo
- */
-perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb);
+	typedef struct
+	{
+		uint key;
+		uint pointer;
+	} auxbwd;
 
-/** Gets the i-th element of the permutation
- *  
- *  @author Diego Arroyuelo
- */
-uint getelemPerm(const perm P, uint i);
+	/** Creates a permutation
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	perm createPerm(uint *elems, uint nelems, uint t, BitSequenceBuilder * bmb);
 
-/** Destroys a permutation
- *  
- *  @author Diego Arroyuelo
- */
-void destroyPerm(perm P);
+	/** Gets the i-th element of the permutation
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	uint getelemPerm(const perm P, uint i);
 
-/** Get pi(i)^{-1}
- *  
- *  @author Diego Arroyuelo
- */
-uint inversePerm(const perm P, uint i);
+	/** Destroys a permutation
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	void destroyPerm(perm P);
 
-/** Saves a permutation
- *  
- *  @author Diego Arroyuelo
- */
-uint savePerm(const perm P, ofstream & f);
+	/** Get pi(i)^{-1}
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	uint inversePerm(const perm P, uint i);
 
-/** Loads a permutation
- *  
- *  @author Diego Arroyuelo
- */
-perm loadPerm(ifstream & f);
+	/** Saves a permutation
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	uint savePerm(const perm P, ofstream & f);
 
-/** Returns the size of the data structure
- *  
- *  @author Diego Arroyuelo
- */
-uint sizeofPerm(const perm P);
+	/** Loads a permutation
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	perm loadPerm(ifstream & f);
+
+	/** Returns the size of the data structure
+	 *
+	 *  @author Diego Arroyuelo
+	 */
+	uint sizeofPerm(const perm P);
 
 };
-
 #endif

@@ -33,41 +33,41 @@ using namespace cds_utils;
 namespace cds_static
 {
 
-    /** static_sequence represented using one bitmap per symbol, doesn't support efficient access
-     *
-     *  @author Francisco Claude
-     */
-    class BitmapsSequence : public Sequence
-    {
+	/** static_sequence represented using one bitmap per symbol, doesn't support efficient access
+	 *
+	 *  @author Francisco Claude
+	 */
+	class BitmapsSequence : public Sequence
+	{
 
-        public:
-            BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb);
-            BitmapsSequence(const Array & a, Mapper * am, BitSequenceBuilder * bsb);
+		public:
+			BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb);
+			BitmapsSequence(const Array & a, Mapper * am, BitSequenceBuilder * bsb);
 
-            virtual ~BitmapsSequence();
+			virtual ~BitmapsSequence();
 
-            virtual size_t rank(uint c, size_t i) const;
+			virtual size_t rank(uint c, size_t i) const;
 
-            virtual size_t select(uint c, size_t i) const;
-            virtual size_t selectNext(uint c, size_t i) const;
+			virtual size_t select(uint c, size_t i) const;
+			virtual size_t selectNext(uint c, size_t i) const;
 
-            virtual uint access(size_t i) const;
+			virtual uint access(size_t i) const;
 
-            virtual size_t getSize() const;
+			virtual size_t getSize() const;
 
-            virtual void save(ofstream & fp) const;
+			virtual void save(ofstream & fp) const;
 
-            /** Reads a bitmap determining the type */
-            static BitmapsSequence * load(ifstream & fp);
+			/** Reads a bitmap determining the type */
+			static BitmapsSequence * load(ifstream & fp);
 
-        protected:
-            uint sigma;
-            BitSequence  ** bitmaps;
-            Mapper * am;
+		protected:
+			uint sigma;
+			BitSequence  ** bitmaps;
+			Mapper * am;
 
-            BitmapsSequence();
+			BitmapsSequence();
 
-    };
+	};
 
 };
-#endif                           /* _BITMAPSSEQUENCE_H */
+#endif							 /* _BITMAPSSEQUENCE_H */

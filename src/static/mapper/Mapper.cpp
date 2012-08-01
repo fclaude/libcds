@@ -23,30 +23,31 @@
 
 namespace cds_static
 {
-    Mapper::Mapper() {
-        userCount=0;
-    }
+	Mapper::Mapper() {
+		userCount=0;
+	}
 
-    void Mapper::use() {
-        userCount++;
-    }
+	void Mapper::use() {
+		userCount++;
+	}
 
-    void Mapper::unuse() {
-        userCount--;
-        assert(userCount>=0);
-        if(userCount==0)
-            delete this;
-    }
+	void Mapper::unuse() {
+		userCount--;
+		assert(userCount>=0);
+		if(userCount==0)
+			delete this;
+	}
 
-    Mapper * Mapper::load(ifstream & input) {
-        uint rd;
-        input.read((char*)&rd,sizeof(uint));
-        size_t pos = input.tellg();
-        input.seekg(pos-sizeof(uint));
-        switch(rd) {
-            case MAPPER_NONE_HDR: return MapperNone::load(input);
-            case MAPPER_CONT_HDR: return MapperCont::load(input);
-        }
-        return NULL;
-    }
+	Mapper * Mapper::load(ifstream & input) {
+		uint rd;
+		input.read((char*)&rd,sizeof(uint));
+		size_t pos = input.tellg();
+		input.seekg(pos-sizeof(uint));
+		switch(rd) {
+			case MAPPER_NONE_HDR: return MapperNone::load(input);
+			case MAPPER_CONT_HDR: return MapperCont::load(input);
+			case MAPPER_REV_HDR: return MapperRev::load(input);
+		}
+		return NULL;
+	}
 };

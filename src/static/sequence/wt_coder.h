@@ -49,6 +49,7 @@ namespace cds_static
             virtual ~wt_coder() {};
             /** Tells if at level l the symbol is represented by a one or a zero */
             virtual bool is_set(uint symbol, uint l) const=0;
+            virtual bool is_set(uint *symbol, uint l) const=0;
             /** Tells if the path of symbol becomes unique at level l */
             virtual bool done(uint symbol, uint l) const =0;
 	    virtual uint * get_symbol(uint symbol) const = 0;

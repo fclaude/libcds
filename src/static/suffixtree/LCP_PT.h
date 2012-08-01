@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,26 +16,27 @@
  *
  */
 
-
 #ifndef LCP_PT_H
 #define LCP_PT_H
 
 #include <RMQ_succinct.h>
 #include <LCP.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-	class LCP_PT: public LCP{
+	class LCP_PT: public LCP
+	{
 		private:
 			LCP_PT();
-			
+
 			virtual int calc_delta(unsigned int i, unsigned int j) const;
-				
+
 			int logv;
 			size_t length;
 			int mask;
 			int v;
-			int m; /*size of rev_ess*/
+			int m;				 /*size of rev_ess*/
 			int *rev_cover;
 			int *delta;
 			int cover_size;

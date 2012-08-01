@@ -23,24 +23,24 @@
 
 namespace cds_static
 {
-    MapperNone::MapperNone() { }
+	MapperNone::MapperNone() { }
 
-    uint MapperNone::map(const uint s) const {return s;}
+	uint MapperNone::map(const uint s) const {return s;}
 
-    uint MapperNone::unmap(const uint s) const {return s;}
+	uint MapperNone::unmap(const uint s) const {return s;}
 
-    size_t MapperNone::getSize() const { return sizeof(MapperNone); }
+	size_t MapperNone::getSize() const { return sizeof(MapperNone); }
 
-    void MapperNone::save(ofstream & out) const
-    {
-        uint wr = MAPPER_NONE_HDR;
-        out.write((char*)&wr,sizeof(uint));
-    }
+	void MapperNone::save(ofstream & out) const
+	{
+		uint wr = MAPPER_NONE_HDR;
+		out.write((char*)&wr,sizeof(uint));
+	}
 
-    MapperNone * MapperNone::load(ifstream & input) {
-        uint rd;
-        input.read((char*)&rd,sizeof(uint));
-        if(rd!=MAPPER_NONE_HDR) return NULL;
-        return new MapperNone();
-    }
+	MapperNone * MapperNone::load(ifstream & input) {
+		uint rd;
+		input.read((char*)&rd,sizeof(uint));
+		if(rd!=MAPPER_NONE_HDR) return NULL;
+		return new MapperNone();
+	}
 };

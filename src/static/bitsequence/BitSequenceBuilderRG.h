@@ -28,19 +28,19 @@
 
 namespace cds_static
 {
-    /** BitSequence builder for BitSequenceRG
-     *
-     * @author Francisco Claude
-     */
-    class BitSequenceBuilderRG : public BitSequenceBuilder
-    {
-        public:
-            BitSequenceBuilderRG(uint factor);
-            virtual ~BitSequenceBuilderRG() {}
-            virtual BitSequence * build(uint * bitseq, size_t len) const;
-            virtual BitSequence * build(const BitString & bs) const;
-        protected:
-            uint factor;
-    };
+	/** BitSequence builder for BitSequenceRG
+	 *
+	 * @author Francisco Claude
+	 */
+	class BitSequenceBuilderRG : public BitSequenceBuilder
+	{
+		public:
+			BitSequenceBuilderRG(uint factor);
+			virtual ~BitSequenceBuilderRG() {}
+			virtual BitSequence * build(uint * bitseq, size_t len) const;
+			virtual BitSequence * build(const BitString & bs) const;
+		protected:
+			uint factor;
+	};
 };
 #endif

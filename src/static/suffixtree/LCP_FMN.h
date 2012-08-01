@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,6 @@
  *
  */
 
-
 #ifndef LCP_FMN_H
 #define LCP_FMN_H
 
@@ -25,19 +24,21 @@
 
 using namespace cds_static;
 
-namespace cds_static{
-	
-	class LCP_FMN: public LCP{
+namespace cds_static
+{
+
+	class LCP_FMN: public LCP
+	{
 		private:
 			LCP_FMN();
 			virtual void generate_OZ(BitSequence *U, uint **O, uint **Z, uint length);
 
 			BitSequence *O, *Z;
-			size_t b_length; //length of the bitmaps
+			size_t b_length;	 //length of the bitmaps
 			size_t OZ_type;
-	
+
 		public:
-		
+
 			/*Johannes, Veli & Gonzalo LCP encode
 			 * @param csa The compressed suffix array of the text
 			 * @param text The text
@@ -45,9 +46,9 @@ namespace cds_static{
 			 * @param op_rs Choose rank/select implementation that will be used (must be RRR02_HDR or SDARRAY_HDR)
 			 * */
 			LCP_FMN(TextIndex *csa, char *text, size_t n, size_t op_rs=RRR02_HDR);
-			
+
 			LCP_FMN(LCP *lcp, TextIndex *csa, size_t n, size_t op_rs=RRR02_HDR);
-			
+
 			/**Return LCP[i]*/
 			virtual size_t get_LCP(size_t i, TextIndex *csa) const;
 
@@ -66,6 +67,4 @@ namespace cds_static{
 			virtual ~LCP_FMN();
 	};
 };
-
 #endif
-

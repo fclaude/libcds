@@ -27,16 +27,16 @@
 namespace cds_static
 {
 
-    class Coder
-    {
-        public:
-            virtual size_t encode(uint symb, uint * stream, size_t pos) const = 0;
-            virtual size_t decode(uint * symb, uint *stream, size_t pos) const = 0;
-            virtual size_t maxLength() const = 0;
-            virtual size_t getSize() const = 0;
-            virtual void save(ofstream & fp) const = 0;
-            static Coder * load(ifstream & fp);
-    };
+	class Coder
+	{
+		public:
+			virtual size_t encode(uint symb, uint * stream, size_t pos) const = 0;
+			virtual size_t decode(uint * symb, uint *stream, size_t pos) const = 0;
+			virtual size_t maxLength() const = 0;
+			virtual size_t getSize() const = 0;
+			virtual void save(ofstream & fp) const = 0;
+			static Coder * load(ifstream & fp);
+	};
 
 };
 

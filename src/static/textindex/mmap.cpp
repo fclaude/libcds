@@ -22,19 +22,19 @@
 #include <mmap.h>
 #include <unistd.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-#ifdef WIN32
-	MMAP *  mymmap (char *fname)
-	{
-	void *base;
-	HANDLE fd,h;
-	int len;
-	MMAP *m;
+	#ifdef WIN32
+	MMAP *  mymmap (char *fname) {
+		void *base;
+		HANDLE fd,h;
+		int len;
+		MMAP *m;
 		m = malloc(sizeof(*m));
 		if (m==NULL) {perror("mymmap malloc");  exit(1);}
 		fd = CreateFile(fname,GENERIC_READ,0,NULL,OPEN_EXISTING,
-					 FILE_ATTRIBUTE_NORMAL,NULL);
+			FILE_ATTRIBUTE_NORMAL,NULL);
 		if (fd==INVALID_HANDLE_VALUE) {
 			printf("createfile\n");
 			exit(1);
@@ -57,23 +57,21 @@ namespace cds_static{
 		return m;
 	}
 
-	int mymunmap (MMAP *m)
-	{
-	 UnmapViewOfFile (m->addr);
-	 CloseHandle(m->h2);
-	 CloseHandle(m->h1);
-	 return 0;
-	}                
+	int mymunmap (MMAP *m) {
+		UnmapViewOfFile (m->addr);
+		CloseHandle(m->h2);
+		CloseHandle(m->h1);
+		return 0;
+	}
 
-#else
+	#else
 
-	MMAP *mymmap (char *fname)
-	{
-	int fd;
-	int len;
-	MMAP *m;
-	struct stat statbuf;
-	caddr_t base;
+	MMAP *mymmap (char *fname) {
+		int fd;
+		int len;
+		MMAP *m;
+		struct stat statbuf;
+		caddr_t base;
 		m =(MMAP *) malloc(sizeof(*m));
 		if (m==NULL) {perror("mymmap malloc");  exit(1);}
 
@@ -91,8 +89,7 @@ namespace cds_static{
 		return m;
 	}
 
-	int mymunmap (MMAP *m)
-	{
+	int mymunmap (MMAP *m) {
 		if (munmap(m->addr,m->len)==-1) {
 			perror("munmap 1:");
 		}

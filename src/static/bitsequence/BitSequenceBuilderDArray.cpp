@@ -24,21 +24,20 @@
 namespace cds_static
 {
 
-    BitSequenceBuilderDArray::BitSequenceBuilderDArray() {
-    }
+	BitSequenceBuilderDArray::BitSequenceBuilderDArray() {
+	}
 
-    BitSequenceBuilderDArray::~BitSequenceBuilderDArray() {
-    }
+	BitSequenceBuilderDArray::~BitSequenceBuilderDArray() {
+	}
 
+	BitSequence * BitSequenceBuilderDArray::build(uint * bitseq, size_t len) const
+	{
+		return new BitSequenceDArray(bitseq,len);
+	}
 
-    BitSequence * BitSequenceBuilderDArray::build(uint * bitseq, size_t len) const
-    {
-        return new BitSequenceDArray(bitseq,len);
-    }
-
-    BitSequence * BitSequenceBuilderDArray::build(const BitString & bs) const
-    {
-        return new BitSequenceDArray(bs);
-    }
+	BitSequence * BitSequenceBuilderDArray::build(const BitString & bs) const
+	{
+		return new BitSequenceDArray(bs);
+	}
 
 };

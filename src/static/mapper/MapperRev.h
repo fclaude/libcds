@@ -1,7 +1,7 @@
-/* MapperNone.h
- * Copyright (C) 2008, Francisco Claude, all rights reserved.
+/* MapperRev.h
+ * Copyright (C) 2012, Francisco Claude, all rights reserved.
  *
- * MapperNone definition
+ * MapperRev definition
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,15 +19,19 @@
  *
  */
 
-#ifndef _MAPPERNONE_H
-#define _MAPPERNONE_H
-
-#include <iostream>
+#ifndef _MAPPERREV_H
+#define _MAPPERREV_H
 
 #include <libcdsBasics.h>
+#include <iostream>
+
+#include <Array.h>
 #include <Mapper.h>
+#include <BitSequence.h>
+#include <BitSequenceBuilder.h>
 
 using namespace std;
+using namespace cds_utils;
 
 namespace cds_static
 {
@@ -36,16 +40,20 @@ namespace cds_static
 	 *
 	 *  @author Francisco Claude
 	 */
-	class MapperNone : public Mapper
+	class MapperRev : public Mapper
 	{
 		public:
-			MapperNone();
-			virtual ~MapperNone() {}
+			MapperRev(const Array *a);
+			virtual ~MapperRev() {}
 			virtual uint map(const uint s) const;
 			virtual uint unmap(const uint s) const;
 			virtual size_t getSize() const;
 			virtual void save(ofstream & out) const;
-			static MapperNone * load(ifstream & input);
+			static MapperRev * load(ifstream & input);
+
+		protected:
+			MapperRev();
+			uint bits;
 	};
 };
-#endif							 /* __MAPPER_NONE_H */
+#endif							 /* __MAPPER_REV_H */

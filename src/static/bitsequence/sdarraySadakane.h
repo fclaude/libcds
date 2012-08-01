@@ -36,45 +36,45 @@
 namespace cds_static
 {
 
-    using namespace cds_utils;
+	using namespace cds_utils;
 
-    typedef struct
-    {
-        int n,m;
-        int size;
-        unsigned char *buf;
-        uint *lp;
-        uint *sl;
-        ushort *ss;
-        uint ss_len, sl_len;
-        uint *p;
-    } selectd2;
+	typedef struct
+	{
+		int n,m;
+		int size;
+		unsigned char *buf;
+		uint *lp;
+		uint *sl;
+		ushort *ss;
+		uint ss_len, sl_len;
+		uint *p;
+	} selectd2;
 
-    typedef struct
-    {
-        int n,m,d;
-        int size;
-        unsigned char *hi;
-        uint *low;
-        selectd2 *sd0,*sd1;
-        uint hi_len, low_len;
-        //uint lasti, lasts;
-    } selects3;
+	typedef struct
+	{
+		int n,m,d;
+		int size;
+		unsigned char *hi;
+		uint *low;
+		selectd2 *sd0,*sd1;
+		uint hi_len, low_len;
+		//uint lasti, lasts;
+	} selects3;
 
-    int selects3_construct(selects3 *select, const int n, const uint *buf);
-    int selects3_select(const selects3 *select, const int i);
-    int selects3_rank(const selects3 *select, const int i);
-    int selects3_selectnext(const selects3 *select, const int i);
+	int selects3_construct(selects3 *select, const int n, const uint *buf);
+	int selects3_select(const selects3 *select, const int i);
+	int selects3_rank(const selects3 *select, const int i);
+	int selects3_selectnext(const selects3 *select, const int i);
 
-    void make___selecttbl(void);
-    void selectd2_save(const selectd2 * s, ofstream & fp);
-    void selects3_save(const selects3 * s, ofstream & fp);
+	void make___selecttbl(void);
+	void selectd2_save(const selectd2 * s, ofstream & fp);
+	void selects3_save(const selects3 * s, ofstream & fp);
 
-    void selectd2_load(selectd2 * s, ifstream & fp);
-    void selects3_load(selects3 * s, ifstream & fp);
+	void selectd2_load(selectd2 * s, ifstream & fp);
+	void selects3_load(selects3 * s, ifstream & fp);
 
-    void selectd2_free(selectd2 * s);
-    void selects3_free(selects3 * s);
+	void selectd2_free(selectd2 * s);
+	void selects3_free(selects3 * s);
 
 }
 #endif

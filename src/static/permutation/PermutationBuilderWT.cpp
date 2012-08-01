@@ -18,8 +18,10 @@
 
 #include <PermutationBuilderWT.h>
 
-namespace cds_static {
-  Permutation * PermutationBuilderWT::build(uint * perm, uint len) const {
-      return new PermutationWT(perm,len);
-    }
+namespace cds_static
+{
+	Permutation * PermutationBuilderWT::build(uint * perm, uint len) const
+	{
+		return new PermutationWT(perm,len);
+	}
 }

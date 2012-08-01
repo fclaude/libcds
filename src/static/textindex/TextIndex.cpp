@@ -1,4 +1,4 @@
-/* Copyright (C) 2010, Rodrigo Cánovas, all rights reserved.
+/* Copyright (C) 2010, Rodrigo Cnovas, all rights reserved.
  *
  *This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,17 +20,17 @@
 
 #include <TextIndex.h>
 
-namespace cds_static{
+namespace cds_static
+{
 
-			/** Reads a text index determining the type */
-			TextIndex * TextIndex::load(ifstream & fp){
-				uint r = loadValue<uint>(fp);
-				size_t pos = fp.tellg();
-				fp.seekg(pos-sizeof(uint));
-				switch(r) {
-					case CSA_HDR: return TextIndexCSA::load(fp);
-				}
-				return NULL;
-			}
+	/** Reads a text index determining the type */
+	TextIndex * TextIndex::load(ifstream & fp) {
+		uint r = loadValue<uint>(fp);
+		size_t pos = fp.tellg();
+		fp.seekg(pos-sizeof(uint));
+		switch(r) {
+			case CSA_HDR: return TextIndexCSA::load(fp);
+		}
+		return NULL;
+	}
 };
-

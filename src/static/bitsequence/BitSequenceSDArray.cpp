@@ -26,94 +26,94 @@
 
 namespace cds_static
 {
-    BitSequenceSDArray::BitSequenceSDArray(const BitString & bs) {
-        uint * tmp_seq = new uint[uint_len(bs.getLength(),1)+1];
-        ones = 0;
-        for(uint i=0;i<uint_len(bs.getLength(),1)+1;i++)
-            tmp_seq[i] = 0;
-        for(uint i=0;i<bs.getLength();i++)
-        if(bs[i]) {
-					  __setbit(tmp_seq,i,1);
-            ones++;
-        }
-        if(ones)
-            selects3_construct(&sd,bs.getLength(),tmp_seq);
-        this->length = bs.getLength();
-        delete [] tmp_seq;
-    }
+	BitSequenceSDArray::BitSequenceSDArray(const BitString & bs) {
+		uint * tmp_seq = new uint[uint_len(bs.getLength(),1)+1];
+		ones = 0;
+		for(uint i=0;i<uint_len(bs.getLength(),1)+1;i++)
+			tmp_seq[i] = 0;
+		for(uint i=0;i<bs.getLength();i++)
+		if(bs[i]) {
+			__setbit(tmp_seq,i,1);
+			ones++;
+		}
+		if(ones)
+			selects3_construct(&sd,bs.getLength(),tmp_seq);
+		this->length = bs.getLength();
+		delete [] tmp_seq;
+	}
 
-    BitSequenceSDArray::BitSequenceSDArray(uint * buff, size_t len) {
-        uint * tmp_seq = new uint[uint_len(len,1)+1];
-        ones = 0;
-        for(uint i=0;i<uint_len(len,1)+1;i++)
-            tmp_seq[i] = 0;
-        for(uint i=0;i<len;i++)
-        if(bitget(buff,i)) {
-					  __setbit(tmp_seq,i,1);
-            ones++;
-        }
-        if(ones)
-            selects3_construct(&sd,len,tmp_seq);
-        this->length = len;
-        delete [] tmp_seq;
-    }
+	BitSequenceSDArray::BitSequenceSDArray(uint * buff, size_t len) {
+		uint * tmp_seq = new uint[uint_len(len,1)+1];
+		ones = 0;
+		for(uint i=0;i<uint_len(len,1)+1;i++)
+			tmp_seq[i] = 0;
+		for(uint i=0;i<len;i++)
+		if(bitget(buff,i)) {
+			__setbit(tmp_seq,i,1);
+			ones++;
+		}
+		if(ones)
+			selects3_construct(&sd,len,tmp_seq);
+		this->length = len;
+		delete [] tmp_seq;
+	}
 
-    BitSequenceSDArray::BitSequenceSDArray() {
-        make___selecttbl();
-    }
+	BitSequenceSDArray::BitSequenceSDArray() {
+		make___selecttbl();
+	}
 
-    BitSequenceSDArray::~BitSequenceSDArray() {
-			if(ones)
-				selects3_free(&sd);
-    }
+	BitSequenceSDArray::~BitSequenceSDArray() {
+		if(ones)
+			selects3_free(&sd);
+	}
 
-    size_t BitSequenceSDArray::rank1(size_t i) const
-    {
-        if(i>=length) return -1;
-        if(ones)
-            return selects3_rank(&sd,i);
-        else
-            return 0;
-    }
+	size_t BitSequenceSDArray::rank1(size_t i) const
+	{
+		if(i>=length) return -1;
+		if(ones)
+			return selects3_rank(&sd,i);
+		else
+			return 0;
+	}
 
-    size_t BitSequenceSDArray::select1(size_t i) const
-    {
-        if(i>ones || i==0) return -1;
-        if(ones)
-            return selects3_select(&sd,(uint)i);
-        else
-            return (uint)-1;
-    }
+	size_t BitSequenceSDArray::select1(size_t i) const
+	{
+		if(i>ones || i==0) return -1;
+		if(ones)
+			return selects3_select(&sd,(uint)i);
+		else
+			return (uint)-1;
+	}
 
-    size_t BitSequenceSDArray::selectNext1(size_t i) const
-    {
-        return selects3_selectnext(&sd,(uint)i);
-    }
+	size_t BitSequenceSDArray::selectNext1(size_t i) const
+	{
+		return selects3_selectnext(&sd,(uint)i);
+	}
 
-    size_t BitSequenceSDArray::getSize() const
-    {
-        return sizeof(BitSequenceSDArray)+(ones?(sd.size + sd.sd0->size + sd.sd1->size):0);
-    }
+	size_t BitSequenceSDArray::getSize() const
+	{
+		return sizeof(BitSequenceSDArray)+(ones?(sd.size + sd.sd0->size + sd.sd1->size):0);
+	}
 
-    void BitSequenceSDArray::save(ofstream & fp) const
-    {
-        uint wr = SDARRAY_HDR;
-        saveValue(fp,wr);
-        saveValue(fp,length);
-        saveValue(fp,ones);
-        if(ones)
-            selects3_save(&sd,fp);
-    }
+	void BitSequenceSDArray::save(ofstream & fp) const
+	{
+		uint wr = SDARRAY_HDR;
+		saveValue(fp,wr);
+		saveValue(fp,length);
+		saveValue(fp,ones);
+		if(ones)
+			selects3_save(&sd,fp);
+	}
 
-    BitSequenceSDArray * BitSequenceSDArray::load(ifstream & fp) {
-        uint id = loadValue<uint>(fp);
-        if(id!=SDARRAY_HDR) return NULL;
-        BitSequenceSDArray * ret = new BitSequenceSDArray();
-        ret->length = loadValue<size_t>(fp);
-        ret->ones = loadValue<size_t>(fp);
-        if(ret->ones)
-            selects3_load(&ret->sd,fp);
-        return ret;
-    }
+	BitSequenceSDArray * BitSequenceSDArray::load(ifstream & fp) {
+		uint id = loadValue<uint>(fp);
+		if(id!=SDARRAY_HDR) return NULL;
+		BitSequenceSDArray * ret = new BitSequenceSDArray();
+		ret->length = loadValue<size_t>(fp);
+		ret->ones = loadValue<size_t>(fp);
+		if(ret->ones)
+			selects3_load(&ret->sd,fp);
+		return ret;
+	}
 
 };
