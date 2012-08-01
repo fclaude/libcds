@@ -211,7 +211,7 @@ namespace cds_static
 				am = new MapperNone();
 			}
 			else if(values["mapper"]=="MapperRev") {
-				am = new MapperRev(&seq);
+				am = new MapperRev(seq);
 			}
 			else {
 				delete bsb;

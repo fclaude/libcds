@@ -27,6 +27,7 @@
 namespace cds_static
 {
 
+	// based on http://graphics.stanford.edu/~seander/bithacks.html#ReverseByteWith64BitsDiv
 	uint reverse(const uint v) {
 		uint res = v;
 		const uchar *c = (const uchar*)&v;
@@ -39,10 +40,17 @@ namespace cds_static
 	}
 
 	MapperRev::MapperRev() { }
-	MapperRev::MapperRev(const Array *a) {
+	MapperRev::MapperRev(const Array &a) {
 		uint maxv = 0;
-		for(uint i=0; i < a->getLength(); i++) 
-			maxv = max(maxv, a->getField(i));
+		for(uint i=0; i < a.getLength(); i++) 
+			maxv = max(maxv, a.getField(i));
+		this->bits = cds_utils::bits(maxv);
+	}
+
+	MapperRev::MapperRev(const uint *A, const size_t len) {
+		uint maxv = 0;
+		for(uint i=0; i < len; i++) 
+			maxv = max(maxv, A[i]);
 		this->bits = cds_utils::bits(maxv);
 	}
 

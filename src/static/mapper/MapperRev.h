@@ -43,7 +43,8 @@ namespace cds_static
 	class MapperRev : public Mapper
 	{
 		public:
-			MapperRev(const Array *a);
+			MapperRev(const Array &a);
+			MapperRev(const uint *A, const size_t len);
 			virtual ~MapperRev() {}
 			virtual uint map(const uint s) const;
 			virtual uint unmap(const uint s) const;
