@@ -6,8 +6,8 @@ CPP=g++
 INCS=-I../includes/
 LIB=../lib/libcds.a
 
-OBJECTS= testArray.o testBitSequence.o testSequence.o testQuantile.o testHuffman.o testTextIndex.o testLCP.o testNPR.o testSuffixTree.o timeSequence.o toArray.o toArray2.o
-BIN= testArray testBitSequence testSequence testHuffman testTextIndex testLCP testNPR testSuffixTree timeSequence toArray toArray2 testQuantile
+OBJECTS= testArray.o testBitSequence.o testSequence.o testQuantile.o testHuffman.o timeSequence.o toArray.o toArray2.o
+BIN= testArray testBitSequence testSequence testHuffman timeSequence toArray toArray2 testQuantile
 
 %.o: %.cpp
 	@echo " [C++] Compiling $<"
