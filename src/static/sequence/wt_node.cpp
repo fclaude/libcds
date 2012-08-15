@@ -1,5 +1,6 @@
 /* wt_node.cpp
- * Copyright (C) 2008, Francisco Claude, all rights reserved.
+ * Copyright (C) 2008, Francisco Claude.
+ * Copyright (C) 2011, Matthias Petri.
  *
  * wt_node
  *

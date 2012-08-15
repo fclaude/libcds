@@ -1,5 +1,7 @@
 /* WaveletTree.h
- * Copyright (C) 2008, Francisco Claude, all rights reserved.
+ * Copyright (C) 2008, Francisco Claude.
+ * Copyright (C) 2008, Niko Välimäki.
+ * Copyright (C) 2011, Matthias Petri.
  *
  * WaveletTree definition
  *
