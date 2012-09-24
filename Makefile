@@ -1,7 +1,7 @@
 
 # CPPFLAGS=-g3 -Wall -O0
 #-DVERBOSE
-CPPFLAGS=-O9 -Wall -DNDEBUG
+CPPFLAGS=-O9 -Wall -DNDEBUG -fPIC
 
 all: libcompact tests
 
@@ -16,6 +16,18 @@ libcompact:
 tests: libcompact
 	@echo " [MSG] Entering directory tests"
 	@CPPFLAGS="$(CPPFLAGS)" make --no-print-directory -C tests
+
+shared_lib: libcompact
+	@echo " [C++] Compiling shared library"
+	@g++ -shared $(CPPFLAGS) -w -o lib/libcds.so ./lib/libcds.a
+	
+shared_lib_install:
+	@cp ./lib/libcds.so /usr/lib
+	@cp ./lib/libcds.a /usr/lib
+	@echo " [MSG] Library copied to /usr/lib"
+	@mkdir -p /usr/include/libcds
+	@cp -rf ./includes /usr/include/libcds
+	@echo " [MSG] Headers copied to /usr/include/libcds"
 
 clean:
 	@echo " [MSG] Entering directory src"
