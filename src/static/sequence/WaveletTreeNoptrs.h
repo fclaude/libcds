@@ -72,8 +72,8 @@ namespace cds_static
 			virtual uint access(size_t pos, size_t &r) const;
 			virtual size_t getSize() const;
 
-			void range(int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, set<int> *res);
-			void range(int i1, int i2, int j1, int j2, set<int> *res);
+			void range(int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, vector<int> *res);
+			void range(int i1, int i2, int j1, int j2, vector<int> *res);
 			int trackUp(int i, int leftb, int level);
 
 			/* find the q-th smallest element in T[l..r] */
