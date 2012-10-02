@@ -386,11 +386,10 @@ namespace cds_static
 		return pos - 1;
 	}
 
-	void WaveletTreeNoptrs::range(int ni1, int ni2, int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, set<int> *res) {
-		if (ni1 > ni2 || leftb > j2 || rightb < j1) return;
+	void WaveletTreeNoptrs::range(int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, set<int> *res) {
+		if (leftb > j2 || rightb < j1) return;
 		
 		if (leftb >= j1 && rightb <= j2) {
-			int start = ni1;
 			for (int i = i1; i <= i2; i++) {
 				res->insert(trackUp(i + 1, symb, level - 1));
 			}
@@ -402,37 +401,34 @@ namespace cds_static
 		// left side
 		int newleftb = symb;
 		int newrightb = (int)((uint)symb | (uint)((1u << (height - level - 1)) - 1));
-		
-		int start = ni1;
+		int start = OCC[symb];
 		int before = 0;
 		if (start > 0)
 			before = bitstring[level]->rank0(start - 1);
-		int newi1 = ((i1 + start > 0) ? bitstring[level]->rank0(i1 + start - 1) : 0) - before;
-		int newi2 = bitstring[level]->rank0(start + i2) - before - 1;
-		int newni2 = ni1 + bitstring[level]->rank0(ni2) - before - 1;
+		int r0i1ps = ((i1 + start > 0) ? bitstring[level]->rank0(i1 + start - 1) : 0);
+		int newi1 = r0i1ps - before;
+		int r0i2ps = bitstring[level]->rank0(start + i2);
+		int newi2 =  r0i2ps - before - 1;
+		// int newni2 = OCC[newrightb] - 1;
 
 		if (newi1 <= newi2) {
-			range(ni1, newni2, newi1, newi2, j1, j2, newleftb, newrightb, symb, level + 1, res);
+			range(newi1, newi2, j1, j2, newleftb, newrightb, symb, level + 1, res);
 		}
 
 		// right side
 		newleftb = (int)((uint)symb | (1u << (height - level - 1)));
 		newrightb = (int)((uint)symb | ((1u << (height - level)) - 1));
-
-		start = ni1;
-		if (start > 0)
-			before = bitstring[level]->rank1(start - 1);
-		int newni1 = newni2 + 1;
-		newi1 = ((i1 + start > 0) ? bitstring[level]->rank1(start + i1 - 1) : 0) - before;
-		newi2 = bitstring[level]->rank1(start + i2) - before - 1;
+		before = start - before;
+		newi1 = (i1 + start - r0i1ps) - before;
+		newi2 = (start + i2 - r0i2ps + 1) - before - 1;
 
 		if (newi1 <= newi2) {
-			range(newni1, ni2, newi1, newi2, j1, j2, newleftb, newrightb, symb | (1 << (height - level - 1)), level + 1, res);
+			range(newi1, newi2, j1, j2, newleftb, newrightb, newleftb, level + 1, res);
 		}
 	}
 
 	void WaveletTreeNoptrs::range(int i1, int i2, int j1, int j2, set<int> *res) {
-		range(0, n - 1, i1, i2, j1, j2, 0, max_v, 0, 0, res);
+		range(i1, i2, j1, j2, 0, max_v, 0, 0, res);
 	}
 
 	size_t WaveletTreeNoptrs::select(uint symbol, size_t j) const
