@@ -386,12 +386,12 @@ namespace cds_static
 		return pos - 1;
 	}
 
-	void WaveletTreeNoptrs::range(int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, set<int> *res) {
+	void WaveletTreeNoptrs::range(int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, vector<int> *res) {
 		if (leftb > j2 || rightb < j1) return;
 		
 		if (leftb >= j1 && rightb <= j2) {
 			for (int i = i1; i <= i2; i++) {
-				res->insert(trackUp(i + 1, symb, level - 1));
+				res->push_back(trackUp(i + 1, symb, level - 1));
 			}
 			return;
 		}
@@ -426,7 +426,7 @@ namespace cds_static
 		}
 	}
 
-	void WaveletTreeNoptrs::range(int i1, int i2, int j1, int j2, set<int> *res) {
+	void WaveletTreeNoptrs::range(int i1, int i2, int j1, int j2, vector<int> *res) {
 		range(i1, i2, j1, j2, 0, max_v, 0, 0, res);
 	}
 
