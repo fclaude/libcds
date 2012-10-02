@@ -409,8 +409,7 @@ namespace cds_static
 		int newi1 = r0i1ps - before;
 		int r0i2ps = bitstring[level]->rank0(start + i2);
 		int newi2 =  r0i2ps - before - 1;
-		// int newni2 = OCC[newrightb] - 1;
-
+		
 		if (newi1 <= newi2) {
 			range(newi1, newi2, j1, j2, newleftb, newrightb, symb, level + 1, res);
 		}
