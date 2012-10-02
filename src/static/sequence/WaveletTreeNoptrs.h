@@ -30,6 +30,7 @@
 #include <BitSequenceBuilder.h>
 #include <Sequence.h>
 #include <Mapper.h>
+#include <set>
 
 using namespace std;
 
@@ -70,6 +71,10 @@ namespace cds_static
 			virtual uint access(size_t pos) const;
 			virtual uint access(size_t pos, size_t &r) const;
 			virtual size_t getSize() const;
+
+			void range(int ni1, int ni2, int i1, int i2, int j1, int j2, int leftb, int rightb, int symb, int level, set<int> *res);
+			void range(int i1, int i2, int j1, int j2, set<int> *res);
+			int trackUp(int i, int leftb, int level);
 
 			/* find the q-th smallest element in T[l..r] */
 			virtual uint quantile(size_t left,size_t right,uint q);
