@@ -41,7 +41,7 @@ namespace cds_static
 	{
 		public:
 			BitSequenceBuilder() { userCount=0; }
-			~BitSequenceBuilder() {}
+			virtual ~BitSequenceBuilder() {}
 			virtual void use() { userCount++; }
 			virtual void unuse() { userCount--; assert(userCount>=0); if(userCount==0) delete this; }
 			virtual BitSequence * build(uint * bitseq, size_t len) const = 0;

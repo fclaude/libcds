@@ -244,17 +244,17 @@ namespace cds_static
 				return NULL;
 			}
 			if(values.find("mapper")==values.end()) return NULL;
-			Mapper * am = NULL;
-			if(values["mapper"]=="MapperCont") {
-				am = new MapperCont(seq,*bsb);
-			}
-			else if(values["mapper"]=="MapperNone") {
-				am = new MapperNone();
-			}
-			else {
-				delete bsb;
-				return NULL;
-			}
+			// Mapper * am = NULL;
+			// if(values["mapper"]=="MapperCont") {
+			// 	am = new MapperCont(seq,*bsb);
+			// }
+			// else if(values["mapper"]=="MapperNone") {
+			// 	am = new MapperNone();
+			// }
+			// else {
+			// 	delete bsb;
+			// 	return NULL;
+			// }
 			PermutationBuilder * pb = new PermutationBuilderMRRR(permsamp,bsb);
 			SequenceBuilder * sb1 = new SequenceBuilderGMRChunk(bsb,pb);
 			return new SequenceBuilderGMR(bsb,sb1,chunklen);
