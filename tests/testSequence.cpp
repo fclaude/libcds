@@ -18,7 +18,7 @@ void testSequence(Array & a, Sequence & bs) {
     Sequence * seq = Sequence::load(infs);
     infs.close();
     uint maxv = a.getMax();
-    size_t count[maxv+1];
+    size_t *count = new size_t[maxv+1];
     for(size_t i=0;i<=maxv;i++)
         count[i] = 0;
     for(size_t i=0;i<a.getLength();i++) {
@@ -44,6 +44,7 @@ void testSequence(Array & a, Sequence & bs) {
         }
 
     }
+    delete []count;
     delete seq;
 }
 
