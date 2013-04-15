@@ -41,8 +41,8 @@ namespace cds_static
 	{
 
 		public:
-			BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb);
-			BitmapsSequence(const Array & a, Mapper * am, BitSequenceBuilder * bsb);
+			BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb, bool keepsSequence);
+			BitmapsSequence(const Array & a, Mapper * am, BitSequenceBuilder * bsb, bool keepsSequence);
 
 			virtual ~BitmapsSequence();
 
@@ -64,6 +64,8 @@ namespace cds_static
 			uint sigma;
 			BitSequence  ** bitmaps;
 			Mapper * am;
+			bool keepsSequence;
+			Array *seq;
 
 			BitmapsSequence();
 

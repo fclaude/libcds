@@ -22,14 +22,20 @@
 
 namespace cds_static
 {
-	BitmapsSequence::BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb) : Sequence(n) {
+	BitmapsSequence::BitmapsSequence(uint * seq, size_t n, Mapper * am, BitSequenceBuilder * bsb, bool keepsSequence) : Sequence(n) {
 		bsb->use();
 		sigma = 0;
+		this->keepsSequence = keepsSequence;
 		//length = n;
 		this->am = am;
 		am->use();
 		for(uint i=0;i<n;i++) sigma=max(sigma,am->map(seq[i]));
 		sigma++;
+		if (keepsSequence) {
+			this->seq = new Array(n, sigma - 1);
+			for (uint i = 0; i < n; i++)
+				this->seq->setField(i, am->map(seq[i]));
+		}
 		uint * occ = new uint[sigma+1];
 		for(uint i=0;i<=sigma;i++) occ[i] = 0;
 		for(uint i=0;i<n;i++) occ[am->map(seq[i])+1]++;
@@ -60,16 +66,24 @@ namespace cds_static
 		sigma = 0;
 		bitmaps = NULL;
 		am = NULL;
+		keepsSequence = false;
+		seq = NULL;
 	}
 
-	BitmapsSequence::BitmapsSequence(const Array &a, Mapper * am, BitSequenceBuilder * bsb) : Sequence(0) {
+	BitmapsSequence::BitmapsSequence(const Array &a, Mapper * am, BitSequenceBuilder * bsb, bool keepsSequence) : Sequence(0) {
 		bsb->use();
 		length = a.getLength();
+		this->keepsSequence = keepsSequence;
 		//cout << "length=" << length << endl;
 		sigma = a.getMax()+1;
 		//cout << "sigma=" << sigma << endl;
 		this->am = am;
 		am->use();
+		if (keepsSequence) {
+			seq = new Array(a.getLength(), sigma - 1);
+			for (uint i = 0; i < a.getLength(); i++)
+				seq->setField(i, am->map(a.getField(i)));
+		}
 		uint * occ = new uint[sigma+1];
 		for(uint i=0;i<=sigma;i++) occ[i] = 0;
 		for(uint i=0;i<length;i++) occ[am->map(a[i])+1]++;
@@ -103,6 +117,8 @@ namespace cds_static
 			}
 			delete [] bitmaps;
 		}
+		if (keepsSequence)
+			delete seq;
 		if(am!=NULL) am->unuse();
 	}
 
@@ -130,6 +146,9 @@ namespace cds_static
 
 	uint BitmapsSequence::access(size_t i) const
 	{
+		if (keepsSequence) {
+			return seq->getField(i);
+		}
 		for(uint j=0;j<sigma;j++) {
 			if(bitmaps[j]->access(i)) return am->unmap(j);
 		}
@@ -141,6 +160,8 @@ namespace cds_static
 		size_t size = sizeof(BitmapsSequence)+am->getSize();
 		for(uint i=0;i<sigma;i++)
 			size += bitmaps[i]->getSize();
+		if (keepsSequence) 
+			size += seq->getSize();
 		return size;
 	}
 
@@ -150,6 +171,10 @@ namespace cds_static
 		saveValue(fp,wr);
 		saveValue(fp,length);
 		saveValue(fp,sigma);
+		char keeps = keepsSequence;
+		saveValue(fp, keeps);
+		if (keepsSequence)
+			seq->save(fp);
 		for(uint i=0;i<sigma;i++)
 			bitmaps[i]->save(fp);
 		am->save(fp);
@@ -164,6 +189,14 @@ namespace cds_static
 		BitmapsSequence * ret = new BitmapsSequence();
 		ret->length = loadValue<uint>(fp);
 		ret->sigma = loadValue<uint>(fp);
+		char keeps = loadValue<char>(fp);
+		if (keeps) {
+			ret->seq = new Array(fp);
+			ret->keepsSequence = true;
+		} else {
+			ret->seq = NULL;
+			ret->keepsSequence = false;
+		}
 		ret->bitmaps = new BitSequence*[ret->sigma];
 		for(uint i=0;i<ret->sigma;i++)
 			ret->bitmaps[i] = BitSequence::load(fp);
