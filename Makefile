@@ -1,6 +1,5 @@
 
-# CPPFLAGS=-g3 -Wall -O0 -fPIC
-#-DVERBOSE
+# CPPFLAGS=-g3 -Wall -O0 -fPIC -DVERBOSE
 CPPFLAGS=-O9 -Wall -DNDEBUG -fPIC
 
 all: libcompact tests
