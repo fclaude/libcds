@@ -33,6 +33,7 @@
 #include <libcdsBasics.h>
 #include <Array.h>
 #include <cppUtils.h>
+#include <libcdsBitString.h>
 
 using namespace std;
 using namespace cds_utils;

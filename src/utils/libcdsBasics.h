@@ -227,5 +227,7 @@ namespace cds_utils
 
 };
 
+#include <libcdsBitString.h>
 #include <cppUtils.h>
+
 #endif							 /* _BASICS_H */

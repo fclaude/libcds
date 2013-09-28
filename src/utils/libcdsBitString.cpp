@@ -20,7 +20,7 @@
  */
 
 #include <libcdsBasics.h>
-#include <BitString.h>
+#include <libcdsBitString.h>
 
 namespace cds_utils
 {

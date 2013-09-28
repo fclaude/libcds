@@ -23,7 +23,7 @@
 #define _STATIC_BITSEQUENCE_RRR02_H
 
 #include <libcdsBasics.h>
-#include <BitString.h>
+#include <libcdsBitString.h>
 #include <BitSequence.h>
 #include <TableOffsetRRR.h>
 

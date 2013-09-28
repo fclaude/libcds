@@ -30,7 +30,7 @@
 #include <BitSequence.h>
 #include <sdarraySadakane.h>
 
-#include <BitString.h>
+#include <libcdsBitString.h>
 using namespace cds_utils;
 
 namespace cds_static
