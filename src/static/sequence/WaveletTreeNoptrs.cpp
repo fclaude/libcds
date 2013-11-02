@@ -572,6 +572,12 @@ namespace cds_static
 		return OCC[mapped + 1] - OCC[mapped] + 1;
 	}
 
+	size_t WaveletTreeNoptrs::occ(uint symbol) const 
+	{
+		uint mapped = am->map(symbol);
+		return OCC[mapped];
+	}
+
 	uint WaveletTreeNoptrs::quantile(size_t left,size_t right,uint q) {
 		pair<uint,size_t> res = quantile_freq(left,right,q);
 		return res.first;

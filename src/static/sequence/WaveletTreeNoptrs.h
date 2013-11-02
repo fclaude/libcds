@@ -83,6 +83,7 @@ namespace cds_static
 			pair<uint32_t,size_t> quantile_freq(size_t left,size_t right,uint q);
 
 			virtual size_t count(uint symbol) const;
+			virtual size_t occ(uint symbol) const;
 
 			virtual void save(ofstream & fp) const;
 			static WaveletTreeNoptrs * load(ifstream & fp);
