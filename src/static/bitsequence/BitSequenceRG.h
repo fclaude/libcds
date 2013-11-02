@@ -24,8 +24,10 @@
 #define _STATIC_BITSEQUENCE_BRW32_H
 
 #include <libcdsBasics.h>
-#include <BitString.h>
+#include <libcdsBitString.h>
 #include <BitSequence.h>
+
+using namespace cds_utils;
 
 namespace cds_static
 {

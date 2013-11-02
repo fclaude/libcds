@@ -17,7 +17,7 @@
  */
 
 #include <libcdsBasics.h>
-#include <BitString.h>
+#include <libcdsBitString.h>
 #include <BitSequence.h>
 #include <BitSequenceRG.h>
 #include <BitSequenceRRR.h>

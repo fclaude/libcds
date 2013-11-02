@@ -4,7 +4,7 @@ CPP=g++
 INCL=-I../includes/
 
 ## OBJECTS FROM cds_utils PACKAGE
-UTILS_OBJ=utils/Array.o utils/BitString.o utils/cppUtils.o utils/timing.o
+UTILS_OBJ=utils/Array.o utils/libcdsBitString.o utils/cppUtils.o utils/timing.o
 
 # OBJECTS FROM cds_static PACKAGE
 STATIC_MAPPER_OBJ=static/mapper/Mapper.o static/mapper/MapperNone.o static/mapper/MapperCont.o static/mapper/MapperRev.o

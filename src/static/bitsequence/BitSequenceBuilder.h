@@ -24,7 +24,7 @@
 
 #include <libcdsBasics.h>
 #include <BitSequence.h>
-#include <BitString.h>
+#include <libcdsBitString.h>
 
 using namespace cds_utils;
 

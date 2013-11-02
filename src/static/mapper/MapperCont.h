@@ -23,6 +23,7 @@
 #define _MAPPERCONT_H
 
 #include <libcdsBasics.h>
+#include <libcdsBitString.h>
 #include <iostream>
 
 #include <Array.h>

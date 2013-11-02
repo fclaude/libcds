@@ -1,4 +1,4 @@
-/* BitString.h
+/* libcdsBitString.h
  * Copyright (C) 2009, Francisco Claude, all rights reserved.
  *
  * BitString definition
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef BITSTRING_H
-#define BITSTRING_H
+#ifndef BITSTRING_H2
+#define BITSTRING_H2
 
 #include <vector>
 

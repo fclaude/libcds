@@ -4,6 +4,7 @@
 
 #include <libcdsBasics.h>
 #include <cppUtils.h>
+#include <libcdsBitString.h>
 
 #include <vector>
 using namespace std;

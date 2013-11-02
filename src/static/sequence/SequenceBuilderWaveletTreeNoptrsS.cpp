@@ -38,7 +38,7 @@ namespace cds_static {
         return new WaveletTreeNoptrsS(sequence, len, bsb, am);
     }
     
-    Sequence * SequenceBuilderWaveletTreeNoptrs::build(const Array & seq) {
+    Sequence * SequenceBuilderWaveletTreeNoptrsS::build(const Array & seq) {
         return new WaveletTreeNoptrsS(seq, bsb, am);
     }
 };
