@@ -18290,7 +18290,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile tests/Makefile tutorial/src/Makefile tutorial/ssa/Makefile"
+ac_config_files="$ac_config_files Makefile cds.pc src/Makefile tests/Makefile tutorial/src/Makefile tutorial/ssa/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -19453,6 +19453,7 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "cds.pc") CONFIG_FILES="$CONFIG_FILES cds.pc" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "tests/Makefile") CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
     "tutorial/src/Makefile") CONFIG_FILES="$CONFIG_FILES tutorial/src/Makefile" ;;

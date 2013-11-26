@@ -42,6 +42,7 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([select])
 
 AC_CONFIG_FILES([Makefile
+                 cds.pc
                  src/Makefile
                  tests/Makefile
                  tutorial/src/Makefile
