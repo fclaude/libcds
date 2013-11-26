@@ -4,6 +4,7 @@
 *.a
 *.so
 .DS_Store
+cds.pc
 # configure cruft
 .deps/
 .dirstamp
