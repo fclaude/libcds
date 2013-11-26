@@ -80,7 +80,47 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libcds_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libcds_la_OBJECTS = static/bitsequence/BitSequenceBuilderDArray.lo
+am_libcds_la_OBJECTS = static/bitsequence/BitSequenceBuilderDArray.lo \
+	static/bitsequence/BitSequenceBuilderRG.lo \
+	static/bitsequence/BitSequenceBuilderRRR.lo \
+	static/bitsequence/BitSequenceBuilderSDArray.lo \
+	static/bitsequence/BitSequence.lo \
+	static/bitsequence/BitSequenceDArray.lo \
+	static/bitsequence/BitSequenceRG.lo \
+	static/bitsequence/BitSequenceRRR.lo \
+	static/bitsequence/BitSequenceSDArray.lo \
+	static/bitsequence/sdarraySadakane.lo \
+	static/bitsequence/TableOffsetRRR.lo static/coders/huff.lo \
+	static/coders/HuffmanCoder.lo static/mapper/MapperCont.lo \
+	static/mapper/Mapper.lo static/mapper/MapperNone.lo \
+	static/mapper/MapperRev.lo static/permutation/perm.lo \
+	static/permutation/PermutationBuilderMRRR.lo \
+	static/permutation/PermutationBuilderWT.lo \
+	static/permutation/Permutation.lo \
+	static/permutation/PermutationMRRR.lo \
+	static/permutation/PermutationWT.lo \
+	static/sequence/BitmapsSequence.lo \
+	static/sequence/SequenceAlphPart.lo \
+	static/sequence/SequenceBuilderAlphPart.lo \
+	static/sequence/SequenceBuilderGMRChunk.lo \
+	static/sequence/SequenceBuilderGMR.lo \
+	static/sequence/SequenceBuilderStr.lo \
+	static/sequence/SequenceBuilderWaveletMatrix.lo \
+	static/sequence/SequenceBuilderWaveletTree.lo \
+	static/sequence/SequenceBuilderWaveletTreeNoptrs.lo \
+	static/sequence/SequenceBuilderWaveletTreeNoptrsS.lo \
+	static/sequence/Sequence.lo \
+	static/sequence/SequenceGMRChunk.lo \
+	static/sequence/SequenceGMR.lo \
+	static/sequence/WaveletMatrix.lo \
+	static/sequence/WaveletTree.lo \
+	static/sequence/WaveletTreeNoptrs.lo \
+	static/sequence/WaveletTreeNoptrsS.lo \
+	static/sequence/wt_coder_binary.lo static/sequence/wt_coder.lo \
+	static/sequence/wt_coder_huff.lo static/sequence/wt_node.lo \
+	static/sequence/wt_node_internal.lo \
+	static/sequence/wt_node_leaf.lo utils/Array.lo \
+	utils/cppUtils.lo utils/libcdsBitString.lo utils/timing.lo
 libcds_la_OBJECTS = $(am_libcds_la_OBJECTS)
 libcds_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
@@ -251,7 +291,56 @@ AM_CPPFLAGS = -I../include/
 lib_LTLIBRARIES = libcds.la
 libcds_la_LDFLAGS = -version-info $(CDS_SO_VERSION)
 libcds_la_SOURCES = \
-    static/bitsequence/BitSequenceBuilderDArray.cpp
+    static/bitsequence/BitSequenceBuilderDArray.cpp \
+    static/bitsequence/BitSequenceBuilderRG.cpp \
+    static/bitsequence/BitSequenceBuilderRRR.cpp \
+    static/bitsequence/BitSequenceBuilderSDArray.cpp \
+    static/bitsequence/BitSequence.cpp \
+    static/bitsequence/BitSequenceDArray.cpp \
+    static/bitsequence/BitSequenceRG.cpp \
+    static/bitsequence/BitSequenceRRR.cpp \
+    static/bitsequence/BitSequenceSDArray.cpp \
+    static/bitsequence/sdarraySadakane.cpp \
+    static/bitsequence/TableOffsetRRR.cpp \
+    static/coders/huff.cpp \
+    static/coders/HuffmanCoder.cpp \
+    static/mapper/MapperCont.cpp \
+    static/mapper/Mapper.cpp \
+    static/mapper/MapperNone.cpp \
+    static/mapper/MapperRev.cpp \
+    static/permutation/perm.cpp \
+    static/permutation/PermutationBuilderMRRR.cpp \
+    static/permutation/PermutationBuilderWT.cpp \
+    static/permutation/Permutation.cpp \
+    static/permutation/PermutationMRRR.cpp \
+    static/permutation/PermutationWT.cpp \
+    static/sequence/BitmapsSequence.cpp \
+    static/sequence/SequenceAlphPart.cpp \
+    static/sequence/SequenceBuilderAlphPart.cpp \
+    static/sequence/SequenceBuilderGMRChunk.cpp \
+    static/sequence/SequenceBuilderGMR.cpp \
+    static/sequence/SequenceBuilderStr.cpp \
+    static/sequence/SequenceBuilderWaveletMatrix.cpp \
+    static/sequence/SequenceBuilderWaveletTree.cpp \
+    static/sequence/SequenceBuilderWaveletTreeNoptrs.cpp \
+    static/sequence/SequenceBuilderWaveletTreeNoptrsS.cpp \
+    static/sequence/Sequence.cpp \
+    static/sequence/SequenceGMRChunk.cpp \
+    static/sequence/SequenceGMR.cpp \
+    static/sequence/WaveletMatrix.cpp \
+    static/sequence/WaveletTree.cpp \
+    static/sequence/WaveletTreeNoptrs.cpp \
+    static/sequence/WaveletTreeNoptrsS.cpp \
+    static/sequence/wt_coder_binary.cpp \
+    static/sequence/wt_coder.cpp \
+    static/sequence/wt_coder_huff.cpp \
+    static/sequence/wt_node.cpp \
+    static/sequence/wt_node_internal.cpp \
+    static/sequence/wt_node_leaf.cpp \
+    utils/Array.cpp \
+    utils/cppUtils.cpp \
+    utils/libcdsBitString.cpp \
+    utils/timing.cpp
 
 all: all-am
 
@@ -327,18 +416,313 @@ static/bitsequence/$(DEPDIR)/$(am__dirstamp):
 static/bitsequence/BitSequenceBuilderDArray.lo:  \
 	static/bitsequence/$(am__dirstamp) \
 	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceBuilderRG.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceBuilderRRR.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceBuilderSDArray.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequence.lo: static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceDArray.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceRG.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceRRR.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/BitSequenceSDArray.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/sdarraySadakane.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/bitsequence/TableOffsetRRR.lo:  \
+	static/bitsequence/$(am__dirstamp) \
+	static/bitsequence/$(DEPDIR)/$(am__dirstamp)
+static/coders/$(am__dirstamp):
+	@$(MKDIR_P) static/coders
+	@: > static/coders/$(am__dirstamp)
+static/coders/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) static/coders/$(DEPDIR)
+	@: > static/coders/$(DEPDIR)/$(am__dirstamp)
+static/coders/huff.lo: static/coders/$(am__dirstamp) \
+	static/coders/$(DEPDIR)/$(am__dirstamp)
+static/coders/HuffmanCoder.lo: static/coders/$(am__dirstamp) \
+	static/coders/$(DEPDIR)/$(am__dirstamp)
+static/mapper/$(am__dirstamp):
+	@$(MKDIR_P) static/mapper
+	@: > static/mapper/$(am__dirstamp)
+static/mapper/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) static/mapper/$(DEPDIR)
+	@: > static/mapper/$(DEPDIR)/$(am__dirstamp)
+static/mapper/MapperCont.lo: static/mapper/$(am__dirstamp) \
+	static/mapper/$(DEPDIR)/$(am__dirstamp)
+static/mapper/Mapper.lo: static/mapper/$(am__dirstamp) \
+	static/mapper/$(DEPDIR)/$(am__dirstamp)
+static/mapper/MapperNone.lo: static/mapper/$(am__dirstamp) \
+	static/mapper/$(DEPDIR)/$(am__dirstamp)
+static/mapper/MapperRev.lo: static/mapper/$(am__dirstamp) \
+	static/mapper/$(DEPDIR)/$(am__dirstamp)
+static/permutation/$(am__dirstamp):
+	@$(MKDIR_P) static/permutation
+	@: > static/permutation/$(am__dirstamp)
+static/permutation/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) static/permutation/$(DEPDIR)
+	@: > static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/permutation/perm.lo: static/permutation/$(am__dirstamp) \
+	static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/permutation/PermutationBuilderMRRR.lo:  \
+	static/permutation/$(am__dirstamp) \
+	static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/permutation/PermutationBuilderWT.lo:  \
+	static/permutation/$(am__dirstamp) \
+	static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/permutation/Permutation.lo: static/permutation/$(am__dirstamp) \
+	static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/permutation/PermutationMRRR.lo:  \
+	static/permutation/$(am__dirstamp) \
+	static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/permutation/PermutationWT.lo:  \
+	static/permutation/$(am__dirstamp) \
+	static/permutation/$(DEPDIR)/$(am__dirstamp)
+static/sequence/$(am__dirstamp):
+	@$(MKDIR_P) static/sequence
+	@: > static/sequence/$(am__dirstamp)
+static/sequence/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) static/sequence/$(DEPDIR)
+	@: > static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/BitmapsSequence.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceAlphPart.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderAlphPart.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderGMRChunk.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderGMR.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderStr.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderWaveletMatrix.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderWaveletTree.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderWaveletTreeNoptrs.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceBuilderWaveletTreeNoptrsS.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/Sequence.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceGMRChunk.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/SequenceGMR.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/WaveletMatrix.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/WaveletTree.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/WaveletTreeNoptrs.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/WaveletTreeNoptrsS.lo:  \
+	static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/wt_coder_binary.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/wt_coder.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/wt_coder_huff.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/wt_node.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/wt_node_internal.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+static/sequence/wt_node_leaf.lo: static/sequence/$(am__dirstamp) \
+	static/sequence/$(DEPDIR)/$(am__dirstamp)
+utils/$(am__dirstamp):
+	@$(MKDIR_P) utils
+	@: > utils/$(am__dirstamp)
+utils/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) utils/$(DEPDIR)
+	@: > utils/$(DEPDIR)/$(am__dirstamp)
+utils/Array.lo: utils/$(am__dirstamp) utils/$(DEPDIR)/$(am__dirstamp)
+utils/cppUtils.lo: utils/$(am__dirstamp) \
+	utils/$(DEPDIR)/$(am__dirstamp)
+utils/libcdsBitString.lo: utils/$(am__dirstamp) \
+	utils/$(DEPDIR)/$(am__dirstamp)
+utils/timing.lo: utils/$(am__dirstamp) utils/$(DEPDIR)/$(am__dirstamp)
 libcds.la: $(libcds_la_OBJECTS) $(libcds_la_DEPENDENCIES) $(EXTRA_libcds_la_DEPENDENCIES) 
 	$(libcds_la_LINK) -rpath $(libdir) $(libcds_la_OBJECTS) $(libcds_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequence.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequence.lo
 	-rm -f static/bitsequence/BitSequenceBuilderDArray.$(OBJEXT)
 	-rm -f static/bitsequence/BitSequenceBuilderDArray.lo
+	-rm -f static/bitsequence/BitSequenceBuilderRG.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceBuilderRG.lo
+	-rm -f static/bitsequence/BitSequenceBuilderRRR.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceBuilderRRR.lo
+	-rm -f static/bitsequence/BitSequenceBuilderSDArray.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceBuilderSDArray.lo
+	-rm -f static/bitsequence/BitSequenceDArray.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceDArray.lo
+	-rm -f static/bitsequence/BitSequenceRG.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceRG.lo
+	-rm -f static/bitsequence/BitSequenceRRR.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceRRR.lo
+	-rm -f static/bitsequence/BitSequenceSDArray.$(OBJEXT)
+	-rm -f static/bitsequence/BitSequenceSDArray.lo
+	-rm -f static/bitsequence/TableOffsetRRR.$(OBJEXT)
+	-rm -f static/bitsequence/TableOffsetRRR.lo
+	-rm -f static/bitsequence/sdarraySadakane.$(OBJEXT)
+	-rm -f static/bitsequence/sdarraySadakane.lo
+	-rm -f static/coders/HuffmanCoder.$(OBJEXT)
+	-rm -f static/coders/HuffmanCoder.lo
+	-rm -f static/coders/huff.$(OBJEXT)
+	-rm -f static/coders/huff.lo
+	-rm -f static/mapper/Mapper.$(OBJEXT)
+	-rm -f static/mapper/Mapper.lo
+	-rm -f static/mapper/MapperCont.$(OBJEXT)
+	-rm -f static/mapper/MapperCont.lo
+	-rm -f static/mapper/MapperNone.$(OBJEXT)
+	-rm -f static/mapper/MapperNone.lo
+	-rm -f static/mapper/MapperRev.$(OBJEXT)
+	-rm -f static/mapper/MapperRev.lo
+	-rm -f static/permutation/Permutation.$(OBJEXT)
+	-rm -f static/permutation/Permutation.lo
+	-rm -f static/permutation/PermutationBuilderMRRR.$(OBJEXT)
+	-rm -f static/permutation/PermutationBuilderMRRR.lo
+	-rm -f static/permutation/PermutationBuilderWT.$(OBJEXT)
+	-rm -f static/permutation/PermutationBuilderWT.lo
+	-rm -f static/permutation/PermutationMRRR.$(OBJEXT)
+	-rm -f static/permutation/PermutationMRRR.lo
+	-rm -f static/permutation/PermutationWT.$(OBJEXT)
+	-rm -f static/permutation/PermutationWT.lo
+	-rm -f static/permutation/perm.$(OBJEXT)
+	-rm -f static/permutation/perm.lo
+	-rm -f static/sequence/BitmapsSequence.$(OBJEXT)
+	-rm -f static/sequence/BitmapsSequence.lo
+	-rm -f static/sequence/Sequence.$(OBJEXT)
+	-rm -f static/sequence/Sequence.lo
+	-rm -f static/sequence/SequenceAlphPart.$(OBJEXT)
+	-rm -f static/sequence/SequenceAlphPart.lo
+	-rm -f static/sequence/SequenceBuilderAlphPart.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderAlphPart.lo
+	-rm -f static/sequence/SequenceBuilderGMR.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderGMR.lo
+	-rm -f static/sequence/SequenceBuilderGMRChunk.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderGMRChunk.lo
+	-rm -f static/sequence/SequenceBuilderStr.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderStr.lo
+	-rm -f static/sequence/SequenceBuilderWaveletMatrix.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderWaveletMatrix.lo
+	-rm -f static/sequence/SequenceBuilderWaveletTree.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderWaveletTree.lo
+	-rm -f static/sequence/SequenceBuilderWaveletTreeNoptrs.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderWaveletTreeNoptrs.lo
+	-rm -f static/sequence/SequenceBuilderWaveletTreeNoptrsS.$(OBJEXT)
+	-rm -f static/sequence/SequenceBuilderWaveletTreeNoptrsS.lo
+	-rm -f static/sequence/SequenceGMR.$(OBJEXT)
+	-rm -f static/sequence/SequenceGMR.lo
+	-rm -f static/sequence/SequenceGMRChunk.$(OBJEXT)
+	-rm -f static/sequence/SequenceGMRChunk.lo
+	-rm -f static/sequence/WaveletMatrix.$(OBJEXT)
+	-rm -f static/sequence/WaveletMatrix.lo
+	-rm -f static/sequence/WaveletTree.$(OBJEXT)
+	-rm -f static/sequence/WaveletTree.lo
+	-rm -f static/sequence/WaveletTreeNoptrs.$(OBJEXT)
+	-rm -f static/sequence/WaveletTreeNoptrs.lo
+	-rm -f static/sequence/WaveletTreeNoptrsS.$(OBJEXT)
+	-rm -f static/sequence/WaveletTreeNoptrsS.lo
+	-rm -f static/sequence/wt_coder.$(OBJEXT)
+	-rm -f static/sequence/wt_coder.lo
+	-rm -f static/sequence/wt_coder_binary.$(OBJEXT)
+	-rm -f static/sequence/wt_coder_binary.lo
+	-rm -f static/sequence/wt_coder_huff.$(OBJEXT)
+	-rm -f static/sequence/wt_coder_huff.lo
+	-rm -f static/sequence/wt_node.$(OBJEXT)
+	-rm -f static/sequence/wt_node.lo
+	-rm -f static/sequence/wt_node_internal.$(OBJEXT)
+	-rm -f static/sequence/wt_node_internal.lo
+	-rm -f static/sequence/wt_node_leaf.$(OBJEXT)
+	-rm -f static/sequence/wt_node_leaf.lo
+	-rm -f utils/Array.$(OBJEXT)
+	-rm -f utils/Array.lo
+	-rm -f utils/cppUtils.$(OBJEXT)
+	-rm -f utils/cppUtils.lo
+	-rm -f utils/libcdsBitString.$(OBJEXT)
+	-rm -f utils/libcdsBitString.lo
+	-rm -f utils/timing.$(OBJEXT)
+	-rm -f utils/timing.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequence.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceBuilderDArray.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceBuilderRG.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceBuilderRRR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceBuilderSDArray.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceDArray.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceRG.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceRRR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/BitSequenceSDArray.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/TableOffsetRRR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/bitsequence/$(DEPDIR)/sdarraySadakane.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/coders/$(DEPDIR)/HuffmanCoder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/coders/$(DEPDIR)/huff.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/mapper/$(DEPDIR)/Mapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/mapper/$(DEPDIR)/MapperCont.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/mapper/$(DEPDIR)/MapperNone.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/mapper/$(DEPDIR)/MapperRev.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/permutation/$(DEPDIR)/Permutation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/permutation/$(DEPDIR)/PermutationBuilderMRRR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/permutation/$(DEPDIR)/PermutationBuilderWT.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/permutation/$(DEPDIR)/PermutationMRRR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/permutation/$(DEPDIR)/PermutationWT.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/permutation/$(DEPDIR)/perm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/BitmapsSequence.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/Sequence.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceAlphPart.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderAlphPart.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderGMR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderGMRChunk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderStr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderWaveletMatrix.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderWaveletTree.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderWaveletTreeNoptrs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceBuilderWaveletTreeNoptrsS.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceGMR.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/SequenceGMRChunk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/WaveletMatrix.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/WaveletTree.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/WaveletTreeNoptrs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/WaveletTreeNoptrsS.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/wt_coder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/wt_coder_binary.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/wt_coder_huff.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/wt_node.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/wt_node_internal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@static/sequence/$(DEPDIR)/wt_node_leaf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@utils/$(DEPDIR)/Array.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@utils/$(DEPDIR)/cppUtils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@utils/$(DEPDIR)/libcdsBitString.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@utils/$(DEPDIR)/timing.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -370,6 +754,11 @@ mostlyclean-libtool:
 clean-libtool:
 	-rm -rf .libs _libs
 	-rm -rf static/bitsequence/.libs static/bitsequence/_libs
+	-rm -rf static/coders/.libs static/coders/_libs
+	-rm -rf static/mapper/.libs static/mapper/_libs
+	-rm -rf static/permutation/.libs static/permutation/_libs
+	-rm -rf static/sequence/.libs static/sequence/_libs
+	-rm -rf utils/.libs utils/_libs
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -488,6 +877,16 @@ distclean-generic:
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
 	-rm -f static/bitsequence/$(DEPDIR)/$(am__dirstamp)
 	-rm -f static/bitsequence/$(am__dirstamp)
+	-rm -f static/coders/$(DEPDIR)/$(am__dirstamp)
+	-rm -f static/coders/$(am__dirstamp)
+	-rm -f static/mapper/$(DEPDIR)/$(am__dirstamp)
+	-rm -f static/mapper/$(am__dirstamp)
+	-rm -f static/permutation/$(DEPDIR)/$(am__dirstamp)
+	-rm -f static/permutation/$(am__dirstamp)
+	-rm -f static/sequence/$(DEPDIR)/$(am__dirstamp)
+	-rm -f static/sequence/$(am__dirstamp)
+	-rm -f utils/$(DEPDIR)/$(am__dirstamp)
+	-rm -f utils/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -498,7 +897,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf static/bitsequence/$(DEPDIR)
+	-rm -rf static/bitsequence/$(DEPDIR) static/coders/$(DEPDIR) static/mapper/$(DEPDIR) static/permutation/$(DEPDIR) static/sequence/$(DEPDIR) utils/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -544,7 +943,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf static/bitsequence/$(DEPDIR)
+	-rm -rf static/bitsequence/$(DEPDIR) static/coders/$(DEPDIR) static/mapper/$(DEPDIR) static/permutation/$(DEPDIR) static/sequence/$(DEPDIR) utils/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -579,55 +978,6 @@ uninstall-am: uninstall-libLTLIBRARIES
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-libLTLIBRARIES
 
-    static/bitsequence/BitSequenceBuilderRG.cpp
-    static/bitsequence/BitSequenceBuilderRRR.cpp
-    static/bitsequence/BitSequenceBuilderSDArray.cpp
-    static/bitsequence/BitSequence.cpp
-    static/bitsequence/BitSequenceDArray.cpp
-    static/bitsequence/BitSequenceRG.cpp
-    static/bitsequence/BitSequenceRRR.cpp
-    static/bitsequence/BitSequenceSDArray.cpp
-    static/bitsequence/sdarraySadakane.cpp
-    static/bitsequence/TableOffsetRRR.cpp
-    static/coders/huff.cpp
-    static/coders/HuffmanCoder.cpp
-    static/mapper/MapperCont.cpp
-    static/mapper/Mapper.cpp
-    static/mapper/MapperNone.cpp
-    static/mapper/MapperRev.cpp
-    static/permutation/perm.cpp
-    static/permutation/PermutationBuilderMRRR.cpp
-    static/permutation/PermutationBuilderWT.cpp
-    static/permutation/Permutation.cpp
-    static/permutation/PermutationMRRR.cpp
-    static/permutation/PermutationWT.cpp
-    static/sequence/BitmapsSequence.cpp
-    static/sequence/SequenceAlphPart.cpp
-    static/sequence/SequenceBuilderAlphPart.cpp
-    static/sequence/SequenceBuilderGMRChunk.cpp
-    static/sequence/SequenceBuilderGMR.cpp
-    static/sequence/SequenceBuilderStr.cpp
-    static/sequence/SequenceBuilderWaveletMatrix.cpp
-    static/sequence/SequenceBuilderWaveletTree.cpp
-    static/sequence/SequenceBuilderWaveletTreeNoptrs.cpp
-    static/sequence/SequenceBuilderWaveletTreeNoptrsS.cpp
-    static/sequence/Sequence.cpp
-    static/sequence/SequenceGMRChunk.cpp
-    static/sequence/SequenceGMR.cpp
-    static/sequence/WaveletMatrix.cpp
-    static/sequence/WaveletTree.cpp
-    static/sequence/WaveletTreeNoptrs.cpp
-    static/sequence/WaveletTreeNoptrsS.cpp
-    static/sequence/wt_coder_binary.cpp
-    static/sequence/wt_coder.cpp
-    static/sequence/wt_coder_huff.cpp
-    static/sequence/wt_node.cpp
-    static/sequence/wt_node_internal.cpp
-    static/sequence/wt_node_leaf.cpp
-    utils/Array.cpp
-    utils/cppUtils.cpp
-    utils/libcdsBitString.cpp
-    utils/timing.cpp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
