@@ -19,8 +19,20 @@ To do a normal build for your platform, just do:
 
 To install "make install".  If you want the library installed elsewhere,
 run the configure script at the beginning with a --prefix flag
-("./configure --prefix=/usr/local").  See the INSTALL file for more
-information on flags that configure supports.
+("./configure --prefix=/usr/local").  Run ./configure --help for more
+information on the build configuration script and refer to the INSTALL
+file for more information.
+
+BUILDING DOCUMENTATION
+
+Documentation is provided by doxygen. This can be built by running:
+
+    make doxygen-doc
+
+You'll need the doxygen tools to build these docs however. On an Ubuntu
+machine do the following to install all the required packages.
+
+    sudo apt-get install doxygen texlive-fonts-recommended texlive-fonts-extra
 
 CROSS BUILD INSTRUCTIONS
 

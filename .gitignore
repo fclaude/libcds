@@ -43,4 +43,6 @@ tests/testSequence
 tests/timeSequence
 tests/toArray
 tests/toArray2
-
+/docs/html/
+/docs/latex/
+/docs/cds.ps

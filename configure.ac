@@ -15,15 +15,13 @@ AM_INIT_AUTOMAKE([1.9 subdir-objects])
 LT_INIT([shared static])
 AC_SUBST([LIBTOOL_DEPS])
 AC_SUBST([CDS_SO_VERSION], [1:3:0])
-DX_INIT_DOXYGEN([libcds], [.], [docs/])
+DX_INIT_DOXYGEN([libcds], [Doxyfile], [docs/])
 
 # Checks for programs.
 AC_PROG_CXX
-AC_PROG_CC
 AC_LANG([C++])
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_PROG_CPP
 
 # Checks for libraries.
 
