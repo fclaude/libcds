@@ -20,3 +20,14 @@ src/libcds.la
 tests/Makefile
 tutorial/src/Makefile
 tutorial/ssa/Makefile
+tutorial/src/ArrayExample
+tutorial/src/ArrayExample2
+tutorial/src/BitSequenceRGExample
+tutorial/src/BitSequenceRRRExample
+tutorial/src/BitSequenceSDArrayExample
+tutorial/src/SequenceAlphPartExample
+tutorial/src/SequenceGMRExample
+tutorial/src/SequenceWaveletTreeExample
+tutorial/ssa/build_index
+tutorial/ssa/dump_bwt
+tutorial/ssa/test_count

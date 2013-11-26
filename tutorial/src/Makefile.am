@@ -1,6 +1,6 @@
 # Build the tutorial programs.
 
-AM_CXXFLAGS = -I../../includes/
+AM_CXXFLAGS = -I../../include/
 LDADD = ../../src/libcds.la
 noinst_PROGRAMS = ArrayExample2 ArrayExample BitSequenceRGExample BitSequenceRRRExample BitSequenceSDArrayExample SequenceAlphPartExample SequenceGMRExample SequenceWaveletTreeExample
 
