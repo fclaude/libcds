@@ -38,9 +38,8 @@ build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = testHuffman$(EXEEXT) testSequence$(EXEEXT) \
 	testQuantile$(EXEEXT) testBitSequence$(EXEEXT) \
-	testArray$(EXEEXT) testTextIndex$(EXEEXT) testLCP$(EXEEXT) \
-	testNPR$(EXEEXT) toArray2$(EXEEXT) toArray$(EXEEXT) \
-	testSuffixTree$(EXEEXT) timeSequence$(EXEEXT)
+	testArray$(EXEEXT) toArray2$(EXEEXT) toArray$(EXEEXT) \
+	timeSequence$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -66,14 +65,6 @@ am_testHuffman_OBJECTS = testHuffman.$(OBJEXT)
 testHuffman_OBJECTS = $(am_testHuffman_OBJECTS)
 testHuffman_LDADD = $(LDADD)
 testHuffman_DEPENDENCIES = ../src/libcds.la
-am_testLCP_OBJECTS = testLCP.$(OBJEXT)
-testLCP_OBJECTS = $(am_testLCP_OBJECTS)
-testLCP_LDADD = $(LDADD)
-testLCP_DEPENDENCIES = ../src/libcds.la
-am_testNPR_OBJECTS = testNPR.$(OBJEXT)
-testNPR_OBJECTS = $(am_testNPR_OBJECTS)
-testNPR_LDADD = $(LDADD)
-testNPR_DEPENDENCIES = ../src/libcds.la
 am_testQuantile_OBJECTS = testQuantile.$(OBJEXT)
 testQuantile_OBJECTS = $(am_testQuantile_OBJECTS)
 testQuantile_LDADD = $(LDADD)
@@ -82,14 +73,6 @@ am_testSequence_OBJECTS = testSequence.$(OBJEXT)
 testSequence_OBJECTS = $(am_testSequence_OBJECTS)
 testSequence_LDADD = $(LDADD)
 testSequence_DEPENDENCIES = ../src/libcds.la
-am_testSuffixTree_OBJECTS = testSuffixTree.$(OBJEXT)
-testSuffixTree_OBJECTS = $(am_testSuffixTree_OBJECTS)
-testSuffixTree_LDADD = $(LDADD)
-testSuffixTree_DEPENDENCIES = ../src/libcds.la
-am_testTextIndex_OBJECTS = testTextIndex.$(OBJEXT)
-testTextIndex_OBJECTS = $(am_testTextIndex_OBJECTS)
-testTextIndex_LDADD = $(LDADD)
-testTextIndex_DEPENDENCIES = ../src/libcds.la
 am_timeSequence_OBJECTS = timeSequence.$(OBJEXT)
 timeSequence_OBJECTS = $(am_timeSequence_OBJECTS)
 timeSequence_LDADD = $(LDADD)
@@ -116,15 +99,13 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(testArray_SOURCES) $(testBitSequence_SOURCES) \
-	$(testHuffman_SOURCES) $(testLCP_SOURCES) $(testNPR_SOURCES) \
-	$(testQuantile_SOURCES) $(testSequence_SOURCES) \
-	$(testSuffixTree_SOURCES) $(testTextIndex_SOURCES) \
-	$(timeSequence_SOURCES) $(toArray_SOURCES) $(toArray2_SOURCES)
+	$(testHuffman_SOURCES) $(testQuantile_SOURCES) \
+	$(testSequence_SOURCES) $(timeSequence_SOURCES) \
+	$(toArray_SOURCES) $(toArray2_SOURCES)
 DIST_SOURCES = $(testArray_SOURCES) $(testBitSequence_SOURCES) \
-	$(testHuffman_SOURCES) $(testLCP_SOURCES) $(testNPR_SOURCES) \
-	$(testQuantile_SOURCES) $(testSequence_SOURCES) \
-	$(testSuffixTree_SOURCES) $(testTextIndex_SOURCES) \
-	$(timeSequence_SOURCES) $(toArray_SOURCES) $(toArray2_SOURCES)
+	$(testHuffman_SOURCES) $(testQuantile_SOURCES) \
+	$(testSequence_SOURCES) $(timeSequence_SOURCES) \
+	$(toArray_SOURCES) $(toArray2_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -279,12 +260,8 @@ testSequence_SOURCES = testSequence.cpp
 testQuantile_SOURCES = testQuantile.cpp
 testBitSequence_SOURCES = testBitSequence.cpp
 testArray_SOURCES = testArray.cpp
-testTextIndex_SOURCES = testTextIndex.cpp
-testLCP_SOURCES = testLCP.cpp
-testNPR_SOURCES = testNPR.cpp
 toArray2_SOURCES = toArray2.cpp
 toArray_SOURCES = toArray.cpp
-testSuffixTree_SOURCES = testSuffixTree.cpp
 timeSequence_SOURCES = timeSequence.cpp
 all: all-am
 
@@ -338,24 +315,12 @@ testBitSequence$(EXEEXT): $(testBitSequence_OBJECTS) $(testBitSequence_DEPENDENC
 testHuffman$(EXEEXT): $(testHuffman_OBJECTS) $(testHuffman_DEPENDENCIES) $(EXTRA_testHuffman_DEPENDENCIES) 
 	@rm -f testHuffman$(EXEEXT)
 	$(CXXLINK) $(testHuffman_OBJECTS) $(testHuffman_LDADD) $(LIBS)
-testLCP$(EXEEXT): $(testLCP_OBJECTS) $(testLCP_DEPENDENCIES) $(EXTRA_testLCP_DEPENDENCIES) 
-	@rm -f testLCP$(EXEEXT)
-	$(CXXLINK) $(testLCP_OBJECTS) $(testLCP_LDADD) $(LIBS)
-testNPR$(EXEEXT): $(testNPR_OBJECTS) $(testNPR_DEPENDENCIES) $(EXTRA_testNPR_DEPENDENCIES) 
-	@rm -f testNPR$(EXEEXT)
-	$(CXXLINK) $(testNPR_OBJECTS) $(testNPR_LDADD) $(LIBS)
 testQuantile$(EXEEXT): $(testQuantile_OBJECTS) $(testQuantile_DEPENDENCIES) $(EXTRA_testQuantile_DEPENDENCIES) 
 	@rm -f testQuantile$(EXEEXT)
 	$(CXXLINK) $(testQuantile_OBJECTS) $(testQuantile_LDADD) $(LIBS)
 testSequence$(EXEEXT): $(testSequence_OBJECTS) $(testSequence_DEPENDENCIES) $(EXTRA_testSequence_DEPENDENCIES) 
 	@rm -f testSequence$(EXEEXT)
 	$(CXXLINK) $(testSequence_OBJECTS) $(testSequence_LDADD) $(LIBS)
-testSuffixTree$(EXEEXT): $(testSuffixTree_OBJECTS) $(testSuffixTree_DEPENDENCIES) $(EXTRA_testSuffixTree_DEPENDENCIES) 
-	@rm -f testSuffixTree$(EXEEXT)
-	$(CXXLINK) $(testSuffixTree_OBJECTS) $(testSuffixTree_LDADD) $(LIBS)
-testTextIndex$(EXEEXT): $(testTextIndex_OBJECTS) $(testTextIndex_DEPENDENCIES) $(EXTRA_testTextIndex_DEPENDENCIES) 
-	@rm -f testTextIndex$(EXEEXT)
-	$(CXXLINK) $(testTextIndex_OBJECTS) $(testTextIndex_LDADD) $(LIBS)
 timeSequence$(EXEEXT): $(timeSequence_OBJECTS) $(timeSequence_DEPENDENCIES) $(EXTRA_timeSequence_DEPENDENCIES) 
 	@rm -f timeSequence$(EXEEXT)
 	$(CXXLINK) $(timeSequence_OBJECTS) $(timeSequence_LDADD) $(LIBS)
@@ -375,12 +340,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testArray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testBitSequence.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testHuffman.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testLCP.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testNPR.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testQuantile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSequence.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSuffixTree.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testTextIndex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timeSequence.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toArray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toArray2.Po@am__quote@
