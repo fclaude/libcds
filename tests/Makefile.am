@@ -30,3 +30,6 @@ timeSequence_SOURCES = timeSequence.cpp
 # FIXME: Actually most of the test programs have this problem. Might be
 #        a better idea to write them to choose default arguments.
 TESTS = $(check_PROGRAMS)
+
+clean-local:
+	rm -f bitsequence.tmp
