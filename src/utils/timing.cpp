@@ -35,6 +35,7 @@ using namespace std;
 namespace cds_utils
 {
 
+#ifndef _WIN32
 	clock_t init;
 	void start_timing() {
 		init = clock();
@@ -44,5 +45,13 @@ namespace cds_utils
 		clock_t fin = clock();
 		return (1000.*(fin-init)/CLOCKS_PER_SEC);
 	}
+#else
+        /* FIXME: Put real win32 api calls here. */
+        void start_timing() {
+        }
 
+        double get_timing() {
+                return 0.0;
+        }
+#endif
 };

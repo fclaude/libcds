@@ -4,6 +4,7 @@
 *.lo
 *.a
 *.so
+*.exe
 .DS_Store
 cds.pc
 # configure cruft

@@ -10,3 +10,23 @@ Right now we are just fixing bugs and testing some new things in here,
 but most of the effort is being put into libcds2, this rewrite aims at
 solving many problems with 64bits systems. This is necessary in order
 to index bigger inputs.
+
+BUILD INSTRUCTIONS
+
+To do a normal build for your platform, just do:
+
+    ./configure && make && make check
+
+To install "make install".  If you want the library installed elsewhere,
+run the configure script at the beginning with a --prefix flag
+("./configure --prefix=/usr/local").  See the INSTALL file for more
+information on flags that configure supports.
+
+CROSS BUILD INSTRUCTIONS
+
+To build for a windows target on an Ubuntu system you can use the mingw32
+cross compiler:
+
+    sudo apt-get install g++-mingw-w64
+    ./configure --host=i686-w64-mingw32
+    make
