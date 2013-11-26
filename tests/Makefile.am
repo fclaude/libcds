@@ -27,4 +27,6 @@ timeSequence_SOURCES = timeSequence.cpp
 # .lib/lt-testBitSequence $SEED $LENGTH $DENSITY
 # That still needs some cleanup to make it portable and the exec path is
 # probably wrong.
-TESTS = testHuffman testSequence testQuantile testArray toArray2 toArray timeSequence
+# FIXME: Actually most of the test programs have this problem. Might be
+#        a better idea to write them to choose default arguments.
+TESTS = $(check_PROGRAMS)
