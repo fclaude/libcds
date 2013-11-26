@@ -1,7 +1,7 @@
 # Build the ssa tutorial programs.
 
 AM_CXXFLAGS = -I../../includes/
-LDADD = ../../lib/libcds.a
+LDADD = ../../src/libcds.la
 noinst_PROGRAMS = test_count build_index dump_bwt
 
 test_count_SOURCES = test_count.cpp ssa.cpp

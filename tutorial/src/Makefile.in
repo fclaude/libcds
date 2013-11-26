@@ -36,8 +36,11 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-noinst_PROGRAMS = lz78$(EXEEXT) lz78dec$(EXEEXT) \
-	lz78dec-shell$(EXEEXT)
+noinst_PROGRAMS = ArrayExample2$(EXEEXT) ArrayExample$(EXEEXT) \
+	BitSequenceRGExample$(EXEEXT) BitSequenceRRRExample$(EXEEXT) \
+	BitSequenceSDArrayExample$(EXEEXT) \
+	SequenceAlphPartExample$(EXEEXT) SequenceGMRExample$(EXEEXT) \
+	SequenceWaveletTreeExample$(EXEEXT)
 subdir = tutorial/src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -52,18 +55,44 @@ CONFIG_HEADER = $(top_builddir)/build-aux/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_lz78_OBJECTS = lz78.$(OBJEXT)
-lz78_OBJECTS = $(am_lz78_OBJECTS)
-lz78_LDADD = $(LDADD)
-lz78_DEPENDENCIES = ../../lib/libcds.a
-am_lz78dec_OBJECTS = lz78dec.$(OBJEXT)
-lz78dec_OBJECTS = $(am_lz78dec_OBJECTS)
-lz78dec_LDADD = $(LDADD)
-lz78dec_DEPENDENCIES = ../../lib/libcds.a
-am_lz78dec_shell_OBJECTS = lz78dec-shell.$(OBJEXT)
-lz78dec_shell_OBJECTS = $(am_lz78dec_shell_OBJECTS)
-lz78dec_shell_LDADD = $(LDADD)
-lz78dec_shell_DEPENDENCIES = ../../lib/libcds.a
+am_ArrayExample_OBJECTS = ArrayExample.$(OBJEXT)
+ArrayExample_OBJECTS = $(am_ArrayExample_OBJECTS)
+ArrayExample_LDADD = $(LDADD)
+ArrayExample_DEPENDENCIES = ../../src/libcds.la
+am_ArrayExample2_OBJECTS = ArrayExample2.$(OBJEXT)
+ArrayExample2_OBJECTS = $(am_ArrayExample2_OBJECTS)
+ArrayExample2_LDADD = $(LDADD)
+ArrayExample2_DEPENDENCIES = ../../src/libcds.la
+am_BitSequenceRGExample_OBJECTS = BitSequenceRGExample.$(OBJEXT)
+BitSequenceRGExample_OBJECTS = $(am_BitSequenceRGExample_OBJECTS)
+BitSequenceRGExample_LDADD = $(LDADD)
+BitSequenceRGExample_DEPENDENCIES = ../../src/libcds.la
+am_BitSequenceRRRExample_OBJECTS = BitSequenceRRRExample.$(OBJEXT)
+BitSequenceRRRExample_OBJECTS = $(am_BitSequenceRRRExample_OBJECTS)
+BitSequenceRRRExample_LDADD = $(LDADD)
+BitSequenceRRRExample_DEPENDENCIES = ../../src/libcds.la
+am_BitSequenceSDArrayExample_OBJECTS =  \
+	BitSequenceSDArrayExample.$(OBJEXT)
+BitSequenceSDArrayExample_OBJECTS =  \
+	$(am_BitSequenceSDArrayExample_OBJECTS)
+BitSequenceSDArrayExample_LDADD = $(LDADD)
+BitSequenceSDArrayExample_DEPENDENCIES = ../../src/libcds.la
+am_SequenceAlphPartExample_OBJECTS =  \
+	SequenceAlphPartExample.$(OBJEXT)
+SequenceAlphPartExample_OBJECTS =  \
+	$(am_SequenceAlphPartExample_OBJECTS)
+SequenceAlphPartExample_LDADD = $(LDADD)
+SequenceAlphPartExample_DEPENDENCIES = ../../src/libcds.la
+am_SequenceGMRExample_OBJECTS = SequenceGMRExample.$(OBJEXT)
+SequenceGMRExample_OBJECTS = $(am_SequenceGMRExample_OBJECTS)
+SequenceGMRExample_LDADD = $(LDADD)
+SequenceGMRExample_DEPENDENCIES = ../../src/libcds.la
+am_SequenceWaveletTreeExample_OBJECTS =  \
+	SequenceWaveletTreeExample.$(OBJEXT)
+SequenceWaveletTreeExample_OBJECTS =  \
+	$(am_SequenceWaveletTreeExample_OBJECTS)
+SequenceWaveletTreeExample_LDADD = $(LDADD)
+SequenceWaveletTreeExample_DEPENDENCIES = ../../src/libcds.la
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/build-aux
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__depfiles_maybe = depfiles
@@ -77,9 +106,20 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(lz78_SOURCES) $(lz78dec_SOURCES) $(lz78dec_shell_SOURCES)
-DIST_SOURCES = $(lz78_SOURCES) $(lz78dec_SOURCES) \
-	$(lz78dec_shell_SOURCES)
+SOURCES = $(ArrayExample_SOURCES) $(ArrayExample2_SOURCES) \
+	$(BitSequenceRGExample_SOURCES) \
+	$(BitSequenceRRRExample_SOURCES) \
+	$(BitSequenceSDArrayExample_SOURCES) \
+	$(SequenceAlphPartExample_SOURCES) \
+	$(SequenceGMRExample_SOURCES) \
+	$(SequenceWaveletTreeExample_SOURCES)
+DIST_SOURCES = $(ArrayExample_SOURCES) $(ArrayExample2_SOURCES) \
+	$(BitSequenceRGExample_SOURCES) \
+	$(BitSequenceRRRExample_SOURCES) \
+	$(BitSequenceSDArrayExample_SOURCES) \
+	$(SequenceAlphPartExample_SOURCES) \
+	$(SequenceGMRExample_SOURCES) \
+	$(SequenceWaveletTreeExample_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -228,10 +268,15 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CXXFLAGS = -I../../includes/
-LDADD = ../../lib/libcds.a
-lz78_SOURCES = lz78.cpp
-lz78dec_SOURCES = lz78dec.cpp
-lz78dec_shell_SOURCES = lz78dec-shell.cpp
+LDADD = ../../src/libcds.la
+ArrayExample2_SOURCES = ArrayExample2.cpp
+ArrayExample_SOURCES = ArrayExample.cpp
+BitSequenceRGExample_SOURCES = BitSequenceRGExample.cpp
+BitSequenceRRRExample_SOURCES = BitSequenceRRRExample.cpp
+BitSequenceSDArrayExample_SOURCES = BitSequenceSDArrayExample.cpp
+SequenceAlphPartExample_SOURCES = SequenceAlphPartExample.cpp
+SequenceGMRExample_SOURCES = SequenceGMRExample.cpp
+SequenceWaveletTreeExample_SOURCES = SequenceWaveletTreeExample.cpp
 all: all-am
 
 .SUFFIXES:
@@ -275,15 +320,30 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-lz78$(EXEEXT): $(lz78_OBJECTS) $(lz78_DEPENDENCIES) $(EXTRA_lz78_DEPENDENCIES) 
-	@rm -f lz78$(EXEEXT)
-	$(CXXLINK) $(lz78_OBJECTS) $(lz78_LDADD) $(LIBS)
-lz78dec$(EXEEXT): $(lz78dec_OBJECTS) $(lz78dec_DEPENDENCIES) $(EXTRA_lz78dec_DEPENDENCIES) 
-	@rm -f lz78dec$(EXEEXT)
-	$(CXXLINK) $(lz78dec_OBJECTS) $(lz78dec_LDADD) $(LIBS)
-lz78dec-shell$(EXEEXT): $(lz78dec_shell_OBJECTS) $(lz78dec_shell_DEPENDENCIES) $(EXTRA_lz78dec_shell_DEPENDENCIES) 
-	@rm -f lz78dec-shell$(EXEEXT)
-	$(CXXLINK) $(lz78dec_shell_OBJECTS) $(lz78dec_shell_LDADD) $(LIBS)
+ArrayExample$(EXEEXT): $(ArrayExample_OBJECTS) $(ArrayExample_DEPENDENCIES) $(EXTRA_ArrayExample_DEPENDENCIES) 
+	@rm -f ArrayExample$(EXEEXT)
+	$(CXXLINK) $(ArrayExample_OBJECTS) $(ArrayExample_LDADD) $(LIBS)
+ArrayExample2$(EXEEXT): $(ArrayExample2_OBJECTS) $(ArrayExample2_DEPENDENCIES) $(EXTRA_ArrayExample2_DEPENDENCIES) 
+	@rm -f ArrayExample2$(EXEEXT)
+	$(CXXLINK) $(ArrayExample2_OBJECTS) $(ArrayExample2_LDADD) $(LIBS)
+BitSequenceRGExample$(EXEEXT): $(BitSequenceRGExample_OBJECTS) $(BitSequenceRGExample_DEPENDENCIES) $(EXTRA_BitSequenceRGExample_DEPENDENCIES) 
+	@rm -f BitSequenceRGExample$(EXEEXT)
+	$(CXXLINK) $(BitSequenceRGExample_OBJECTS) $(BitSequenceRGExample_LDADD) $(LIBS)
+BitSequenceRRRExample$(EXEEXT): $(BitSequenceRRRExample_OBJECTS) $(BitSequenceRRRExample_DEPENDENCIES) $(EXTRA_BitSequenceRRRExample_DEPENDENCIES) 
+	@rm -f BitSequenceRRRExample$(EXEEXT)
+	$(CXXLINK) $(BitSequenceRRRExample_OBJECTS) $(BitSequenceRRRExample_LDADD) $(LIBS)
+BitSequenceSDArrayExample$(EXEEXT): $(BitSequenceSDArrayExample_OBJECTS) $(BitSequenceSDArrayExample_DEPENDENCIES) $(EXTRA_BitSequenceSDArrayExample_DEPENDENCIES) 
+	@rm -f BitSequenceSDArrayExample$(EXEEXT)
+	$(CXXLINK) $(BitSequenceSDArrayExample_OBJECTS) $(BitSequenceSDArrayExample_LDADD) $(LIBS)
+SequenceAlphPartExample$(EXEEXT): $(SequenceAlphPartExample_OBJECTS) $(SequenceAlphPartExample_DEPENDENCIES) $(EXTRA_SequenceAlphPartExample_DEPENDENCIES) 
+	@rm -f SequenceAlphPartExample$(EXEEXT)
+	$(CXXLINK) $(SequenceAlphPartExample_OBJECTS) $(SequenceAlphPartExample_LDADD) $(LIBS)
+SequenceGMRExample$(EXEEXT): $(SequenceGMRExample_OBJECTS) $(SequenceGMRExample_DEPENDENCIES) $(EXTRA_SequenceGMRExample_DEPENDENCIES) 
+	@rm -f SequenceGMRExample$(EXEEXT)
+	$(CXXLINK) $(SequenceGMRExample_OBJECTS) $(SequenceGMRExample_LDADD) $(LIBS)
+SequenceWaveletTreeExample$(EXEEXT): $(SequenceWaveletTreeExample_OBJECTS) $(SequenceWaveletTreeExample_DEPENDENCIES) $(EXTRA_SequenceWaveletTreeExample_DEPENDENCIES) 
+	@rm -f SequenceWaveletTreeExample$(EXEEXT)
+	$(CXXLINK) $(SequenceWaveletTreeExample_OBJECTS) $(SequenceWaveletTreeExample_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -291,9 +351,14 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lz78.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lz78dec-shell.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lz78dec.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ArrayExample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ArrayExample2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BitSequenceRGExample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BitSequenceRRRExample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BitSequenceSDArrayExample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SequenceAlphPartExample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SequenceGMRExample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SequenceWaveletTreeExample.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
