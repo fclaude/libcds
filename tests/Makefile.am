@@ -14,3 +14,17 @@ testArray_SOURCES = testArray.cpp
 toArray2_SOURCES = toArray2.cpp
 toArray_SOURCES = toArray.cpp
 timeSequence_SOURCES = timeSequence.cpp
+
+# FIXME:
+# The testBitSequence needs arguments to run. A simple shell wrapper is
+# needed for this but not sure what are good testing arguments. Perhaps
+# this would work:
+# #!/bin/sh
+# SEED=`date +%s`
+# LENGTH=`expr $SEED % 2048`
+# DENSITY=`expr $LENGTH / 2`
+# echo .lib/lt-testBitSequence $SEED $LENGTH $DENSITY
+# .lib/lt-testBitSequence $SEED $LENGTH $DENSITY
+# That still needs some cleanup to make it portable and the exec path is
+# probably wrong.
+TESTS = testHuffman testSequence testQuantile testArray toArray2 toArray timeSequence

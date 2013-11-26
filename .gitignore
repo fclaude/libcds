@@ -33,3 +33,13 @@ tutorial/src/SequenceWaveletTreeExample
 tutorial/ssa/build_index
 tutorial/ssa/dump_bwt
 tutorial/ssa/test_count
+tests/bitsequence.tmp
+tests/testArray
+tests/testBitSequence
+tests/testHuffman
+tests/testQuantile
+tests/testSequence
+tests/timeSequence
+tests/toArray
+tests/toArray2
+
