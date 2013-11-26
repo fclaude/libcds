@@ -1,8 +1,12 @@
 *~
 *.o
+*.lo
 *.a
 *.so
 .DS_Store
+# configure cruft
+.deps/
+.dirstamp
 autom4te.cache/
 Makefile
 build-aux/config.h
@@ -11,10 +15,6 @@ config.log
 config.status
 libtool
 src/Makefile
-src/static/bitsequence/.deps/
-tests/.deps/
 tests/Makefile
-tutorial/src/.deps/
 tutorial/src/Makefile
-tutorial/ssa/.deps/
 tutorial/ssa/Makefile

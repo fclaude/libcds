@@ -11688,7 +11688,7 @@ CC="$lt_save_CC"
 
 
 
-CDS_SO_VERSION=1:0:3
+CDS_SO_VERSION=1:3:0
 
 
 

@@ -14,7 +14,7 @@ AC_CONFIG_HEADERS([build-aux/config.h])
 AM_INIT_AUTOMAKE([1.9 subdir-objects])
 LT_INIT([shared static])
 AC_SUBST([LIBTOOL_DEPS])
-AC_SUBST([CDS_SO_VERSION], [1:0:3])
+AC_SUBST([CDS_SO_VERSION], [1:3:0])
 DX_INIT_DOXYGEN([libcds], [.], [docs/])
 
 # Checks for programs.
