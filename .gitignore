@@ -4,3 +4,17 @@
 *.so
 .DS_Store
 autom4te.cache/
+Makefile
+build-aux/config.h
+build-aux/stamp-h1
+config.log
+config.status
+libtool
+src/Makefile
+src/static/bitsequence/.deps/
+tests/.deps/
+tests/Makefile
+tutorial/src/.deps/
+tutorial/src/Makefile
+tutorial/ssa/.deps/
+tutorial/ssa/Makefile
