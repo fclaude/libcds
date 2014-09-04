@@ -68,8 +68,8 @@ namespace cds_static
         for(uint i=0;i<(new_n+1)/W+1;i++)
             oc[i] = 0;
         for(uint i=0;i<=max_v;i++)
-            bitset(oc,occurrences[i]-1);
-        bitset(oc,new_n);
+            cds_utils::bitset(oc,occurrences[i]-1);
+        cds_utils::bitset(oc,new_n);
         occ = bmb->build(oc,new_n+1);
         delete [] occurrences;
         this->n = new_n;
@@ -136,8 +136,8 @@ namespace cds_static
         for(uint i=0;i<(new_n+1)/W+1;i++)
             oc[i] = 0;
         for(uint i=0;i<=max_v;i++)
-            bitset(oc,occurrences[i]-1);
-        bitset(oc,new_n);
+            cds_utils::bitset(oc,occurrences[i]-1);
+        cds_utils::bitset(oc,new_n);
         occ = bmb->build(oc,new_n+1);
         delete [] occurrences;
         this->n = new_n;
@@ -355,7 +355,7 @@ namespace cds_static
                 } else {
                     //cout << "[" << new_pos1 << "]=" << symbols[i] << endl;
                     new_symbols[new_pos1++] = symbols[i];
-                    bitset(bm[level], i);
+                    cds_utils::bitset(bm[level], i);
                 }
             }
             delete [] symbols;

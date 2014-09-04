@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     cout << "bit at position " << i << ": ";
     cin >> b;
     if(b==0) bitclean(bs,i);
-    else bitset(bs,i);
+    else cds_utils::bitset(bs,i);
   }
   BitSequenceRRR * bsrrr = new BitSequenceRRR(bs,N,16);
   cout << "rank(" << N/2 << ")=" << bsrrr->rank1(N/2) << endl;

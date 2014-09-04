@@ -31,7 +31,7 @@ namespace cds_static
             ibitmap[i]=0;
         for(uint i=0;i<n;i++) {
             if(c->is_set(symbols[i],l))
-                bitset(ibitmap,i);
+                cds_utils::bitset(ibitmap,i);
         }
         bitmap = bmb->build(ibitmap, n);
         delete [] ibitmap;
@@ -84,7 +84,7 @@ namespace cds_static
             ibitmap[i]=0;
         for(size_t i=0;i<n;i++)
             if(c->is_set((uint)symbols[i + left],l))
-                bitset(ibitmap,i);
+                cds_utils::bitset(ibitmap,i);
         bitmap = bmb->build(ibitmap, n);
         delete [] ibitmap;
 

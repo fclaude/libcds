@@ -170,7 +170,7 @@ namespace cds_static
 		code += pos;
 		if (d > W) { bitzero(stream,ptr,d-W); ptr += d-W; d = W; }
 		while (d--) {
-			if ((code >> d) & 1) bitset(stream,ptr);
+			if ((code >> d) & 1) cds_utils::bitset(stream,ptr);
 			else bitclean(stream,ptr);
 			ptr++;
 		}
@@ -235,7 +235,7 @@ namespace cds_static
 		if (!enc) {
 			H.fst = new uint[H.depth+1];
 			H.fst[H.depth] = 0; dold = 0;
-			for (d=H.depth-1;d>=0;d--) {
+			for (d=H.depth-1;d+1>0;d--) {
 				dact = H.num[d+1];
 				H.fst[d] = (H.fst[d+1]+dact) >> 1;
 				H.num[d+1] = dold;

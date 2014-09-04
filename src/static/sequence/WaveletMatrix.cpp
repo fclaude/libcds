@@ -334,7 +334,7 @@ namespace cds_static
 				}
 				else {
 					new_symbols[new_pos1++] = symbols[i];
-					bitset(bm[level], i);
+                    cds_utils::bitset(bm[level], i);
 				}
 			}
 			delete [] symbols;

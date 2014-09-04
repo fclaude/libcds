@@ -50,7 +50,7 @@ namespace cds_static
 			for(uint j=0;j<uint_len(n,1);j++)
 				bm[j]=0;
 			while(pp<occ[i]) {
-				bitset(bm,pos[pp]);
+                cds_utils::bitset(bm,pos[pp]);
 				pp++;
 			}
 			bitmaps[i] = bsb->build(bm,length);
@@ -98,7 +98,7 @@ namespace cds_static
 			for(uint j=0;j<uint_len(length,1);j++)
 				bm[j]=0;
 			while(pp<occ[i]) {
-				bitset(bm,pos[pp]);
+                cds_utils::bitset(bm,pos[pp]);
 				pp++;
 			}
 			//cout << "build " << bm << " len=" << length << " i=" << i << endl;

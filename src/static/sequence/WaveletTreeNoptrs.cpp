@@ -23,6 +23,14 @@
 
 #include <WaveletTreeNoptrs.h>
 
+#include <queue>
+#include <algorithm>
+#include <vector>
+#include <utility>
+#include <tuple>
+
+using namespace std;
+
 namespace cds_static
 {
 	WaveletTreeNoptrs::WaveletTreeNoptrs(const Array & a, BitSequenceBuilder * bmb, Mapper * am) : Sequence(0) {
@@ -493,7 +501,7 @@ namespace cds_static
 				bitclean(bm[level], offset + i);
 			} else {
 				right[cright++] = symbols[i];
-				bitset(bm[level], offset + i);
+                cds_utils::bitset(bm[level], offset + i);
 			}
 		}
 
@@ -530,7 +538,7 @@ namespace cds_static
 			}
 			else {
 				set_field(right, width, cright++, get_field(symbols, width, i));
-				bitset(bm[level], offset + i);
+                cds_utils::bitset(bm[level], offset + i);
 			}
 		}
 

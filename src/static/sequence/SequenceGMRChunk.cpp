@@ -49,7 +49,7 @@ namespace cds_static
 		for(uint c=0;c<sigma;c++) {
 			X_pos++;
 			for(uint i=0;i<counter[c+1];i++) {
-				bitset(X_bitmap, X_pos);
+                cds_utils::bitset(X_bitmap, X_pos);
 				X_pos++;
 			}
 			counter[c+1]+=counter[c];
@@ -95,7 +95,7 @@ namespace cds_static
 		for(uint c=0;c<sigma;c++) {
 			X_pos++;
 			for(uint i=0;i<counter[c+1];i++) {
-				bitset(X_bitmap, X_pos);
+                cds_utils::bitset(X_bitmap, X_pos);
 				X_pos++;
 			}
 			counter[c+1]+=counter[c];

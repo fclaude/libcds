@@ -65,24 +65,24 @@ namespace cds_static
 				if (bitget(baux,i) == 0) {
 					nextelem = j = bptr = antbptr = i;
 					aux = 0;
-					bitset(baux, j);
+                    cds_utils::bitset(baux, j);
 					cyclesize = 0;
 					while ((elem=get_field(elems,nbits,j)) != nextelem) {
 						j = elem;
-						bitset(baux, j);
+                        cds_utils::bitset(baux, j);
 						aux++;
 						if (aux >= t) {
 							nbwdptrs++;
 							antbptr = bptr;
 							bptr    = j;
 							aux     = 0;
-							bitset(b, j);
+                            cds_utils::bitset(b, j);
 						}
 						cyclesize++;
 					}
 					if (cyclesize >= t) {
 						nbwdptrs++;
-						bitset(b, nextelem);
+                        cds_utils::bitset(b, nextelem);
 					}
 				}
 			}
@@ -97,11 +97,11 @@ namespace cds_static
 				if (bitget(baux,i) == 0) {
 					nextelem = j = bptr = antbptr = i;
 					aux = 0;
-					bitset(baux, j);
+                    cds_utils::bitset(baux, j);
 					cyclesize = 0;
 					while ((elem=get_field(elems,nbits,j)) != nextelem) {
 						j = elem;
-						bitset(baux, j);
+                        cds_utils::bitset(baux, j);
 						aux++;
 						if (aux >= t) {
 							auxbwdptr[nbwdptrs].key = j;
@@ -109,14 +109,14 @@ namespace cds_static
 							antbptr = bptr;
 							bptr    = j;
 							aux     = 0;
-							bitset(b, j);
+                            cds_utils::bitset(b, j);
 						}
 						cyclesize++;
 					}
 					if (cyclesize >= t) {
 						auxbwdptr[nbwdptrs].key = nextelem;
 						auxbwdptr[nbwdptrs++].pointer = bptr;
-						bitset(b, nextelem);
+                        cds_utils::bitset(b, nextelem);
 					}
 				}
 			}

@@ -243,14 +243,14 @@ void ssa::build_bwt() {
   for(uint i=0;i<n+1;i++) {
     if(_sa[i]%samplesuff==0) {
       suff_sample[j++]=_sa[i];
-      bitset(sampled_vector,i);
+      cds_utils::bitset(sampled_vector,i);
     }
     if(_sa[i]%samplepos==0) {
       pos_sample[_sa[i]/samplepos]=i;
     }
   }
   pos_sample[n/samplepos+1]=pos_sample[0];
-  bitset(sampled_vector,n+1);
+  cds_utils::bitset(sampled_vector,n+1);
   sampled = new BitSequenceRRR(sampled_vector,n+1,32);
   delete [] sampled_vector;
   delete [] _sa;
@@ -275,7 +275,7 @@ uint ssa::locate(uchar * pattern, uint m, uint ** occs) {
   assert(m>0);
   assert(pattern!=NULL);
   assert(bwt!=NULL);
-  ulong i=m-1;
+  unsigned long i=m-1;
   uint c = pattern[i]; 
   uint sp = occ[c];
   uint ep = occ[c+1]-1;
@@ -317,7 +317,7 @@ uint ssa::count(uchar * pattern, uint m) {
   assert(m>0);
   assert(pattern!=NULL);
   assert(bwt!=NULL);
-  ulong i=m-1;
+  unsigned long i=m-1;
   uint c = pattern[i]; 
   uint sp = occ[c];
   uint ep = occ[c+1]-1;

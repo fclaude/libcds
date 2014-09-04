@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     cout << "bit at position " << i << ": ";
     cin >> b;
     if(b==0) bitclean(bs,i);
-    else bitset(bs,i);
+    else cds_utils::bitset(bs,i);
   }
   BitSequenceSDArray * bss = new BitSequenceSDArray(bs,N);
   cout << "rank(" << N/2 << ")=" << bss->rank1(N/2) << endl;

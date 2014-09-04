@@ -31,12 +31,12 @@ namespace cds_static
 		runs = 0;
 		uint last = get_field(perm,b,0);
 		seq[get_field(perm,b,0)] = 0;
-		bitset(marker,0);
+        cds_utils::bitset(marker,0);
 
 		for(size_t i=1;i<len;i++) {
 			if(last > get_field(perm,b,i)) {
 				runs++;
-				bitset(marker,i);
+                cds_utils::bitset(marker,i);
 			}
 			seq[get_field(perm,b,i)] = runs;
 			last = get_field(perm,b,i);
